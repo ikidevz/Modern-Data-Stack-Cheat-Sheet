@@ -5,12 +5,12 @@ from components.data_cleaning import DataCleaning
 APP_DIR = Path(__file__).resolve().parents[1]
 
 st.set_page_config(
-    page_title="Data Cleaning",
+    page_title="Data Cleaning (Pandas)",
     page_icon="🧹",
     layout="wide"
 )
 
-st.title("🧹 Data Cleaning Cheat Sheet Universal Data")
+st.title("🧹 Data Cleaning (Pandas) Cheat Sheet Universal Data")
 st.caption(
     "This section focuses on validating, cleaning, and standardizing raw data to ensure accuracy, consistency, and reliability before analysis."
 )
