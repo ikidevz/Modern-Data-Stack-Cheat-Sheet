@@ -32,15 +32,14 @@ left_column_defaults = [
     'join_combine',
     'date_time_operations',
     'case_statements',
-    'userful_string_functions'
+    'userful_string_functions',
+    'subqueries',
 ]
 right_column_defaults = [
     'exploring_data',
     'aggregations_group',
     'window_function',
-    'cte',
-    'subqueries',
-    'data_export_import'
+    'cte'
 ]
 
 all_segments = left_column_defaults + right_column_defaults
@@ -75,8 +74,7 @@ segment_dict = {
     'cte': cte,
     'case_statements': case_statements,
     'subqueries': subqueries,
-    'userful_string_functions': userful_string_functions,
-    'data_export_import': data_export_import,
+    'userful_string_functions': userful_string_functions
 }
 col1, col2 = st.columns(2)
 
@@ -88,4 +86,5 @@ with col2:
     for seg in right_col_segments:
         segment_dict[seg]()
 
+data_export_import()
 quick_tips()
