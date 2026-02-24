@@ -195,7 +195,7 @@ section[data-testid="stSidebar"] * { color: #d6d3d1 !important; }
     color:#fde68a;
     line-height: 1.6;
 }
-.intent-block strong { color: #92400e; }
+.intent-block strong { color: #fde68a; }
 .usecase-block {
     background: transparent;
     border: 1px solid #bae6fd;
@@ -274,6 +274,43 @@ section[data-testid="stSidebar"] * { color: #d6d3d1 !important; }
 
 /* ── Divider ── */
 .doc-divider { border: none; border-top: 1px solid #e7e5e4; margin: 38px 0; }
+
+ /* ── Category definition block ── */
+.definition-block {
+    background: transparent;
+    border: 1px solid #e7e5e4;
+    border-radius: 12px;
+    padding: 22px 26px;
+    margin: 0 0 28px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    position: relative;
+    overflow: hidden;
+}
+.definition-block::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--def-accent, #f59e0b);
+    border-radius: 12px 0 0 12px;
+}
+.definition-block .def-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: white;
+    margin-bottom: 8px;
+    display: block;
+}
+.definition-block .def-text {
+    font-size: 0.95rem;
+    color: white;
+    line-height: 1.75;
+    font-weight: 400;
+    margin: 0;
+}   
 
 /* ── Search ── */
 .stTextInput input {
@@ -368,6 +405,36 @@ def render_pattern(p):
     st.markdown("<hr class='doc-divider'>", unsafe_allow_html=True)
 
 
+def parse_category_definition(content):
+    """
+    Extract the category-level definition paragraph from the markdown file.
+    It sits between the blockquote subtitle (> ...) and the first ## heading.
+    """
+    # Remove the # title line and > blockquote line at the top
+    lines = content.split("\n")
+    body_lines = []
+    skip_prefixes = ("#", ">", "---")
+    started = False
+    for line in lines:
+        stripped = line.strip()
+        # Start collecting after the blockquote
+        if stripped.startswith(">"):
+            started = True
+            continue
+        if not started:
+            continue
+        # Stop at the first ## pattern heading
+        if stripped.startswith("## "):
+            break
+        # Skip horizontal rules
+        if stripped == "---":
+            continue
+        body_lines.append(line)
+
+    definition = "\n".join(body_lines).strip()
+    return definition
+
+
 def search_all(query, all_sections):
     q = query.lower()
     results = []
@@ -384,10 +451,12 @@ def search_all(query, all_sections):
 def load_all():
     content = {cat: load_md(meta["file"]) for cat, meta in DOCS.items()}
     sections = {cat: parse_patterns(content[cat]) for cat in DOCS}
-    return content, sections
+    definitions = {cat: parse_category_definition(
+        content[cat]) for cat in DOCS}
+    return content, sections, definitions
 
 
-_, all_sections = load_all()
+_, all_sections, all_definitions = load_all()
 sidebar()
 with st.sidebar:
     # Search input
@@ -498,7 +567,7 @@ else:
     st.markdown(
         f"<span class='cat-pill {pill}'>{label}</span>", unsafe_allow_html=True)
     st.markdown(
-        f"<h1 class='doc-title'>{label}<br>Patterns</h1>", unsafe_allow_html=True)
+        f"<h1 class='doc-title'>{label} Patterns</h1>", unsafe_allow_html=True)
     st.markdown(
         f"<p class='doc-subtitle'>{len(meta['patterns'])} patterns · Python · Data & Analytics</p>",
         unsafe_allow_html=True
@@ -511,6 +580,23 @@ else:
         <div class='stat-chip'><div class='val'>{total_ex}</div><div class='lbl'>Examples</div></div>
     </div>
     """, unsafe_allow_html=True)
+
+    # Category definition
+    definition = all_definitions.get(cat, "")
+    accent_map = {
+        "🟢 Creational":  "#10b981",
+        "🔵 Structural":  "#3b82f6",
+        "🟣 Behavioural": "#8b5cf6",
+    }
+    accent_color = accent_map.get(cat, "#f59e0b")
+    if definition:
+        st.markdown(
+            f"""<div class='definition-block' style='--def-accent:{accent_color};'>
+            <span class='def-label'>What are {label} Design Patterns?</span>
+            <p class='def-text'>{definition}</p>
+            </div>""",
+            unsafe_allow_html=True
+        )
 
     # Table of contents
     if sections:
