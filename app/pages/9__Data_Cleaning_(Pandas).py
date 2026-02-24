@@ -1,5 +1,7 @@
 import streamlit as st
 from pathlib import Path
+
+from components import sidebar
 from components.data_cleaning import DataCleaning
 
 APP_DIR = Path(__file__).resolve().parents[1]
@@ -9,6 +11,8 @@ st.set_page_config(
     page_icon="🧹",
     layout="wide"
 )
+
+sidebar()
 
 st.title("🧹 Data Cleaning (Pandas) Cheat Sheet Universal Data")
 st.caption(

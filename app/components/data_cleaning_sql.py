@@ -443,12 +443,12 @@ END;""", language="sql", line_numbers=True)
 
                     # Fill categorical with defaults
                     if 'customer_name' in self.df.columns and self.df['customer_name'].isnull().any():
-                        self.df['customer_name'].fillna(
-                            'Unknown Customer', inplace=True)
+                        self.df['customer_name'] = self.df['customer_name'].fillna(
+                            'Unknown Customer')
                         st.info("• customer_name: Filled with 'Unknown Customer'")
 
                     if 'notes' in self.df.columns and self.df['notes'].isnull().any():
-                        self.df['notes'].fillna('No notes', inplace=True)
+                        self.df['notes'] = self.df['notes'].fillna('No notes')
                         st.info("• notes: Filled with 'No notes'")
 
                     st.success("✅ Missing values handled")

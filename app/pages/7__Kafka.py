@@ -1,4 +1,5 @@
 import streamlit as st
+from components import sidebar
 
 st.set_page_config(
     page_title="Kafka in Python Guide and Tips",
@@ -76,6 +77,8 @@ page = st.sidebar.selectbox(
 )
 st.markdown('# 📊 Apache Kafka Learning Hub and Tips',
             unsafe_allow_html=True)
+
+sidebar()
 if page == "🏠 Overview":
     st.markdown('#### What is Apache Kafka?',
                 unsafe_allow_html=True)

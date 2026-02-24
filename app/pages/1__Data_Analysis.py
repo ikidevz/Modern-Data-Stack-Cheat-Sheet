@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from components import sidebar
 
 st.set_page_config(page_title="Data Analysis Types Guide",
                    page_icon="📊", layout="wide")
@@ -97,9 +98,9 @@ st.markdown('<h1 class="main-header">📊 Data Analysis Types</h1>',
 st.markdown('<p class="sub-header">Complete Learning Guide with Examples & Code</p>',
             unsafe_allow_html=True)
 
-# Sidebar navigation
-st.sidebar.title("🔍 Navigation")
-st.sidebar.markdown("---")
+
+sidebar()
+
 analysis_type = st.sidebar.selectbox(
     "Choose an analysis type:",
     ["🏠 Overview", "📈 Descriptive", "🔍 Diagnostic", "🧭 Exploratory",
