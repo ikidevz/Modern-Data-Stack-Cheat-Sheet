@@ -8,10 +8,8 @@ st.set_page_config(
     layout="wide"
 )
 
-
 st.title("📊🧱⚙️  The Modern Data Stack Cheat Sheet")
 st.caption("Analytics • Engineering • Data System Patterns")
-
 
 sidebar()
 
@@ -36,22 +34,38 @@ st.markdown(
 # --------------------------------------------------
 st.subheader("🧠 What You'll Find Here")
 
-col1, _ = st.columns(2)
+col1, col2 = st.columns(2)
 
 with col1:
     st.markdown(
         """
-        **📊 DataFrame & Processing**
-        - 🐼 Pandas (local analytics)
-        - ⚡ Polars (columnar performance)
-        - 🔥 PySpark (distributed processing)
+        **📊 Data Analysis & Visualization**
+        - 📈 Data Analysis — EDA, aggregations, and analytical workflows
+        - 🎨 Data Visualization — charts, plots, and storytelling with data
 
-        **🗄️ SQL & Databases**
-        - 🐘 PostgreSQL
-        - 🐬 MySQL
+        **🧹 Data Cleaning**
+        - 🐼 Data Cleaning (Pandas) — cleaning in Python
+        - 🗄️ Data Cleaning (SQL) — cleaning at the database layer
+
+        **🐍 DataFrame & Processing**
+        - 🐼 Pandas — local analytics and data wrangling
+        - ⚡ Polars — columnar, high-performance processing
+        - 🔥 PySpark — distributed big data processing
         """
     )
 
+with col2:
+    st.markdown(
+        """
+        **🗄️ SQL & Databases**
+        - 🐘 PostgreSQL — advanced SQL and relational patterns
+        - 🐬 MySQL — queries, joins, and DB management
+
+        **⚙️ Data Engineering**
+        - 🌊 Kafka — event streaming and message queues
+        - 🧱 Design Patterns — architecture and pipeline design patterns
+        """
+    )
 
 # --------------------------------------------------
 # How to Use This Cheat Sheet
@@ -64,20 +78,6 @@ st.markdown(
     - Treat each page as a **quick reference**, not a walkthrough  
     - Focus on **patterns**, not memorization  
     - Apply what you see directly to **real pipelines and data apps**
-    """
-)
-
-
-# --------------------------------------------------
-# What's Coming Next
-# --------------------------------------------------
-st.subheader("🚀 What's Coming Next")
-
-st.markdown(
-    """
-    - 🧱 **Data Engineering Design Patterns**
-    - 📐 **Analytics Engineering Modeling Patterns**
-    - 🧪 **Performance & Optimization Playbooks**
     """
 )
 
