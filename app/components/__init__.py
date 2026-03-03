@@ -6,7 +6,7 @@ def sidebar():
         st.title("📊🧱⚙️  The Modern Data Stack Cheat Sheet")
 
         st.sidebar.caption(
-            "Made by an [Franz Monzales](https://github.com/ikigamisama)")
+            "Made by [Franz Monzales](https://github.com/ikigamisama)")
 
 
 def init_layout_state(left_defaults, right_defaults):
