@@ -515,8 +515,7 @@ if search_query:
             render_pattern(pattern)
 
 elif selected_page == "📖 Overview":
-    st.markdown("<h1 class='doc-title'>Design Patterns</h1>",
-                unsafe_allow_html=True)
+    st.title("📐 Design Patterns")
     st.markdown(
         "<p class='doc-subtitle'>A comprehensive Python reference for Data Engineering, "
         "Analytics Engineering, Data Science & Analytics</p>",
