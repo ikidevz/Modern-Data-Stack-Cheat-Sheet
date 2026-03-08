@@ -186,8 +186,7 @@ st.markdown(
     f'<h2 style="margin:0 0 0.05rem 0;">'
     f'{sector_icon}&nbsp;<span style="color:{accent_color};">{selected_sector}</span>'
     f'&nbsp;Feature Engineering</h2>'
-    f'<p style="color:#6e7681;font-size:0.8rem;margin:0 0 1rem 0;">'
-    f'All snippets: <code>import pandas as pd; import numpy as np</code></p>',
+    f'<p style="color:#6e7681;font-size:0.8rem;margin:0 0 1rem 0;">',
     unsafe_allow_html=True,
 )
 
