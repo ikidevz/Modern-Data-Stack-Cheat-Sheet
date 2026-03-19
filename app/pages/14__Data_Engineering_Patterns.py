@@ -180,7 +180,7 @@ code {
 }
 </style>
 """, unsafe_allow_html=True)
-
+sidebar()
 # ── Data ────────────────────────────────────────────────────────────────────
 
 PATTERNS = [
