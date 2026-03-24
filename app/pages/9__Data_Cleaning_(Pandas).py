@@ -3,7 +3,7 @@ from pathlib import Path
 
 from components import sidebar
 from components.data_cleaning import DataCleaning
-from utils.seo import inject_seo
+from utility.seo import inject_seo
 
 APP_DIR = Path(__file__).resolve().parents[1]
 

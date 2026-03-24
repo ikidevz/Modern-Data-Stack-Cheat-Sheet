@@ -29,7 +29,7 @@ from components.mysql import (
     system_information,
     json_functions
 )
-from utils.seo import inject_seo
+from utility.seo import inject_seo
 
 st.set_page_config(
     page_title="MySQL Cheat Sheet",

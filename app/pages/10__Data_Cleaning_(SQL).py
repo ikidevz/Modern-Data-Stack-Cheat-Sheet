@@ -5,7 +5,7 @@ from components.data_cleaning_sql_1 import DataCleaningSQL as sql_1
 from components.data_cleaning_sql_2 import DataCleaningSQL as sql_2
 from components.data_cleaning_sql_3 import DataCleaningFinanceSQL as sql_3
 
-from utils.seo import inject_seo
+from utility.seo import inject_seo
 
 st.set_page_config(
     page_title="Data Cleaning (SQL)",

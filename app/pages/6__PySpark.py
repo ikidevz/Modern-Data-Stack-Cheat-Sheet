@@ -19,7 +19,7 @@ from components.pyspark import (
     performance_tuning,
     quick_refence
 )
-from utils.seo import inject_seo
+from utility.seo import inject_seo
 st.set_page_config(
     page_title="PySpark Cheat Sheet",
     page_icon="🔥⚡",

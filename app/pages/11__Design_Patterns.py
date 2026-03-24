@@ -4,7 +4,7 @@ from pathlib import Path
 import re
 
 from components import sidebar
-from utils.seo import inject_seo
+from utility.seo import inject_seo
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DOCS_DIR = BASE_DIR / "docs"

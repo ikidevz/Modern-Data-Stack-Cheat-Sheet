@@ -19,7 +19,7 @@ from components.polaris import (
     best_practice,
     quick_refences
 )
-from utils.seo import inject_seo
+from utility.seo import inject_seo
 st.set_page_config(
     page_title="Polars Cheat Sheet",
     page_icon="⚡📊",

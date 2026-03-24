@@ -31,7 +31,7 @@ from components.DataVisualization import (
     Comparison,
     Statistical
 )
-from utils.seo import inject_seo
+from utility.seo import inject_seo
 
 # Page configuration
 st.set_page_config(

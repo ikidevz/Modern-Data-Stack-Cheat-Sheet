@@ -15,7 +15,7 @@ from components.postgresql import (
     data_export_import,
     quick_tips
 )
-from utils.seo import inject_seo
+from utility.seo import inject_seo
 
 st.set_page_config(
     page_title="PostgreSQL Cheat Sheet",

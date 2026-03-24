@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from components import sidebar
-from utils.seo import inject_seo
+from utility.seo import inject_seo
 
 st.set_page_config(page_title="Data Analysis Types Guide",
                    page_icon="📊", layout="wide")

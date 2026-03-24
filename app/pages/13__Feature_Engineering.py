@@ -3,7 +3,7 @@ import pandas as pd
 
 from components import sidebar
 from components.feature_engineering import get_cheatsheet_data
-from utils.seo import inject_seo
+from utility.seo import inject_seo
 
 st.set_page_config(
     page_title="Feature Engineering Cheat Sheet",
