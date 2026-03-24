@@ -1,0 +1,28 @@
+# robots.txt for Modern Data Stack Cheat Sheet
+# App URL: https://modern-data-stack-cheat-sheet-ikigami.streamlit.app
+
+User-agent: *
+Allow: /
+
+# Disallow expensive or unnecessary paths (optional but recommended)
+Disallow: /?st_*
+Disallow: /*?*
+Disallow: /static/
+Disallow: /_stcore/
+Disallow: /component/
+
+# Sitemap
+Sitemap: https://modern-data-stack-cheat-sheet-ikigami.streamlit.app/sitemap.xml
+
+# Optional: Block specific AI training crawlers (2026 best practice)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
