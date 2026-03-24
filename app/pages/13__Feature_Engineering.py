@@ -3,12 +3,14 @@ import pandas as pd
 
 from components import sidebar
 from components.feature_engineering import get_cheatsheet_data
+from utils.seo import inject_seo
 
 st.set_page_config(
     page_title="Feature Engineering Cheat Sheet",
     page_icon="⚙️",
     layout="wide",
 )
+inject_seo('Feature_Engineering')
 st.markdown("""
 <style>
     .block-container { padding: 1.2rem 2rem 2rem 2rem; max-width: 100%; }

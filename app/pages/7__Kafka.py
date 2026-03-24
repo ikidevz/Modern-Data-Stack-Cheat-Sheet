@@ -1,6 +1,6 @@
 import streamlit as st
 from components import sidebar
-
+from utils.seo import inject_seo
 st.set_page_config(
     page_title="Kafka in Python Guide and Tips",
     page_icon="📡",
@@ -75,6 +75,8 @@ page = st.sidebar.selectbox(
         "⚠️ Common Issues"
     ],
 )
+
+inject_seo('Kafka')
 st.markdown('# 📊 Apache Kafka Learning Hub and Tips',
             unsafe_allow_html=True)
 

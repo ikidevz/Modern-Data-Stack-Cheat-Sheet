@@ -19,6 +19,7 @@ from components.pandas import (
     best_practices,
     quick_reference
 )
+from utils.seo import inject_seo
 
 st.set_page_config(
     page_title="Pandas Cheat Sheet",
@@ -26,6 +27,7 @@ st.set_page_config(
     layout="wide"
 )
 
+inject_seo('Pandas')
 st.title("🐼📊  Pandas Cheat Sheet")
 st.caption("Analytics/Data Engineer Patterns")
 sidebar()

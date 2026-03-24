@@ -1,6 +1,7 @@
 import streamlit as st
 
 from components import sidebar
+from utils.seo import inject_seo
 
 
 st.set_page_config(
@@ -8,18 +9,15 @@ st.set_page_config(
     page_icon="⚙️",
     layout="wide"
 )
-
+inject_seo('Data_Engineering_Patterns')
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;700;800&display=swap');
  
-html, body, [class*="css"] {
-    font-family: 'Syne', sans-serif;
-}
- 
 .stApp {
     background-color: #0a0a0f;
     color: #e8e8f0;
+    font-family: 'Syne', sans-serif;
 }
  
 h1, h2, h3 {

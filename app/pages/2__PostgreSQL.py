@@ -15,13 +15,14 @@ from components.postgresql import (
     data_export_import,
     quick_tips
 )
+from utils.seo import inject_seo
 
 st.set_page_config(
     page_title="PostgreSQL Cheat Sheet",
     page_icon="🐘🗄️",
     layout="wide"
 )
-
+inject_seo('PostgreSQL')
 st.title("🐘🗄️  PostgreSQL Cheat Sheet")
 st.caption("Analytics/Data Engineer Patterns")
 sidebar()

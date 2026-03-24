@@ -29,6 +29,7 @@ from components.mysql import (
     system_information,
     json_functions
 )
+from utils.seo import inject_seo
 
 st.set_page_config(
     page_title="MySQL Cheat Sheet",
@@ -36,7 +37,7 @@ st.set_page_config(
     layout="wide"
 )
 
-
+inject_seo('MySQL')
 st.title("🐬🗄️  MySQL Cheat Sheet")
 st.caption("Analytics/Data Engineer Patterns")
 sidebar()

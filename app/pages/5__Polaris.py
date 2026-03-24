@@ -19,13 +19,14 @@ from components.polaris import (
     best_practice,
     quick_refences
 )
-
+from utils.seo import inject_seo
 st.set_page_config(
     page_title="Polars Cheat Sheet",
     page_icon="⚡📊",
     layout="wide"
 )
 
+inject_seo('Polaris')
 st.title("⚡📊  Polars Cheat Sheet")
 st.caption("Analytics/Data Engineer Patterns")
 sidebar()

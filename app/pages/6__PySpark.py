@@ -19,13 +19,13 @@ from components.pyspark import (
     performance_tuning,
     quick_refence
 )
-
+from utils.seo import inject_seo
 st.set_page_config(
     page_title="PySpark Cheat Sheet",
     page_icon="🔥⚡",
     layout="wide"
 )
-
+inject_seo('PySpark')
 st.title("🔥⚡  PySpark Cheat Sheet")
 st.caption("Analytics/Data Engineer Patterns")
 sidebar()

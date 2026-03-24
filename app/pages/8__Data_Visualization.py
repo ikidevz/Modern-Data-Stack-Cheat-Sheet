@@ -31,6 +31,7 @@ from components.DataVisualization import (
     Comparison,
     Statistical
 )
+from utils.seo import inject_seo
 
 # Page configuration
 st.set_page_config(
@@ -205,7 +206,7 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
-
+inject_seo('Data_Visualization')
 # Hero Section
 st.markdown('# 📊 Data Visualization Hub')
 

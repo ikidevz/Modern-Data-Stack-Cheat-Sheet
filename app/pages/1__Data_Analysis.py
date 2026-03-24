@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from components import sidebar
+from utils.seo import inject_seo
 
 st.set_page_config(page_title="Data Analysis Types Guide",
                    page_icon="📊", layout="wide")
@@ -91,7 +92,7 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-
+inject_seo("Data_Analysis")
 # Title
 st.markdown('<h1 class="main-header">📊 Data Analysis Types</h1>',
             unsafe_allow_html=True)

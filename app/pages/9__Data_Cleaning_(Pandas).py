@@ -3,6 +3,7 @@ from pathlib import Path
 
 from components import sidebar
 from components.data_cleaning import DataCleaning
+from utils.seo import inject_seo
 
 APP_DIR = Path(__file__).resolve().parents[1]
 
@@ -13,7 +14,7 @@ st.set_page_config(
 )
 
 sidebar()
-
+inject_seo('Data_Cleaning_(Pandas)')
 st.title("🧹 Data Cleaning (Pandas) Cheat Sheet Universal Data")
 st.caption(
     "This section focuses on validating, cleaning, and standardizing raw data to ensure accuracy, consistency, and reliability before analysis."

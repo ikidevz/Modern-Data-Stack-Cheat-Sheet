@@ -4,6 +4,7 @@ from pathlib import Path
 import re
 
 from components import sidebar
+from utils.seo import inject_seo
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DOCS_DIR = BASE_DIR / "docs"
@@ -457,6 +458,7 @@ def load_all():
 
 
 _, all_sections, all_definitions = load_all()
+inject_seo('Design_Patterns')
 sidebar()
 with st.sidebar:
     # Search input

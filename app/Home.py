@@ -1,13 +1,14 @@
 import streamlit as st
 
 from components import sidebar
+from utils.seo import inject_seo
 
 st.set_page_config(
     page_title="The Modern Data Stack Cheat Sheet",
     page_icon="📊🧱⚙️",
     layout="wide"
 )
-
+inject_seo("/")
 st.title("📊🧱⚙️  The Modern Data Stack Cheat Sheet")
 st.caption("Analytics • Engineering • Data System Patterns")
 
