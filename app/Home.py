@@ -9,6 +9,8 @@ st.set_page_config(
     layout="wide"
 )
 inject_seo("/")
+
+st.markdown('<img src="https://tdhghaslnufgtzjybhhf.supabase.co/storage/v1/object/public/resume/moden_data_stack_cheat_sheer_banner.png" alt="main-banner" style="width:100%; object-fit: cover;"/>', unsafe_allow_html=True)
 st.title("📊🧱⚙️  The Modern Data Stack Cheat Sheet")
 st.caption("Analytics • Engineering • Data System Patterns")
 

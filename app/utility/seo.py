@@ -66,7 +66,7 @@ PAGE_META = {
 
 BASE_URL = "https://modern-data-stack-cheat-sheet-ikigami.streamlit.app"
 # replace with real image URL
-OG_IMAGE = "https://modern-data-stack-cheat-sheet-ikigami.streamlit.app/og-image.png"
+OG_IMAGE = "https://tdhghaslnufgtzjybhhf.supabase.co/storage/v1/object/public/resume/moden_data_stack_cheat_sheer_banner.png"
 
 
 def inject_seo(page_key: str = "/"):

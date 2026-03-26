@@ -3,7 +3,8 @@ import streamlit as st
 
 def sidebar():
     with st.sidebar:
-        st.title("📊🧱⚙️  The Modern Data Stack Cheat Sheet")
+
+        st.markdown('<img src="https://tdhghaslnufgtzjybhhf.supabase.co/storage/v1/object/public/resume/moden_data_stack_cheat_sheet_main_logo.png" alt="main-banner" style="width:100%; object-fit: cover; height: 90px;"/>', unsafe_allow_html=True)
 
         st.markdown("""
         <style>
