@@ -9,6 +9,14 @@ def sidebar():
         st.markdown("""
         <style>
             .block-container { padding: 3.75rem 2rem 2rem 2rem; max-width: 100%; }
+            [data-testid="stSidebar"] {
+                background-color: #161b22 !important;
+                border-right: 1px solid #30363d;
+            }
+            [data-testid="stSidebar"] * {
+                color: #e6edf3 !important;
+            }
+
         </style>
         """, unsafe_allow_html=True)
 
