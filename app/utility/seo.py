@@ -62,6 +62,10 @@ PAGE_META = {
         "title": "Data Engineering Patterns — Lake, Mesh & Pipeline Designs",
         "description": "Architectural patterns for data engineers: data lake, lakehouse, mesh, and pipeline design.",
     },
+    "Databricks": {
+        "title": "Delta Lake Cheat Sheet - Best Practices",
+        "description": "Building a professional Streamlit cheat sheet app ",
+    },
 }
 
 BASE_URL = "https://modern-data-stack-cheat-sheet-ikigami.streamlit.app"

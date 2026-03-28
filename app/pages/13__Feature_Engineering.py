@@ -97,6 +97,12 @@ SECTOR_META = {
     "Energy & Utilities": ("#ff7b72", "⚡"),
     "Agriculture":        ("#7ee787", "🌾"),
     "Transportation":     ("#a5d6ff", "🚆"),
+    "Real Estate":        ("#f0883e", "🏠"),
+    "Human Resources":    ("#d2a8ff", "👥"),
+    "Insurance":          ("#79c0ff", "🛡️"),
+    "Cybersecurity":      ("#ff7b72", "🔐"),
+    "ML Ops / AI":        ("#bc8cff", "🤖"),
+    "Education":          ("#7ee787", "🎓"),
 }
 
 sector_dfs = load_data()
@@ -113,7 +119,7 @@ st.caption(
 
 st.markdown(f"""
 <div class="hero">
-    <span class="hero-badge">🗂 12 Sectors</span>
+    <span class="hero-badge">🗂 18 Sectors</span>
     <span class="hero-badge">📐 {total_all:,} Features</span>
     <span class="hero-badge">🐼 pandas + numpy</span>
     <span class="hero-badge">🔍 Searchable</span>

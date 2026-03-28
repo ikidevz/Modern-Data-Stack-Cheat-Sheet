@@ -10,7 +10,7 @@ st.set_page_config(
     layout="wide",
 )
 
-inject_seo('Data_Engineering_Patterns')
+inject_seo('Databricks')
 
 # ── CUSTOM CSS ───────────────────────────────────────────
 st.markdown("""
