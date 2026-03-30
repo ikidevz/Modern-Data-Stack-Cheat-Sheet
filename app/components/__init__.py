@@ -21,7 +21,7 @@ def sidebar():
         """, unsafe_allow_html=True)
 
         st.sidebar.caption(
-            "Made by [Franz Monzales](https://github.com/ikigamisama)")
+            "Made by [Franz Monzales](https://ikidevs.vercel.app)")
 
 
 def init_layout_state(left_defaults, right_defaults):

@@ -169,27 +169,6 @@ with col_cat:
     )
 
 
-st.markdown('<hr class="divider-line">', unsafe_allow_html=True)
-grid_html = '<div class="sector-grid">'
-for s in sector_names:
-    color, icon = SECTOR_META[s]
-    cnt = len(sector_dfs[s])
-    is_active = s == selected_sector
-    b_sty = f"border-color:{color};" if is_active else ""
-    bg_sty = "background:#1c2128;" if is_active else ""
-    n_sty = f"color:{color};" if is_active else ""
-    grid_html += (
-        f'<div class="sector-card" style="{b_sty}{bg_sty}">'
-        f'<div class="sector-card-icon">{icon}</div>'
-        f'<div class="sector-card-name" style="{n_sty}">{s}</div>'
-        f'<div class="sector-card-count">{cnt} features</div>'
-        f'</div>'
-    )
-grid_html += "</div>"
-st.markdown(grid_html, unsafe_allow_html=True)
-
-st.markdown('<hr class="divider-line">', unsafe_allow_html=True)
-
 st.markdown(
     f'<h2 style="margin:0 0 0.05rem 0;">'
     f'{sector_icon}&nbsp;<span style="color:{accent_color};">{selected_sector}</span>'
