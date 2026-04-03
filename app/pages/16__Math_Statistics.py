@@ -8,7 +8,6 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-    .block-container { padding-top: 2rem; padding-bottom: 2rem; max-width: 980px; }
     .badge {
         display: inline-block;
         padding: 2px 10px;
