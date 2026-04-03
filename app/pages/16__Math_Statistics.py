@@ -26,7 +26,7 @@ st.markdown("""
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.08em;
-        color: #9ca3af;
+        color: white;
         margin-top: 0.75rem;
         margin-bottom: 0.2rem;
     }
@@ -36,6 +36,7 @@ st.markdown("""
         padding: 8px 12px;
         border-radius: 0 4px 4px 0;
         font-size: 0.87rem;
+        margin: 1rem 0;
     }
     .formula-box {
         background: transparent;
@@ -45,6 +46,7 @@ st.markdown("""
         font-family: 'Courier New', monospace;
         font-size: 0.83rem;
         white-space: pre-wrap;
+            margin: 1rem 0;
     }
     .example-box {
         background: transparent;
@@ -52,6 +54,7 @@ st.markdown("""
         padding: 8px 12px;
         border-radius: 0 4px 4px 0;
         font-size: 0.86rem;
+        margin: 1rem 0;
     }
     .warn-box {
         background: transparent;
@@ -59,6 +62,7 @@ st.markdown("""
         padding: 8px 12px;
         border-radius: 0 4px 4px 0;
         font-size: 0.86rem;
+        margin: 1rem 0;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -509,7 +513,7 @@ for level, content in sections.items():
     cols = st.columns(2)
     for i, topic in enumerate(topics):
         with cols[i % 2]:
-            with st.expander(f"**{topic['title']}**", expanded=False):
+            with st.expander(f"**{topic['title']}**", expanded=True):
                 render_topic(topic)
 
     st.markdown("---")
