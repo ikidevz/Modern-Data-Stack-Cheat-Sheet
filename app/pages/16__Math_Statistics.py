@@ -32,14 +32,14 @@ st.markdown("""
         margin-bottom: 0.2rem;
     }
     .def-box {
-        background: #f0f7ff;
+        background: transparent;
         border-left: 3px solid #3b82f6;
         padding: 8px 12px;
         border-radius: 0 4px 4px 0;
         font-size: 0.87rem;
     }
     .formula-box {
-        background: #1a1a2e;
+        background: transparent;
         color: #a9d0f5;
         padding: 10px 14px;
         border-radius: 5px;
@@ -48,14 +48,14 @@ st.markdown("""
         white-space: pre-wrap;
     }
     .example-box {
-        background: #f0fdf4;
+        background: transparent;
         border-left: 3px solid #22c55e;
         padding: 8px 12px;
         border-radius: 0 4px 4px 0;
         font-size: 0.86rem;
     }
     .warn-box {
-        background: #fff7ed;
+        background: transparent;
         border-left: 3px solid #f97316;
         padding: 8px 12px;
         border-radius: 0 4px 4px 0;
