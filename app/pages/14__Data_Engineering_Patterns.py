@@ -1302,7 +1302,7 @@ st.markdown('<div class="main-subtitle">Top 12 · Reference Guide · Code Exampl
 st.markdown('<hr class="divider">', unsafe_allow_html=True)
 
 for p in PATTERNS:
-    with st.expander(f"  {p['num']}  ·  {p['title']}", expanded=False):
+    with st.expander(f"  {p['num']}  ·  {p['title']}", expanded=True):
 
         # Tags
         tags_html = "".join(f'<span class="tag">{t}</span>' for t in p["tags"])
