@@ -1659,7 +1659,7 @@ for level, content in sections.items():
     cols = st.columns(2)
     for i, topic in enumerate(topics):
         with cols[i % 2]:
-            with st.expander(f"**{topic['title']}**", expanded=True):
+            with st.expander(f"**{topic['title']}**", expanded=False):
                 render_topic(topic)
 
     st.markdown("---")
