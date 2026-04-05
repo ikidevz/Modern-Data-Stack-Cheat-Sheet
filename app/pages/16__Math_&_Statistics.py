@@ -1,10 +1,15 @@
 import streamlit as st
 
+from components import sidebar
+from utility.seo import inject_seo
+
 st.set_page_config(
     page_title="Data & Statistics Cheat Sheet",
     page_icon="📊",
     layout="wide",
 )
+
+inject_seo('Math & Statistics')
 
 st.markdown("""
 <style>
@@ -71,6 +76,8 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+
+sidebar()
 
 st.markdown("# 📊 Data & Statistics Cheat Sheet")
 st.markdown("#### A structured reference by role and difficulty level")

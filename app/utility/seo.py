@@ -66,6 +66,10 @@ PAGE_META = {
         "title": "Delta Lake Cheat Sheet - Best Practices",
         "description": "Building a professional Streamlit cheat sheet app ",
     },
+    "Math & Statistics": {
+        "title": "Data & Statistics Cheat Sheet",
+        "description": "Cheat sheet covering key math and statistics concepts for data professionals, including probability, distributions, hypothesis testing, and more.",
+    },
 }
 
 BASE_URL = "https://modern-data-stack-cheat-sheet-ikigami.streamlit.app"
