@@ -4132,7 +4132,7 @@ else:
     cols = st.columns(2)
     for i, topic in enumerate(filtered):
         with cols[i % 2]:
-            with st.expander(f"**{topic['title']}**", expanded=False):
+            with st.expander(f"**{i + 1} - {topic['title']}**", expanded=False):
                 render_topic(topic)
 
 st.markdown("---")
