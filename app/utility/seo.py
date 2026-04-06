@@ -70,6 +70,10 @@ PAGE_META = {
         "title": "Data & Statistics Cheat Sheet",
         "description": "Cheat sheet covering key math and statistics concepts for data professionals, including probability, distributions, hypothesis testing, and more.",
     },
+    "EDA": {
+        "title": "EDA Guide",
+        "description": "A structured study guide to understanding your data before modeling.",
+    },
 }
 
 BASE_URL = "https://modern-data-stack-cheat-sheet-ikigami.streamlit.app"
