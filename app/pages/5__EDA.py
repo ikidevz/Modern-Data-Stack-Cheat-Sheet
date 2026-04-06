@@ -715,13 +715,13 @@ with tab_ex:
     with st.expander("Preview raw data"):
         st.dataframe(data.head(100), width='stretch')
 
-    tab_overview, tab_desc, tab_outliers, tab_uni, tab_target, tab_bi, tab_domain, tab_corr, tab_insights = st.tabs([
+    tab_overview, tab_desc, tab_outliers, tab_uni, tab_bi, tab_target, tab_domain, tab_corr, tab_insights = st.tabs([
         "📋 Overview",
         "📊 Descriptive",
         "🎯 Outliers",
         "📈 Univariate",
-        "🏷️ Target",
         "🔀 Bivariate",
+        "🏷️ Target",
         "🔬 Domain",
         "🌡️ Correlation",
         "💡 Insights",
