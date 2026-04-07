@@ -1734,187 +1734,158 @@ node = ll.find(3)
 print("Found:", node.val if node else "Not found")  # Found: 3''',
         "leetcode_examples": [
             {
+                "id": "LC 83",
+                "title": "Remove Duplicates from Sorted List",
+                "difficulty": "Easy",
+                "complexity": "O(n) time, O(1) space",
+                "description": "Given the head of a sorted linked list, delete all duplicates such that each element appears only once.",
+                "approach": "Use two pointers to traverse the list and remove duplicate nodes in-place.",
+                "code": '''def deleteDuplicates(head: Optional[ListNode]) -> Optional[ListNode]:
+    cur = head
+
+    while cur and cur.next:
+        if cur.val == cur.next.val:
+            cur.next = cur.next.next
+        else:
+            cur = cur.next
+    return head'''
+            },
+            {
                 "id": "LC 206",
                 "title": "Reverse Linked List",
                 "difficulty": "Easy",
                 "complexity": "O(n) time, O(1) space",
-                "description": "Reverse a singly linked list.",
-                "approach": "Iteratively re-point each node's next to its previous node. Three pointers: prev, curr, next.",
-                "code": '''class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val; self.next = next
- 
-def reverseList(head):
+                "description": "Given the head of a linked list, reverse the list and return the new head.",
+                "approach": "Use three pointers to reverse the links in the list.",
+                "code": '''def reverseList(head: Optional[ListNode]) -> Optional[ListNode]:
+    cur = head
     prev = None
-    curr = head
-    while curr:
-        nxt = curr.next   # save next
-        curr.next = prev  # reverse pointer
-        prev = curr       # advance prev
-        curr = nxt        # advance curr
-    return prev  # new head
- 
-# Recursive version
-def reverseList2(head):
-    if not head or not head.next:
-        return head
-    new_head = reverseList2(head.next)
-    head.next.next = head
-    head.next = None
-    return new_head'''
+    
+    while cur:
+        temp = cur.next
+        cur.next = prev
+        prev = cur
+        cur = temp
+    
+    return prev'''
             },
             {
                 "id": "LC 21",
                 "title": "Merge Two Sorted Lists",
                 "difficulty": "Easy",
-                "complexity": "O(m+n) time, O(1) space",
-                "description": "Merge two sorted linked lists and return one sorted list.",
-                "approach": "Use a dummy head. Compare heads of both lists, attach smaller one, advance that pointer.",
-                "code": '''def mergeTwoLists(l1, l2):
-    dummy = ListNode(0)
-    curr = dummy
- 
-    while l1 and l2:
-        if l1.val <= l2.val:
-            curr.next = l1
-            l1 = l1.next
+                "complexity": "O(n) time, O(1) space",
+                "description": "Given the heads of two sorted linked lists, merge them into one sorted list.",
+                "approach": "Use a dummy node and two pointers to traverse both lists and merge them in sorted order.",
+                "code": '''def mergeTwoLists(list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+    d = ListNode()
+    cur = d
+
+    while list1 and list2:
+        if list1.val < list2.val:
+            cur.next = list1
+            cur = list1
+            list1 = list1.next
         else:
-            curr.next = l2
-            l2 = l2.next
-        curr = curr.next
- 
-    curr.next = l1 or l2  # attach remaining
- 
-    return dummy.next'''
+            cur.next = list2
+            cur = list2
+            list2 = list2.next
+
+    cur.next = list1 if list1 else list2
+
+    return d.next'''
             },
+
             {
                 "id": "LC 141",
                 "title": "Linked List Cycle",
                 "difficulty": "Easy",
                 "complexity": "O(n) time, O(1) space",
-                "description": "Detect if a linked list has a cycle.",
-                "approach": "Floyd's Tortoise and Hare: slow moves 1 step, fast moves 2 steps. If there's a cycle, they meet.",
-                "code": '''def hasCycle(head):
+                "description": "Given the head of a linked list, determine if the linked list has a cycle in it.",
+                "approach": "Use the Floyd's Tortoise and Hare algorithm (two pointers) to detect if there's a cycle in the list.",
+                "code": '''def hasCycle(head: Optional[ListNode]) -> bool:
     slow = fast = head
- 
+
     while fast and fast.next:
-        slow = slow.next        # 1 step
-        fast = fast.next.next   # 2 steps
+        fast = fast.next.next
+        slow = slow.next
+
         if slow is fast:
-            return True  # cycle detected!
- 
+            return True
+
     return False'''
             },
             {
-                "id": "LC 143",
-                "title": "Reorder List",
-                "difficulty": "Medium",
+                "id": "LC 876",
+                "title": "Middle of the Linked List",
+                "difficulty": "Easy",
                 "complexity": "O(n) time, O(1) space",
-                "description": "Reorder list: L0→L1→…→Ln becomes L0→Ln→L1→Ln-1→L2→Ln-2→…",
-                "approach": "1) Find middle (slow/fast pointers), 2) Reverse second half, 3) Merge two halves.",
-                "code": '''def reorderList(head):
-    # Step 1: find middle
-    slow, fast = head, head.next
+                "description": "Given the head of a linked list, return the middle node of the linked list.",
+                "approach": "Use the Floyd's Tortoise and Hare algorithm (two pointers) to find the middle node.",
+                "code": '''def middleNode(head: Optional[ListNode]) -> Optional[ListNode]:
+    slow = head
+    fast = head
+
     while fast and fast.next:
-        slow = slow.next
         fast = fast.next.next
- 
-    # Step 2: reverse second half
-    second = slow.next
-    slow.next = None  # split
-    prev = None
-    while second:
-        nxt = second.next
-        second.next = prev
-        prev = second
-        second = nxt
-    second = prev
- 
-    # Step 3: merge
-    first = head
-    while second:
-        tmp1, tmp2 = first.next, second.next
-        first.next = second
-        second.next = tmp1
-        first, second = tmp1, tmp2'''
+        slow = slow.next
+
+    return slow'''
             },
+
             {
                 "id": "LC 19",
                 "title": "Remove Nth Node From End of List",
                 "difficulty": "Medium",
                 "complexity": "O(n) time, O(1) space",
-                "description": "Remove the nth node from the end of a linked list in one pass.",
-                "approach": "Two pointers: advance fast n steps ahead. Then move both until fast reaches end. Slow is at target.",
-                "code": '''def removeNthFromEnd(head, n):
-    dummy = ListNode(0, head)
-    slow, fast = dummy, dummy
- 
-    # Move fast n+1 steps ahead
+                "description": "Given the head of a linked list and a position n, remove the nth node from the end of the list.",
+                "approach": "Use two pointers to traverse the list and find the node to remove.",
+                "code": '''def removeNthFromEnd(head: Optional[ListNode], n: int) -> Optional[ListNode]:
+    dummy = ListNode()
+    dummy.next = head
+    behind = ahead = dummy
+
     for _ in range(n + 1):
-        fast = fast.next
- 
-    # Move both until fast reaches end
-    while fast:
-        slow = slow.next
-        fast = fast.next
- 
-    # Remove nth from end
-    slow.next = slow.next.next
+        ahead = ahead.next
+
+    while ahead:
+        behind = behind.next
+        ahead = ahead.next
+
+    behind.next = behind.next.next
+
     return dummy.next'''
             },
+
             {
-                "id": "LC 2",
-                "title": "Add Two Numbers",
+                "id": "LC 138",
+                "title": "Copy List with Random Pointer",
                 "difficulty": "Medium",
-                "complexity": "O(max(m,n)) time, O(max(m,n)) space",
-                "description": "Add two numbers stored in reverse order as linked lists. Return sum as linked list.",
-                "approach": "Simulate addition digit by digit with carry. Process both lists simultaneously.",
-                "code": '''def addTwoNumbers(l1, l2):
-    dummy = ListNode(0)
-    curr = dummy
-    carry = 0
- 
-    while l1 or l2 or carry:
-        v1 = l1.val if l1 else 0
-        v2 = l2.val if l2 else 0
- 
-        total = v1 + v2 + carry
-        carry = total // 10
-        curr.next = ListNode(total % 10)
- 
+                "complexity": "O(n) time, O(n) space",
+                "description": "Given the head of a linked list with random pointers, create a deep copy of the list.",
+                "approach": "Use a hash map to store the mapping between original and copied nodes.",
+                "code": '''def copyRandomList(head: "Optional [Node]") -> "Optional [Node]":
+    if not head:
+        return None
+
+    curr = head
+    old_to_new = {}
+
+    while curr:
+        node = Node(x=curr.val)
+        old_to_new[curr] = node
         curr = curr.next
-        if l1: l1 = l1.next
-        if l2: l2 = l2.next
- 
-    return dummy.next'''
+
+    curr = head
+
+    while curr:
+        new_node = old_to_new[curr]
+        new_node.next = old_to_new[curr.next] if curr.next else None
+        new_node.random = old_to_new[curr.random] if curr.random else None
+        curr = curr.next
+
+    return old_to_new[head]'''
             },
-            {
-                "id": "LC 287",
-                "title": "Find the Duplicate Number",
-                "difficulty": "Medium",
-                "complexity": "O(n) time, O(1) space",
-                "description": "Find the duplicate in array of n+1 integers in range [1,n]. Can't modify array.",
-                "approach": "Floyd's cycle detection — treat array values as pointers. Find cycle entry = duplicate.",
-                "code": '''def findDuplicate(nums):
-    # Phase 1: detect cycle
-    slow = fast = 0
-    while True:
-        slow = nums[slow]
-        fast = nums[nums[fast]]
-        if slow == fast:
-            break
- 
-    # Phase 2: find cycle entry
-    slow2 = 0
-    while slow != slow2:
-        slow = nums[slow]
-        slow2 = nums[slow2]
- 
-    return slow
- 
-print(findDuplicate([1,3,4,2,2]))  # 2
-print(findDuplicate([3,1,3,4,2]))  # 3'''
-            },
+
         ]
     },
 
@@ -2044,170 +2015,216 @@ print(binary_search_bounds(arr, 6))      # (-1, -1)''',
                 "id": "LC 704",
                 "title": "Binary Search",
                 "difficulty": "Easy",
-                "complexity": "O(log n) time, O(1) space",
-                "description": "Search for a target in a sorted array. Return its index or -1.",
-                "approach": "Standard binary search: compare target with middle element, narrow search range.",
-                "code": '''def search(nums, target):
-    L, R = 0, len(nums) - 1
- 
-    while L <= R:
-        M = (L + R) // 2
-        if nums[M] == target:
-            return M
-        elif nums[M] < target:
-            L = M + 1
-        else:
-            R = M - 1
- 
-    return -1
- 
-print(search([-1,0,3,5,9,12], 9))   # 4
-print(search([-1,0,3,5,9,12], 2))   # -1'''
+                "complexity": "O(n) time, O(1) space",
+                "description": "Given a sorted array of integers and a target value, return the index of the target if it exists, otherwise return -1.",
+                "approach": "Use binary search to efficiently find the target in the sorted array.",
+                "code": '''def search(nums: List[int], target: int) -> int:
+    n = len(nums)
+    for i in range(n):
+        if nums[i] == target:
+            return i
+    return -1'''
             },
+
+            {
+                "id": "LC 35",
+                "title": "Search Insert Position",
+                "difficulty": "Easy",
+                "complexity": "O(log n) time, O(1) space",
+                "description": "Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.",
+                "approach": "Use binary search to find the target or determine its insertion point.",
+                "code": '''def searchInsert(nums: List[int], target: int) -> int:
+    n = len(nums)
+    l = 0
+    r = n - 1
+
+    while l <= r:
+        m = (l + r) // 2
+        
+        if nums[m] < target:
+            l = m + 1
+        elif nums[m] > target:
+            r = m - 1
+        else:
+            return m
+
+    if nums[m] < target:
+        return m + 1
+    else:
+        return m'''
+            },
+
+
+            {
+                "id": "LC 278",
+                "title": "First Bad Version",
+                "difficulty": "Easy",
+                "complexity": "O(log n) time, O(1) space",
+                "description": "You are a product manager and currently leading a team to develop a new product. Unfortunately, the latest version of your product fails the quality check. Since each version is developed based on the previous version, all the versions after a bad version are also bad.",
+                "approach": "Use binary search to efficiently find the first bad version.",
+                "code": '''def firstBadVersion(self, n: int) -> int:
+    L = 1
+    R = n
+
+    while L < R:
+        M = (L+R) // 2
+        if isBadVersion(M):
+            R = M
+        else:
+            L = M + 1
+    
+    return L '''
+            },
+
+            {
+                "id": "LC 367",
+                "title": "Valid Perfect Square",
+                "difficulty": "Easy",
+                "complexity": "O(log n) time, O(1) space",
+                "description": "Given a positive integer num, write a function to determine if it is a perfect square.",
+                "approach": "Use binary search to efficiently find if there exists an integer whose square equals the given number.",
+                "code": '''def isPerfectSquare(num: int) -> bool:
+    l = 1
+    r = num
+
+    while l <= r:
+        m = (l+r) // 2
+        m_squared = m * m
+
+        if num == m_squared:
+            return True
+        elif m_squared < num:
+            l = m + 1
+        else:
+            r = m - 1
+    
+    return False'''
+            },
+
             {
                 "id": "LC 74",
                 "title": "Search a 2D Matrix",
                 "difficulty": "Medium",
-                "complexity": "O(log(m*n)) time, O(1) space",
-                "description": "Search for target in m×n matrix where each row is sorted and first element of each row > last of previous row.",
-                "approach": "Treat the matrix as a flattened sorted array. Binary search on virtual index, convert to row/col.",
-                "code": '''def searchMatrix(matrix, target):
-    m, n = len(matrix), len(matrix[0])
-    L, R = 0, m * n - 1
+                "complexity": "O(log(m * n)) time, O(1) space",
+                "description": "Write an efficient algorithm that searches for a value target in an m x n integer matrix.",
+                "approach": "Treat the 2D matrix as a 1D array and use binary search.",
+                "code": '''def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        m = len(matrix)
+        n = len(matrix[0])
+        t = m * n
+        l = 0
+        r = t - 1
  
-    while L <= R:
-        M = (L + R) // 2
-        row, col = M // n, M % n  # convert flat → 2D
-        val = matrix[row][col]
+        while l <= r:
+            mid = (l + r) // 2
+            mid_i = mid // n
+            mid_j = mid % n
+            mid_num = matrix[mid_i][mid_j]
  
-        if val == target:
-            return True
-        elif val < target:
-            L = M + 1
-        else:
-            R = M - 1
+            if target == mid_num:
+                return True
+            elif target < mid_num:
+                r = mid - 1
+            else:
+                l = mid + 1
  
-    return False
- 
-print(searchMatrix([[1,3,5,7],[10,11,16,20],[23,30,34,60]], 3))   # True
-print(searchMatrix([[1,3,5,7],[10,11,16,20],[23,30,34,60]], 13))  # False'''
+        return False'''
             },
+
             {
                 "id": "LC 153",
                 "title": "Find Minimum in Rotated Sorted Array",
                 "difficulty": "Medium",
-                "complexity": "O(log n) time, O(1) space",
-                "description": "Find the minimum element in a rotated sorted array with no duplicates.",
-                "approach": "If mid > right, minimum is in right half. Otherwise it's in left half (including mid).",
-                "code": '''def findMin(nums):
-    L, R = 0, len(nums) - 1
- 
-    while L < R:
-        M = (L + R) // 2
-        if nums[M] > nums[R]:
-            L = M + 1  # min is in right half
+                "complexity": "O(log(n)) time, O(1) space",
+                "description": "Given a sorted array of unique elements that has been rotated at some pivot unknown to you beforehand, find the minimum element.",
+                "approach": "Use binary search to find the minimum element in the rotated sorted array.",
+                "code": '''def findMin(nums: List[int]) -> int:
+    n = len(nums)
+    l = 0
+    r = n - 1
+
+    while l < r:
+        m = (l + r) // 2
+    
+        if nums[m] > nums[r]:
+            l = m + 1
         else:
-            R = M      # min is in left half (or at M)
- 
-    return nums[L]
- 
-print(findMin([3,4,5,1,2]))    # 1
-print(findMin([4,5,6,7,0,1,2])) # 0
-print(findMin([11,13,15,17]))   # 11'''
+            r = m
+
+    return nums[l]'''
             },
+
             {
                 "id": "LC 33",
                 "title": "Search in Rotated Sorted Array",
                 "difficulty": "Medium",
-                "complexity": "O(log n) time, O(1) space",
-                "description": "Search for target in a rotated sorted array.",
-                "approach": "Determine which half is sorted. If target in sorted half, go there; else go to other half.",
-                "code": '''def search(nums, target):
-    L, R = 0, len(nums) - 1
+                "complexity": "O(log(n)) time, O(1) space",
+                "description": "Given a sorted array of unique elements that has been rotated at some pivot unknown to you beforehand, search for a target value.",
+                "approach": "Use binary search to find the target value in the rotated sorted array.",
+                "code": '''def search(nums: List[int], target: int) -> int:
+        n = len(nums)
+        l = 0
+        r = n - 1
  
-    while L <= R:
-        M = (L + R) // 2
-        if nums[M] == target:
-            return M
+        while l < r:
+            m = (l + r) // 2
  
-        # Left half is sorted
-        if nums[L] <= nums[M]:
-            if nums[L] <= target < nums[M]:
-                R = M - 1
+            if nums[m] > nums[r]:
+                l = m + 1
             else:
-                L = M + 1
-        # Right half is sorted
+                r = m
+ 
+        min_i = l
+ 
+        if min_i == 0:
+            l, r = 0, n - 1
+        elif target >= nums[0] and target <= nums[min_i - 1]:
+            l, r = 0, min_i - 1
         else:
-            if nums[M] < target <= nums[R]:
-                L = M + 1
+            l, r = min_i, n - 1
+ 
+        while l <= r:
+            m = (l + r) // 2
+            if nums[m] == target:
+                return m
+            elif nums[m] < target:
+                l = m + 1
             else:
-                R = M - 1
- 
-    return -1
- 
-print(search([4,5,6,7,0,1,2], 0))  # 4
-print(search([4,5,6,7,0,1,2], 3))  # -1'''
+                r = m - 1
+        return -1'''
             },
+
+
             {
                 "id": "LC 875",
                 "title": "Koko Eating Bananas",
                 "difficulty": "Medium",
-                "complexity": "O(n log m) time, O(1) space",
-                "description": "Find the minimum eating speed k such that Koko can eat all piles in h hours.",
-                "approach": "Binary search on the answer (speed). For each speed, check if it's feasible to finish in h hours.",
-                "code": '''import math
- 
-def minEatingSpeed(piles, h):
-    L, R = 1, max(piles)
- 
-    while L < R:
-        M = (L + R) // 2
-        hours = sum(math.ceil(p / M) for p in piles)
-        if hours <= h:
-            R = M       # might be able to go slower
+                "complexity": "O(n * log(m)) time, O(1) space",
+                "description": "Koko loves to eat bananas. There are n piles of bananas, the ith pile has piles[i] bananas. The guards have gone and will come back in h hours.",
+                "approach": "Use binary search to find the minimum eating speed.",
+                "code": '''def minEatingSpeed(piles: List[int], h: int) -> int:
+    def k_works(k):
+        hours = 0
+
+        for p in piles:
+            hours += ceil(p / k)
+
+        return hours <= h
+
+    l = 1
+    r = max(piles) # m
+
+    while l < r:
+        k = (l + r) // 2
+
+        if k_works(k):
+            r = k
         else:
-            L = M + 1   # too slow, need more speed
- 
-    return L
- 
-print(minEatingSpeed([3,6,7,11], 8))  # 4
-print(minEatingSpeed([30,11,23,4,20], 5))  # 30'''
+            l = k + 1
+
+    return r'''
             },
-            {
-                "id": "LC 4",
-                "title": "Median of Two Sorted Arrays",
-                "difficulty": "Hard",
-                "complexity": "O(log(min(m,n))) time, O(1) space",
-                "description": "Find the median of two sorted arrays in O(log(m+n)) time.",
-                "approach": "Binary search on partition of shorter array. Ensure left halves contain equal elements, check boundary conditions.",
-                "code": '''def findMedianSortedArrays(nums1, nums2):
-    if len(nums1) > len(nums2):
-        nums1, nums2 = nums2, nums1  # ensure nums1 is shorter
- 
-    m, n = len(nums1), len(nums2)
-    L, R = 0, m
- 
-    while L <= R:
-        i = (L + R) // 2           # partition in nums1
-        j = (m + n + 1) // 2 - i   # partition in nums2
- 
-        maxL1 = nums1[i-1] if i > 0 else float('-inf')
-        minR1 = nums1[i]   if i < m else float('inf')
-        maxL2 = nums2[j-1] if j > 0 else float('-inf')
-        minR2 = nums2[j]   if j < n else float('inf')
- 
-        if maxL1 <= minR2 and maxL2 <= minR1:
-            if (m + n) % 2 == 1:
-                return max(maxL1, maxL2)
-            return (max(maxL1, maxL2) + min(minR1, minR2)) / 2
-        elif maxL1 > minR2:
-            R = i - 1
-        else:
-            L = i + 1
- 
-print(findMedianSortedArrays([1,3], [2]))    # 2.0
-print(findMedianSortedArrays([1,2], [3,4]))  # 2.5'''
-            },
+
         ]
     },
 
@@ -2320,273 +2337,162 @@ target = 7
 print("Min subarray length with sum >= 7:", min_subarray_sum(arr2, target))  # 2''',
         "leetcode_examples": [
             {
+                "id": "LC 643",
+                "title": "Maximum Average Subarray I",
+                "difficulty": "Easy",
+                "complexity": "O(n) time, O(1) space",
+                "description": "Given an array of integers and a window size k, find the maximum average of any subarray of size k.",
+                "approach": "Use a sliding window approach to calculate the sum of each subarray of size k and keep track of the maximum sum.",
+                "code": '''def findMaxAverage(nums: List[int], k: int) -> float:
+    n = len(nums)
+    cur_sum = 0
+
+    for i in range(k):
+        cur_sum += nums[i]
+
+    max_avg = cur_sum / k
+
+    for i in range(k, n):
+        cur_sum += nums[i]
+        cur_sum -= nums[i - k]
+
+        avg = cur_sum / k
+        max_avg = max(max_avg, avg)
+
+    return max_avg'''
+            },
+
+
+            {
+                "id": "LC 1004",
+                "title": "Max Consecutive Ones III",
+                "difficulty": "Medium",
+                "complexity": "O(n) time, O(1) space",
+                "description": "Given a binary array and an integer k, find the maximum number of consecutive 1s in the array if you can flip at most k 0s to 1s.",
+                "approach": "Use a sliding window approach to keep track of the number of zeros in the current window. If the number of zeros exceeds k, move the left pointer until the number of zeros is at most k again.",
+                "code": '''def longestOnes(nums: List[int], k: int) -> int:
+    max_w = 0
+    num_zeros = 0
+    n = len(nums)
+    l = 0
+
+    for r in range(n):
+        if nums[r] == 0:
+            num_zeros += 1
+
+        while num_zeros > k:
+            if nums[l] == 0:
+                num_zeros -= 1
+            l += 1
+        w = r - l + 1
+        max_w = max(max_w, w)
+
+    return max_w'''
+            },
+
+
+            {
                 "id": "LC 3",
                 "title": "Longest Substring Without Repeating Characters",
                 "difficulty": "Medium",
-                "complexity": "O(n) time, O(1) space",
-                "description": "Find the length of the longest substring without repeating characters.",
-                "approach": "Sliding window with a hashset. Expand right; when duplicate found, shrink from left until valid.",
-                "code": '''def lengthOfLongestSubstring(s):
-    seen = set()
-    L = 0
-    best = 0
- 
-    for R in range(len(s)):
-        while s[R] in seen:
-            seen.remove(s[L])
-            L += 1
-        seen.add(s[R])
-        best = max(best, R - L + 1)
- 
-    return best
- 
-print(lengthOfLongestSubstring("abcabcbb"))  # 3
-print(lengthOfLongestSubstring("bbbbb"))     # 1
-print(lengthOfLongestSubstring("pwwkew"))    # 3'''
+                "complexity": "O(n) time, O(n) space",
+                "description": "Given a string, find the length of the longest substring without repeating characters.",
+                "approach": "Use a sliding window approach to keep track of the characters in the current window. If a repeated character is found, move the left pointer until the character is no longer in the window.",
+                "code": '''def lengthOfLongestSubstring(s: str) -> int:
+    l = 0
+    longest = 0
+    sett = set()
+    n = len(s)
+
+    for r in range(n):
+        while s[r] in sett:
+            sett.remove(s[l])
+            l += 1
+
+        w = (r - l) + 1
+        longest = max(longest, w)
+        sett.add(s[r])
+
+    return longest'''
             },
+
             {
                 "id": "LC 424",
                 "title": "Longest Repeating Character Replacement",
                 "difficulty": "Medium",
                 "complexity": "O(n) time, O(1) space",
-                "description": "Replace at most k characters. Find longest substring with one repeated letter.",
-                "approach": "Window is valid if (window_size - max_freq) <= k. Grow right, shrink left when invalid.",
-                "code": '''def characterReplacement(s, k):
-    count = {}
-    L = 0
-    max_freq = 0
-    best = 0
- 
-    for R in range(len(s)):
-        count[s[R]] = count.get(s[R], 0) + 1
-        max_freq = max(max_freq, count[s[R]])
- 
-        # window_size - max_freq = chars to replace
-        while (R - L + 1) - max_freq > k:
-            count[s[L]] -= 1
-            L += 1
- 
-        best = max(best, R - L + 1)
- 
-    return best
- 
-print(characterReplacement("ABAB", 2))   # 4
-print(characterReplacement("AABABBA", 1)) # 4'''
+                "description": "Given a string and an integer k, find the length of the longest substring that can be made by replacing at most k characters with any other character.",
+                "approach": "Use a sliding window approach to keep track of the characters in the current window. If the number of characters that need to be replaced exceeds k, move the left pointer until the number of replacements is at most k again.",
+                "code": '''def characterReplacement(s: str, k: int) -> int:
+    longest = 0
+    l = 0
+    counts = [0] * 26
+
+    for r in range(len(s)):
+        counts[ord(s[r]) - 65] += 1
+
+        while (r - l + 1) - max(counts) > k:
+            counts[ord(s[l]) - 65] -= 1
+            l += 1
+
+        longest = max(longest, (r - l + 1))
+
+    return longest'''
             },
+
             {
-                "id": "LC 567",
+                "id": "LC 209",
+                "title": "Minimum Size Subarray Sum",
+                "difficulty": "Medium",
+                "complexity": "O(n) time, O(1) space",
+                "description": "Given an array of positive integers and a target sum, find the minimal length of a contiguous subarray whose sum is greater than or equal to the target.",
+                "approach": "Use a sliding window approach to keep track of the current subarray sum. If the sum is greater than or equal to the target, update the minimum length and move the left pointer.",
+                "code": '''def minSubArrayLen(target: int, nums: List[int]) -> int:
+    min_length = float('inf')
+    summ = 0
+    l = 0
+    
+    for r in range(len(nums)):
+        summ += nums[r]
+        while summ >= target:
+            min_length = min(min_length, r-l+1)
+            summ -= nums[l]
+            l += 1
+    
+    return min_length if min_length < float('inf') else 0'''
+            },
+
+            {
+                "id": "LC 587",
                 "title": "Permutation in String",
                 "difficulty": "Medium",
                 "complexity": "O(n) time, O(1) space",
-                "description": "Check if s2 contains a permutation of s1 as a substring.",
-                "approach": "Fixed window of size len(s1). Compare character frequency arrays as window slides.",
-                "code": '''def checkInclusion(s1, s2):
-    if len(s1) > len(s2):
+                "description": "Given two strings s1 and s2, determine if s2 contains a permutation of s1 as a substring.",
+                "approach": "Use a sliding window approach to keep track of the characters in the current window. If the window contains a permutation of s1, return True.",
+                "code": '''def checkInclusion(s1: str, s2: str) -> bool:
+    n1 = len(s1)
+    n2 = len(s2)
+
+    if n1 > n2:
         return False
- 
-    count1 = [0] * 26
-    count2 = [0] * 26
- 
-    for c in s1:
-        count1[ord(c) - ord('a')] += 1
- 
-    for i in range(len(s2)):
-        count2[ord(s2[i]) - ord('a')] += 1
-        if i >= len(s1):  # slide window
-            count2[ord(s2[i - len(s1)]) - ord('a')] -= 1
-        if count1 == count2:
+
+    s1_counts = [0] * 26
+    s2_counts = [0] * 26
+
+    for i in range(n1):
+        s1_counts[ord(s1[i]) - 97] += 1
+        s2_counts[ord(s2[i]) - 97] += 1
+
+    if s1_counts == s2_counts:
+        return True
+
+    for i in range(n1, n2):
+        s2_counts[ord(s2[i]) - 97] += 1
+        s2_counts[ord(s2[i - n1]) - ord("a")] -= 1
+        if s1_counts == s2_counts:
             return True
- 
-    return False
- 
-print(checkInclusion("ab", "eidbaooo"))  # True
-print(checkInclusion("ab", "eidboaoo"))  # False'''
-            },
-            {
-                "id": "LC 76",
-                "title": "Minimum Window Substring",
-                "difficulty": "Hard",
-                "complexity": "O(n) time, O(k) space",
-                "description": "Find the minimum window in s that contains all characters of t.",
-                "approach": "Expand right to include chars, shrink left while window still valid. Track 'have' vs 'need' counts.",
-                "code": '''from collections import Counter
- 
-def minWindow(s, t):
-    if not t: return ""
-    need = Counter(t)
-    have, total_need = 0, len(need)
-    L = 0
-    best = (float('inf'), 0, 0)
-    window = {}
- 
-    for R, c in enumerate(s):
-        window[c] = window.get(c, 0) + 1
-        if c in need and window[c] == need[c]:
-            have += 1
- 
-        while have == total_need:
-            if (R - L + 1) < best[0]:
-                best = (R - L + 1, L, R)
-            window[s[L]] -= 1
-            if s[L] in need and window[s[L]] < need[s[L]]:
-                have -= 1
-            L += 1
- 
-    _, L, R = best
-    return s[L:R+1] if best[0] != float('inf') else ""
- 
-print(minWindow("ADOBECODEBANC", "ABC"))  # "BANC"
-print(minWindow("a", "a"))               # "a"'''
-            },
-            {
-                "id": "LC 239",
-                "title": "Sliding Window Maximum",
-                "difficulty": "Hard",
-                "complexity": "O(n) time, O(k) space",
-                "description": "Find the maximum in each sliding window of size k.",
-                "approach": "Monotonic deque storing indices in decreasing order. Front is always the current window max.",
-                "code": '''from collections import deque
 
-# ----------------------------
-# Binary Tree Core Utilities
-# ----------------------------
-
-class TreeNode:
-    def __init__(self, val):
-        self.val = val
-        self.left = None
-        self.right = None
-
-class BinaryTree:
-    def __init__(self, root=None):
-        self.root = root
-
-    # ----------------------------
-    # Traversals
-    # ----------------------------
-
-    def in_order(self, node=None):
-        """
-        In-order traversal (Left, Root, Right)
-        """
-        if node is None:
-            node = self.root
-        if not node:
-            return
-        self.in_order(node.left)
-        print(node.val, end=" ")
-        self.in_order(node.right)
-
-    def pre_order(self, node=None):
-        """
-        Pre-order traversal (Root, Left, Right)
-        """
-        if node is None:
-            node = self.root
-        if not node:
-            return
-        print(node.val, end=" ")
-        self.pre_order(node.left)
-        self.pre_order(node.right)
-
-    def post_order(self, node=None):
-        """
-        Post-order traversal (Left, Right, Root)
-        """
-        if node is None:
-            node = self.root
-        if not node:
-            return
-        self.post_order(node.left)
-        self.post_order(node.right)
-        print(node.val, end=" ")
-
-    def level_order(self):
-        """
-        Level-order traversal (Breadth-first)
-        """
-        if not self.root:
-            return
-        q = deque([self.root])
-        while q:
-            node = q.popleft()
-            print(node.val, end=" ")
-            if node.left:
-                q.append(node.left)
-            if node.right:
-                q.append(node.right)
-
-    # ----------------------------
-    # Utility Functions
-    # ----------------------------
-
-    def height(self, node=None):
-        """
-        Returns the height of the tree
-        """
-        if node is None:
-            node = self.root
-        if not node:
-            return 0
-        return 1 + max(self.height(node.left), self.height(node.right))
-
-    def search(self, val, node=None):
-        """
-        Search for a value in the tree
-        """
-        if node is None:
-            node = self.root
-        if not node:
-            return False
-        if node.val == val:
-            return True
-        return self.search(val, node.left) or self.search(val, node.right)
-
-# ----------------------------
-# Example usage
-# ----------------------------
-
-# Build a simple binary tree
-root = TreeNode(1)
-root.left = TreeNode(2)
-root.right = TreeNode(3)
-root.left.left = TreeNode(4)
-root.left.right = TreeNode(5)
-
-bt = BinaryTree(root)
-
-print("In-order:", end=" ")
-bt.in_order()
-print("\nPre-order:", end=" ")
-bt.pre_order()
-print("\nPost-order:", end=" ")
-bt.post_order()
-print("\nLevel-order:", end=" ")
-bt.level_order()
-
-print("\nHeight of tree:", bt.height())
-print("Search for 3:", bt.search(3))  # True
-print("Search for 6:", bt.search(6))  # False'''
-            },
-            {
-                "id": "LC 643",
-                "title": "Maximum Average Subarray I",
-                "difficulty": "Easy",
-                "complexity": "O(n) time, O(1) space",
-                "description": "Find the contiguous subarray of length k with the maximum average.",
-                "approach": "Fixed sliding window: initialize first k elements sum, slide by adding new and removing old.",
-                "code": '''def findMaxAverage(nums, k):
-    window_sum = sum(nums[:k])
-    best = window_sum
- 
-    for i in range(k, len(nums)):
-        window_sum += nums[i] - nums[i - k]
-        best = max(best, window_sum)
- 
-    return best / k
- 
-print(findMaxAverage([1,12,-5,-6,50,3], 4))  # 12.75
-print(findMaxAverage([5], 1))                 # 5.0'''
+    return False'''
             },
         ]
     },
@@ -2639,157 +2545,373 @@ def level_order(root):
         if node.right: q.append(node.right)''',
         "leetcode_examples": [
             {
+                "id": "LC 225",
+                "title": "Invert Binary Tree",
+                "difficulty": "Easy",
+                "complexity": "O(n) time, O(h) space",
+                "description": "Invert a binary tree.",
+                "approach": "Recursively swap the left and right children of each node.",
+                "code": '''def invertTree(root: Optional[TreeNode]) -> Optional[TreeNode]:
+
+    if not root:
+        return None
+
+    root.left, root.right = root.right, root.left
+
+    self.invertTree(root.left)
+    self.invertTree(root.right)
+
+    return root'''
+            },
+
+            {
                 "id": "LC 104",
                 "title": "Maximum Depth of Binary Tree",
                 "difficulty": "Easy",
                 "complexity": "O(n) time, O(h) space",
-                "description": "Find the maximum depth (number of nodes along the longest root-to-leaf path).",
-                "approach": "DFS: depth = 1 + max(depth of left, depth of right). Base case: null node returns 0.",
-                "code": '''def maxDepth(root):
+                "description": "Find the maximum depth of a binary tree.",
+                "approach": "Recursively calculate the depth of the left and right subtrees and return the maximum.",
+                "code": '''def maxDepth(root: Optional[TreeNode]) -> int:
     if not root:
         return 0
-    return 1 + max(maxDepth(root.left), maxDepth(root.right))
- 
-# Iterative BFS approach
-from collections import deque
-def maxDepth2(root):
-    if not root: return 0
-    q = deque([root])
-    depth = 0
-    while q:
-        depth += 1
-        for _ in range(len(q)):
-            node = q.popleft()
-            if node.left: q.append(node.left)
-            if node.right: q.append(node.right)
-    return depth'''
+
+    left = self.maxDepth(root.left)
+    right = self.maxDepth(root.right)
+
+    return 1 + max(left, right)'''
             },
+
+
             {
-                "id": "LC 226",
-                "title": "Invert Binary Tree",
+                "id": "LC 110",
+                "title": "Balanced Binary Tree",
                 "difficulty": "Easy",
                 "complexity": "O(n) time, O(h) space",
-                "description": "Invert (mirror) a binary tree.",
-                "approach": "Recursively swap left and right children of every node.",
-                "code": '''def invertTree(root):
-    if not root:
-        return None
-    root.left, root.right = invertTree(root.right), invertTree(root.left)
-    return root
- 
-# Iterative BFS
-from collections import deque
-def invertTree2(root):
-    if not root: return root
-    q = deque([root])
-    while q:
-        node = q.popleft()
-        node.left, node.right = node.right, node.left
-        if node.left: q.append(node.left)
-        if node.right: q.append(node.right)
-    return root'''
+                "description": "Determine if a binary tree is height-balanced.",
+                "approach": "Recursively check if the left and right subtrees are balanced and their heights differ by at most 1.",
+                "code": '''def isBalanced(root: Optional[TreeNode]) -> bool:
+    balanced = [True]
+
+    def height(root):
+        if not root:
+            return 0
+
+        left_height = height(root.left)
+        if balanced[0] is False:
+            return 0
+
+
+        right_height = height(root.right)
+        if abs(left_height - right_height) > 1:
+            balanced[0] = False
+            return 0
+        return 1 + max(left_height, right_height)
+
+    height(root)
+    return balanced[0]'''
             },
+
             {
                 "id": "LC 543",
                 "title": "Diameter of Binary Tree",
                 "difficulty": "Easy",
                 "complexity": "O(n) time, O(h) space",
-                "description": "Find the length of the longest path between any two nodes in the tree.",
-                "approach": "At each node, diameter through it = left_height + right_height. Track max during DFS.",
-                "code": '''def diameterOfBinaryTree(root):
-    diameter = [0]
- 
-    def height(node):
-        if not node: return 0
-        L = height(node.left)
-        R = height(node.right)
-        diameter[0] = max(diameter[0], L + R)
-        return 1 + max(L, R)
- 
+                "description": "Find the diameter of a binary tree, which is the length of the longest path between any two nodes in the tree.",
+                "approach": "Recursively calculate the height of the left and right subtrees while updating the diameter at each node.",
+                "code": '''def diameterOfBinaryTree(root: Optional[TreeNode]) -> int:
+    largest_diameter = [0]
+
+    def height(root):
+        if root is None:
+            return 0
+
+        left_height = height(root.left)
+        right_height = height(root.right)
+        diameter = left_height + right_height
+
+        largest_diameter[0] = max(largest_diameter[0], diameter)
+        
+        return 1 + max(left_height, right_height)
+
     height(root)
-    return diameter[0]'''
+    return largest_diameter[0]'''
             },
+
             {
                 "id": "LC 100",
-                "title": "Same Tree",
+                "title": "Same Binary Tree",
+                "difficulty": "Easy",
+                "complexity": "O(n + m) time, O(n + m) space",
+                "description": "Determine if two binary trees are the same.",
+                "approach": "Recursively compare the values of corresponding nodes in both trees.",
+                "code": '''def isSameTree(p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+    # 1: Both Null
+    if not p and not q: 
+        return True
+    
+    # 2: One is Null
+    if (p and not q) or (q and not p):
+        return False
+    
+    # 3. Values Mismatch
+    if p.val != q.val:
+        return False
+    
+    return self.isSameTree(p.left, q.left) and self.isSameTree(p.right, q.right)'''
+            },
+
+            {
+                "id": "LC 101",
+                "title": "Symmetric Tree",
+                "difficulty": "Easy",
+                "complexity": "O(n) time, O(n) space",
+                "description": "Determine if a binary tree is symmetric.",
+                "approach": "Recursively compare the left and right subtrees of the root.",
+                "code": '''def isSymmetric(root: Optional[TreeNode]) -> bool:
+        def same(root1, root2):
+            if not root1 and not root2:
+                return True
+ 
+            if not root1 or not root2:
+                return False
+            
+            if root1.val != root2.val:
+                return False
+            
+            return same(root1.left, root2.right) and same(root1.right, root2.left)
+ 
+        return same(root, root)'''
+            },
+
+            {
+                "id": "LC 112",
+                "title": "Path Sum",
                 "difficulty": "Easy",
                 "complexity": "O(n) time, O(h) space",
-                "description": "Check if two binary trees are structurally identical with same node values.",
-                "approach": "Recursively check: both null (same), one null (different), values differ (different), else check subtrees.",
-                "code": '''def isSameTree(p, q):
-    if not p and not q: return True
-    if not p or not q: return False
-    if p.val != q.val: return False
-    return isSameTree(p.left, q.left) and isSameTree(p.right, q.right)'''
+                "description": "Determine if a binary tree has a root-to-leaf path such that adding up all the values along the path equals a given sum.",
+                "approach": "Recursively calculate the sum of the values along the path from the root to each leaf node and check if it equals the target sum.",
+                "code": '''def hasPathSum(root: Optional[TreeNode], targetSum: int) -> bool:
+ 
+    def has_sum(root, cur_sum):
+        if not root:
+            return False
+
+        cur_sum += root.val
+
+        if not root.left and not root.right:
+            return cur_sum == targetSum
+        
+        return has_sum(root.left, cur_sum) or  has_sum(root.right, cur_sum)
+    
+    return has_sum(root, 0)'''
             },
+
+            {
+                "id": "LC 150",
+                "title": "Minimum Absolute Difference in BST",
+                "difficulty": "Easy",
+                "complexity": "O(n) time, O(h) space",
+                "description": "Find the minimum absolute difference between the values of any two different nodes in a BST.",
+                "approach": "Perform an in-order traversal of the BST and keep track of the previous node's value to calculate the difference.",
+                "code": '''def getMinimumDifference(root: Optional[TreeNode]) -> int:
+    min_distance = [float('inf')]
+    prev = [None]
+
+    def dfs(node):
+        if node is None:
+            return
+            
+        dfs(node.left)
+
+        if prev[0] is not None:
+            min_distance[0] = min(min_distance[0], node.val - prev[0])
+
+        prev[0] = node.val
+        dfs(node.right)
+
+    dfs(root)
+    return min_distance[0]'''
+            },
+
+            {
+                "id": "LC 572",
+                "title": "Subtree of Another Tree",
+                "difficulty": "Medium",
+                "complexity": "O(m * n) time, O(n) space",
+                "description": "Determine if a binary tree is a subtree of another binary tree.",
+                "approach": "Recursively check if the current node and its subtrees match the subtree rooted at subRoot.",
+                "code": '''def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
+ 
+        def sameTree(p, q):
+            if not p and not q:
+                return True
+ 
+            if (p and not q) or (q and not p):
+                return False
+ 
+            if p.val != q.val:
+                return False
+ 
+            return sameTree(p.left, q.left) and sameTree(p.right, q.right)
+ 
+        def has_subtree(root):
+            if not root:
+                return False
+ 
+            if sameTree(root, subRoot):
+                return True
+            
+            return has_subtree(root.left) or has_subtree(root.right)
+ 
+        return has_subtree(root)'''
+            },
+
             {
                 "id": "LC 102",
-                "title": "Binary Tree Level Order Traversal",
+                "title": "Binary Tree Level Order Traversal (BFS)",
                 "difficulty": "Medium",
                 "complexity": "O(n) time, O(n) space",
-                "description": "Return the level-order traversal as a list of lists.",
-                "approach": "BFS with queue. At each level, process all nodes currently in queue (snapshot the length first).",
-                "code": '''from collections import deque
+                "description": "Return the level order traversal of a binary tree's nodes' values.",
+                "approach": "Use a queue to perform a breadth-first search and collect nodes level by level.",
+                "code": '''def levelOrder(root: Optional[TreeNode]) -> List[List[int]]:
+        if root is None:
+            return None
+        
+        queue = deque()
+        queue.append(root)
+        ans = []
+        
+        while queue:
+            level = []
+            n = len(queue)
+            for i in range(n):
+                node = queue.popleft()
+                level.append(node.val)
  
-def levelOrder(root):
-    if not root: return []
-    result = []
-    q = deque([root])
+                if node.left: queue.append(node.left)                
+                if node.right: queue.append(node.right)
+            
+            ans.append(level)
  
-    while q:
-        level = []
-        for _ in range(len(q)):  # process one level at a time
-            node = q.popleft()
-            level.append(node.val)
-            if node.left: q.append(node.left)
-            if node.right: q.append(node.right)
-        result.append(level)
- 
-    return result'''
+        return ans'''
             },
+
+            {
+                "id": "LC 230",
+                "title": "Kth Smallest Element in a BST",
+                "difficulty": "Medium",
+                "complexity": "O(n) time, O(n) space",
+                "description": "Find the kth smallest element in a BST.",
+                "approach": "Perform an in-order traversal and stop when the kth element is found.",
+                "code": '''def kthSmallest(root: Optional[TreeNode], k: int) -> int:
+    count = [k]
+    ans = [0]
+
+    def dfs(node):
+        if not node:
+            return
+        
+        dfs(node.left)
+
+        if count[0] == 1:
+            ans[0] = node.val
+        
+        count[0] = count[0] - 1
+        if count[0] > 0:
+            dfs(node.right)
+    
+    dfs(root)
+    return ans[0]'''
+            },
+
+            {
+                "id": "LC 98",
+                "title": "Validate Binary Search Tree",
+                "difficulty": "Medium",
+                "complexity": "O(n) time, O(n) space",
+                "description": "Validate if a binary tree is a valid binary search tree.",
+                "approach": "Perform a recursive check ensuring each node's value is within the valid range.",
+                "code": '''def isValidBST(self, root: Optional[TreeNode]) -> bool:
+    def is_valid(node, minn, maxx):
+        if not node:
+            return True
+        
+        if node.val <= minn or node.val >= maxx:
+            return False
+        
+        return is_valid(node.left, minn, node.val) and is_valid(node.right, node.val, maxx)
+
+    return is_valid(root, float("-inf"), float("inf"))'''
+            },
+
             {
                 "id": "LC 235",
-                "title": "Lowest Common Ancestor of BST",
+                "title": "Lowest Common Ancestor of a Binary Search Tree",
                 "difficulty": "Medium",
-                "complexity": "O(log n) balanced, O(n) worst",
-                "description": "Find the lowest common ancestor of two nodes in a BST.",
-                "approach": "Exploit BST property: if both values < current, go left. If both > current, go right. Else current is LCA.",
-                "code": '''def lowestCommonAncestor(root, p, q):
-    curr = root
- 
-    while curr:
-        if p.val < curr.val and q.val < curr.val:
-            curr = curr.left   # both in left subtree
-        elif p.val > curr.val and q.val > curr.val:
-            curr = curr.right  # both in right subtree
+                "complexity": "O(h) time, O(h) space",
+                "description": "Find the lowest common ancestor of two nodes in a binary search tree.",
+                "approach": "Use the properties of a binary search tree to navigate towards the nodes and find their common ancestor.",
+                "code": '''def lowestCommonAncestor(root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+    lca = [root]
+
+    def search(root):
+        if not root:
+            return
+
+        lca[0] = root
+        if root is p or root is q:
+            return
+        elif root.val < p.val and root.val < q.val:
+            search(root.right)
+        elif root.val > p.val and root.val > q.val:
+            search(root.left)
         else:
-            return curr  # split point = LCA
- 
-    return None'''
+            return
+
+    search(root)
+    return lca[0]'''
             },
+
             {
-                "id": "LC 124",
-                "title": "Binary Tree Maximum Path Sum",
-                "difficulty": "Hard",
-                "complexity": "O(n) time, O(h) space",
-                "description": "Find the maximum path sum where a path can start and end at any node.",
-                "approach": "Post-order DFS. At each node, compute max gain going through left/right children. Track global max.",
-                "code": '''def maxPathSum(root):
-    max_sum = [float('-inf')]
+                "id": "LC 208",
+                "title": "Implement Trie (Prefix Tree)",
+                "difficulty": "Medium",
+                "complexity": "O(n) time, O(T) space",
+                "description": "Implement a trie (prefix tree) data structure.",
+                "approach": "Use a dictionary to represent nodes and track the end of words.",
+                "code": '''	class Trie:
+    def __init__(self):
+        self.trie = {}
  
-    def dfs(node):
-        if not node: return 0
-        left = max(dfs(node.left), 0)   # ignore if negative
-        right = max(dfs(node.right), 0)
+    def insert(self, word: str) -> None:
+        d = self.trie
  
-        # Path through this node (can't split further up)
-        max_sum[0] = max(max_sum[0], node.val + left + right)
+        for c in word:
+            if c not in d:
+                d[c] = {}
+            d = d[c]
  
-        # Return max gain going in one direction (for parent)
-        return node.val + max(left, right)
+        d['.'] = '.'
  
-    dfs(root)
-    return max_sum[0]'''
+    def search(self, word: str) -> bool:
+        d = self.trie
+ 
+        for c in word:
+            if c not in d:
+                return False
+            d = d[c]
+ 
+        return '.' in d
+ 
+    def startsWith(self, prefix: str) -> bool:
+        d = self.trie
+ 
+        for c in prefix:
+            if c not in d:
+                return False
+            d = d[c]
+ 
+        return True'''
             },
 
         ]
@@ -2885,180 +3007,121 @@ max_heap.push(20)
 print("Max-Heap peek after push:", max_heap.peek())  # 20''',
         "leetcode_examples": [
             {
-                "id": "LC 703",
-                "title": "Kth Largest Element in a Stream",
+                "id": "LC 1046",
+                "title": "Last Stone Weight",
                 "difficulty": "Easy",
-                "complexity": "O(n log k) init, O(log k) per add",
-                "description": "Design a class to find the kth largest element in a stream.",
-                "approach": "Maintain a min-heap of size k. The kth largest is always at the top (minimum of the heap).",
-                "code": '''import heapq
- 
-class KthLargest:
-    def __init__(self, k, nums):
-        self.k = k
-        self.heap = nums
-        heapq.heapify(self.heap)
-        while len(self.heap) > k:
-            heapq.heappop(self.heap)  # keep only k largest
- 
-    def add(self, val):
-        heapq.heappush(self.heap, val)
-        if len(self.heap) > self.k:
-            heapq.heappop(self.heap)
-        return self.heap[0]  # kth largest = min of heap
- 
-kth = KthLargest(3, [4,5,8,2])
-print(kth.add(3))   # 4
-print(kth.add(5))   # 5
-print(kth.add(10))  # 5'''
+                "complexity": "O(n log n) time, O(1) space",
+                "description": "You are given an array of integers `stones` where `stones[i]` is the weight of the `i`-th stone. We are playing a game with the stones. On each turn, we choose the heaviest two stones",
+                "approach": "1. Negate the weights to use a Min Heap as a Max Heap.\n2. Use `heapq` to create a Min Heap from the negated weights.\n3. While there are more than one stone, pop the two heaviest stones (the smallest in the Min Heap), compare them, and if they are not equal, push the difference back into the heap.\n4. Finally, return the weight of the last remaining stone (negate it back to get the original weight) or 0 if there are no stones left.",
+                "code": '''def lastStoneWeight(stones: List[int]) -> int:
+    for i in range(len(stones)):
+        stones[i] *= -1 # Negate to force Max Heap
+
+    heapq.heapify(stones)
+
+    while len(stones) > 1:
+        largest = heapq.heappop(stones)
+        next_largest = heapq.heappop(stones)
+
+        if largest != next_largest:
+            heapq.heappush(stones, largest - next_largest)
+
+    return -heapq.heappop(stones) if stones else 0'''
             },
+
             {
                 "id": "LC 215",
                 "title": "Kth Largest Element in an Array",
                 "difficulty": "Medium",
-                "complexity": "O(n log k) time, O(k) space",
-                "description": "Find the kth largest element in an unsorted array.",
-                "approach": "Min-heap of size k: push each element, pop if heap exceeds k. Final top = kth largest.",
+                "complexity": " O(n + k log n) time, O(1) space",
+                "description": "You are given an array of integers `nums` and an integer `k`. Return the kth largest element in the array.",
+                "approach": "1. Negate the elements of the array to use a Min Heap as a Max Heap.\n2. Use `heapq` to create a Min Heap from the negated elements.\n3. Pop the smallest element (the largest in the original array) from the heap `k-1` times.\n4. Finally, return the next popped element (negate it back to get the original value) as the kth largest element.",
                 "code": '''import heapq
- 
-def findKthLargest(nums, k):
-    heap = []
-    for num in nums:
-        heapq.heappush(heap, num)
-        if len(heap) > k:
-            heapq.heappop(heap)  # remove smallest
-    return heap[0]  # kth largest
- 
-# Alternative: nlargest (simpler but same complexity)
-def findKthLargest2(nums, k):
-    return heapq.nlargest(k, nums)[-1]
- 
-print(findKthLargest([3,2,1,5,6,4], 2))  # 5
-print(findKthLargest([3,2,3,1,2,4,5,5,6], 4))  # 4'''
+def findKthLargest(self, nums: List[int], k: int) -> int:
+    for i in range(len(nums)):
+        nums[i] = -nums[i] # Max Heap
+
+    heapq.heapify(nums)
+
+    for _ in range(k-1):
+        heapq.heappop(nums)
+
+    return -heapq.heappop(nums)'''
             },
+
+            {
+                "id": "LC 347",
+                "title": "Top K Frequent Elements",
+                "difficulty": "Medium",
+                "complexity": " O(n log k) time, O(k) space",
+                "description": "Given an integer array `nums` and an integer `k`, return the `k` most frequent elements. You may return the answer in any order.",
+                "approach": "1. Count the frequency of each element.\n2. Use a Min Heap to keep track of the top k frequent elements.\n3. Pop the smallest element (the least frequent in the heap) from the heap `k-1` times.\n4. Finally, return the next popped element as the kth most frequent element.",
+                "code": '''from collections import Counter
+import heapq
+
+def topKFrequent(nums: List[int], k: int) -> List[int]:
+    counter = Counter(nums)
+    heap = []
+
+    for key, val in counter.items():
+        if len(heap) < k:
+            heapq.heappush(heap, (val, key))
+        else:
+            heapq.heappushpop(heap, (val, key))
+    
+    return [h[1] for h in heap]'''
+            },
+
+            {
+                "id": "LC 973",
+                "title": "K Closest Points to Origin",
+                "difficulty": "Medium",
+                "complexity": " O(n log k) time, O(k) space",
+                "description": "Given an array of points on the X-Y plane and an integer `k`, return the `k` closest points to the origin (0, 0).",
+                "approach": "1. Calculate the distance of each point from the origin using the formula `dist = x^2 + y^2`.\n2. Use a Max Heap to keep track of the k closest points.\n3. For each point, if the heap has less than k points, push it onto the heap. Otherwise, compare the distance of the current point with the largest distance in the heap (the root). If the current point is closer, replace the root with the current point.\n4. Finally, return the points in the heap as the k closest points.",
+                "code": '''def kClosest(points: List[List[int]], k: int) -> List[List[int]]:
+    def dist(x, y):
+        return x**2 + y**2
+
+    heap = []
+    for x, y in points:
+        d = dist(x, y)
+        if len(heap) < k:
+            heapq.heappush(heap, (-d, x, y))
+        else:
+            heapq.heappushpop(heap, (-d, x, y))
+
+    return [(x, y) for d, x, y in heap]'''
+            },
+
             {
                 "id": "LC 23",
-                "title": "Merge K Sorted Lists",
+                "title": "Merge K Sorted Linked Lists",
                 "difficulty": "Hard",
-                "complexity": "O(n log k) time, O(k) space",
-                "description": "Merge k sorted linked lists into one sorted list.",
-                "approach": "Use min-heap of (value, index, node). Always extract minimum, add its next to heap.",
+                "complexity": " O(N log K) time, O(k) space",
+                "description": "Given an array of points on the X-Y plane and an integer `k`, return the `k` closest points to the origin (0, 0).",
+                "approach": "1. Calculate the distance of each point from the origin using the formula `dist = x^2 + y^2`.\n2. Use a Max Heap to keep track of the k closest points.\n3. For each point, if the heap has less than k points, push it onto the heap. Otherwise, compare the distance of the current point with the largest distance in the heap (the root). If the current point is closer, replace the root with the current point.\n4. Finally, return the points in the heap as the k closest points.",
                 "code": '''import heapq
- 
-def mergeKLists(lists):
+def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
     heap = []
-    # Initialize with head of each list
     for i, node in enumerate(lists):
         if node:
             heapq.heappush(heap, (node.val, i, node))
- 
-    dummy = ListNode(0)
-    curr = dummy
- 
+    
+    D = ListNode()
+    cur = D
+    
+    # n log k
     while heap:
         val, i, node = heapq.heappop(heap)
-        curr.next = node
-        curr = curr.next
-        if node.next:
-            heapq.heappush(heap, (node.next.val, i, node.next))
- 
-    return dummy.next'''
-            },
-            {
-                "id": "LC 295",
-                "title": "Find Median from Data Stream",
-                "difficulty": "Hard",
-                "complexity": "O(log n) add, O(1) find",
-                "description": "Design a data structure that supports adding numbers and finding the median.",
-                "approach": "Two heaps: max-heap for lower half, min-heap for upper half. Keep sizes balanced.",
-                "code": '''import heapq
- 
-class MedianFinder:
-    def __init__(self):
-        self.lo = []  # max-heap (store negated)
-        self.hi = []  # min-heap
- 
-    def addNum(self, num):
-        heapq.heappush(self.lo, -num)  # add to max-heap
- 
-        # Balance: lo's max must be <= hi's min
-        if self.hi and (-self.lo[0]) > self.hi[0]:
-            heapq.heappush(self.hi, -heapq.heappop(self.lo))
- 
-        # Balance sizes: lo can only be 1 bigger than hi
-        if len(self.lo) > len(self.hi) + 1:
-            heapq.heappush(self.hi, -heapq.heappop(self.lo))
-        elif len(self.hi) > len(self.lo):
-            heapq.heappush(self.lo, -heapq.heappop(self.hi))
- 
-    def findMedian(self):
-        if len(self.lo) > len(self.hi):
-            return -self.lo[0]
-        return (-self.lo[0] + self.hi[0]) / 2.0
- 
-mf = MedianFinder()
-mf.addNum(1); mf.addNum(2)
-print(mf.findMedian())  # 1.5
-mf.addNum(3)
-print(mf.findMedian())  # 2.0'''
-            },
-            {
-                "id": "LC 1046",
-                "title": "Last Stone Weight",
-                "difficulty": "Easy",
-                "complexity": "O(n log n) time, O(n) space",
-                "description": "Smash the two heaviest stones. Return the remaining stone weight (0 if none left).",
-                "approach": "Max-heap: always extract two heaviest, push difference back if not equal.",
-                "code": '''import heapq
- 
-def lastStoneWeight(stones):
-    heap = [-s for s in stones]  # max-heap via negation
-    heapq.heapify(heap)
- 
-    while len(heap) > 1:
-        y = -heapq.heappop(heap)  # heaviest
-        x = -heapq.heappop(heap)  # second heaviest
-        if x != y:
-            heapq.heappush(heap, -(y - x))
- 
-    return -heap[0] if heap else 0
- 
-print(lastStoneWeight([2,7,4,1,8,1]))  # 1
-print(lastStoneWeight([1]))             # 1'''
-            },
-            {
-                "id": "LC 621",
-                "title": "Task Scheduler",
-                "difficulty": "Medium",
-                "complexity": "O(n log n) time, O(1) space",
-                "description": "Find the minimum intervals CPU needs to complete all tasks with cooldown n.",
-                "approach": "Use max-heap for most frequent task. Use queue to track cooldown. Simulate time steps.",
-                "code": '''import heapq
-from collections import Counter, deque
- 
-def leastInterval(tasks, n):
-    count = Counter(tasks)
-    max_heap = [-c for c in count.values()]
-    heapq.heapify(max_heap)
- 
-    time = 0
-    q = deque()  # (count, time_available)
- 
-    while max_heap or q:
-        time += 1
-        if max_heap:
-            cnt = 1 + heapq.heappop(max_heap)  # -1 from count
-            if cnt:
-                q.append((cnt, time + n))       # add cooldown
- 
-        if q and q[0][1] == time:
-            heapq.heappush(max_heap, q.popleft()[0])
- 
-    return time
- 
-print(leastInterval(["A","A","A","B","B","B"], 2))  # 8
-print(leastInterval(["A","A","A","B","B","B"], 0))  # 6'''
-            },
+        cur.next = node
+        cur = node
+        node = node.next
+        if node:
+            heapq.heappush(heap, (node.val, i, node))
+    
+    return D.next'''
+            }
         ]
     },
 
