@@ -7,6 +7,7 @@ st.set_page_config(
     page_icon="🧠",
     layout="wide",
 )
+sidebar()
 inject_seo('DSA')
 
 st.markdown("""
@@ -490,6 +491,59 @@ counts = Counter("banana")
 # Counter({'a': 3, 'n': 2, 'b': 1})''',
         "leetcode_examples": [
             {
+                "id": "LC 290",
+                "title": "Word Pattern",
+                "difficulty": "Easy",
+                "complexity": "O(n) time, O(n) space",
+                "description": "Check if a string follows the same pattern as given pattern string.",
+                "approach": "Two-way bijection: map pattern chars to words AND words to pattern chars. Both must match.",
+                "code": '''def wordPattern(pattern, s):
+    words = s.split()
+    if len(pattern) != len(words):
+        return False
+ 
+    char_to_word = {}
+    word_to_char = {}
+ 
+    for c, w in zip(pattern, words):
+        if c in char_to_word and char_to_word[c] != w:
+            return False
+        if w in word_to_char and word_to_char[w] != c:
+            return False
+        char_to_word[c] = w
+        word_to_char[w] = c
+ 
+    return True
+ 
+print(wordPattern("abba", "dog cat cat dog"))  # True
+print(wordPattern("abba", "dog cat cat fish"))  # False'''
+            },
+            {
+                "id": "LC 205",
+                "title": "Isomorphic Strings",
+                "difficulty": "Easy",
+                "complexity": "O(n) time, O(1) space",
+                "description": "Determine if two strings are isomorphic (same structure mapping).",
+                "approach": "Map each char in s to char in t, and vice versa. Check consistency of both mappings.",
+                "code": '''def isIsomorphic(s, t):
+    s_to_t = {}
+    t_to_s = {}
+ 
+    for cs, ct in zip(s, t):
+        if cs in s_to_t and s_to_t[cs] != ct:
+            return False
+        if ct in t_to_s and t_to_s[ct] != cs:
+            return False
+        s_to_t[cs] = ct
+        t_to_s[ct] = cs
+ 
+    return True
+ 
+print(isIsomorphic("egg", "add"))   # True
+print(isIsomorphic("foo", "bar"))   # False
+print(isIsomorphic("paper", "title"))  # True'''
+            },
+            {
                 "id": "LC 49",
                 "title": "Group Anagrams",
                 "difficulty": "Medium",
@@ -582,34 +636,6 @@ print(subarraySum([1,1,1], 2))    # 2
 print(subarraySum([1,2,3], 3))    # 2'''
             },
             {
-                "id": "LC 290",
-                "title": "Word Pattern",
-                "difficulty": "Easy",
-                "complexity": "O(n) time, O(n) space",
-                "description": "Check if a string follows the same pattern as given pattern string.",
-                "approach": "Two-way bijection: map pattern chars to words AND words to pattern chars. Both must match.",
-                "code": '''def wordPattern(pattern, s):
-    words = s.split()
-    if len(pattern) != len(words):
-        return False
- 
-    char_to_word = {}
-    word_to_char = {}
- 
-    for c, w in zip(pattern, words):
-        if c in char_to_word and char_to_word[c] != w:
-            return False
-        if w in word_to_char and word_to_char[w] != c:
-            return False
-        char_to_word[c] = w
-        word_to_char[w] = c
- 
-    return True
- 
-print(wordPattern("abba", "dog cat cat dog"))  # True
-print(wordPattern("abba", "dog cat cat fish"))  # False'''
-            },
-            {
                 "id": "LC 451",
                 "title": "Sort Characters By Frequency",
                 "difficulty": "Medium",
@@ -627,32 +653,7 @@ def frequencySort(s):
 print(frequencySort("tree"))   # "eert" or "eetr"
 print(frequencySort("cccaaa")) # "cccaaa" or "aaaccc"
 print(frequencySort("Aabb"))   # "bbAa" or "bbaA"'''
-            },
-            {
-                "id": "LC 205",
-                "title": "Isomorphic Strings",
-                "difficulty": "Easy",
-                "complexity": "O(n) time, O(1) space",
-                "description": "Determine if two strings are isomorphic (same structure mapping).",
-                "approach": "Map each char in s to char in t, and vice versa. Check consistency of both mappings.",
-                "code": '''def isIsomorphic(s, t):
-    s_to_t = {}
-    t_to_s = {}
- 
-    for cs, ct in zip(s, t):
-        if cs in s_to_t and s_to_t[cs] != ct:
-            return False
-        if ct in t_to_s and t_to_s[ct] != cs:
-            return False
-        s_to_t[cs] = ct
-        t_to_s[ct] = cs
- 
-    return True
- 
-print(isIsomorphic("egg", "add"))   # True
-print(isIsomorphic("foo", "bar"))   # False
-print(isIsomorphic("paper", "title"))  # True'''
-            },
+            }
         ]
     },
 
@@ -706,38 +707,6 @@ def is_palindrome(s):
     return True''',
         "leetcode_examples": [
             {
-                "id": "LC 15",
-                "title": "3Sum",
-                "difficulty": "Medium",
-                "complexity": "O(n²) time, O(1) space",
-                "description": "Find all unique triplets in array that sum to zero.",
-                "approach": "Sort array. For each element, use two pointers on remaining. Skip duplicates carefully.",
-                "code": '''def threeSum(nums):
-    nums.sort()
-    res = []
- 
-    for i in range(len(nums) - 2):
-        if i > 0 and nums[i] == nums[i-1]:
-            continue  # skip duplicate
-        L, R = i + 1, len(nums) - 1
-        while L < R:
-            total = nums[i] + nums[L] + nums[R]
-            if total == 0:
-                res.append([nums[i], nums[L], nums[R]])
-                while L < R and nums[L] == nums[L+1]: L += 1
-                while L < R and nums[R] == nums[R-1]: R -= 1
-                L += 1; R -= 1
-            elif total < 0:
-                L += 1
-            else:
-                R -= 1
- 
-    return res
- 
-print(threeSum([-1,0,1,2,-1,-4]))
-# [[-1,-1,2],[-1,0,1]]'''
-            },
-            {
                 "id": "LC 125",
                 "title": "Valid Palindrome",
                 "difficulty": "Easy",
@@ -761,30 +730,6 @@ print(threeSum([-1,0,1,2,-1,-4]))
 print(isPalindrome("A man, a plan, a canal: Panama"))  # True
 print(isPalindrome("race a car"))                       # False
 print(isPalindrome(" "))                                # True'''
-            },
-            {
-                "id": "LC 167",
-                "title": "Two Sum II - Input Array Is Sorted",
-                "difficulty": "Medium",
-                "complexity": "O(n) time, O(1) space",
-                "description": "Find two numbers in a sorted array that add up to target. Return 1-indexed positions.",
-                "approach": "Classic squeeze pattern: L at start, R at end. Move based on sum vs target.",
-                "code": '''def twoSum(numbers, target):
-    L, R = 0, len(numbers) - 1
- 
-    while L < R:
-        total = numbers[L] + numbers[R]
-        if total == target:
-            return [L + 1, R + 1]  # 1-indexed
-        elif total < target:
-            L += 1
-        else:
-            R -= 1
- 
-    return []
- 
-print(twoSum([2,7,11,15], 9))   # [1,2]
-print(twoSum([2,3,4], 6))        # [1,3]'''
             },
             {
                 "id": "LC 26",
@@ -838,31 +783,126 @@ print(sortedSquares([-4,-1,0,3,10]))  # [0,1,9,16,100]
 print(sortedSquares([-7,-3,2,3,11]))  # [4,9,9,49,121]'''
             },
             {
-                "id": "LC 42",
-                "title": "Trapping Rain Water",
-                "difficulty": "Hard",
+                "id": "LC 232",
+                "title": "Implement Queue using Stacks",
+                "difficulty": "Easy",
+                "complexity": "O(1) amortized push/pop",
+                "description": "Implement a FIFO queue using only two stacks.",
+                "approach": "Two stacks: inbox for push, outbox for pop. Transfer inbox→outbox lazily when outbox is empty.",
+                "code": '''class MyQueue:
+    def __init__(self):
+        self.inbox = []   # for push
+        self.outbox = []  # for pop/peek
+ 
+    def push(self, x):
+        self.inbox.append(x)
+ 
+    def _transfer(self):
+        if not self.outbox:
+            while self.inbox:
+                self.outbox.append(self.inbox.pop())
+ 
+    def pop(self):
+        self._transfer()
+        return self.outbox.pop()
+ 
+    def peek(self):
+        self._transfer()
+        return self.outbox[-1]
+ 
+    def empty(self):
+        return not self.inbox and not self.outbox
+ 
+q = MyQueue()
+q.push(1); q.push(2)
+print(q.peek())  # 1
+print(q.pop())   # 1
+print(q.empty()) # False'''
+            },
+            {
+                "id": "LC 150",
+                "title": "Evaluate Reverse Polish Notation",
+                "difficulty": "Medium",
+                "complexity": "O(n) time, O(n) space",
+                "description": "Evaluate the value of an arithmetic expression in Reverse Polish Notation.",
+                "approach": "Push numbers onto stack. On operator, pop two numbers, apply operator, push result.",
+                "code": '''def evalRPN(tokens):
+    stack = []
+    ops = {
+        '+': lambda a, b: a + b,
+        '-': lambda a, b: a - b,
+        '*': lambda a, b: a * b,
+        '/': lambda a, b: int(a / b),  # truncate toward zero
+    }
+ 
+    for token in tokens:
+        if token in ops:
+            b, a = stack.pop(), stack.pop()
+            stack.append(ops[token](a, b))
+        else:
+            stack.append(int(token))
+ 
+    return stack[0]
+ 
+print(evalRPN(["2","1","+","3","*"]))        # 9
+print(evalRPN(["4","13","5","/","+"]))        # 6
+print(evalRPN(["10","6","9","3","+","-11","*","/","*","17","+","5","+"]))  # 22'''
+            },
+            {
+                "id": "LC 15",
+                "title": "3Sum",
+                "difficulty": "Medium",
+                "complexity": "O(n²) time, O(1) space",
+                "description": "Find all unique triplets in array that sum to zero.",
+                "approach": "Sort array. For each element, use two pointers on remaining. Skip duplicates carefully.",
+                "code": '''def threeSum(nums):
+    nums.sort()
+    res = []
+ 
+    for i in range(len(nums) - 2):
+        if i > 0 and nums[i] == nums[i-1]:
+            continue  # skip duplicate
+        L, R = i + 1, len(nums) - 1
+        while L < R:
+            total = nums[i] + nums[L] + nums[R]
+            if total == 0:
+                res.append([nums[i], nums[L], nums[R]])
+                while L < R and nums[L] == nums[L+1]: L += 1
+                while L < R and nums[R] == nums[R-1]: R -= 1
+                L += 1; R -= 1
+            elif total < 0:
+                L += 1
+            else:
+                R -= 1
+ 
+    return res
+ 
+print(threeSum([-1,0,1,2,-1,-4]))
+# [[-1,-1,2],[-1,0,1]]'''
+            },
+            {
+                "id": "LC 167",
+                "title": "Two Sum II - Input Array Is Sorted",
+                "difficulty": "Medium",
                 "complexity": "O(n) time, O(1) space",
-                "description": "Calculate how much water can be trapped between heights.",
-                "approach": "Two pointers. Track max height seen from left and right. Water at position = min(maxL, maxR) - height.",
-                "code": '''def trap(height):
-    L, R = 0, len(height) - 1
-    maxL, maxR = height[L], height[R]
-    water = 0
+                "description": "Find two numbers in a sorted array that add up to target. Return 1-indexed positions.",
+                "approach": "Classic squeeze pattern: L at start, R at end. Move based on sum vs target.",
+                "code": '''def twoSum(numbers, target):
+    L, R = 0, len(numbers) - 1
  
     while L < R:
-        if maxL <= maxR:
+        total = numbers[L] + numbers[R]
+        if total == target:
+            return [L + 1, R + 1]  # 1-indexed
+        elif total < target:
             L += 1
-            maxL = max(maxL, height[L])
-            water += maxL - height[L]
         else:
             R -= 1
-            maxR = max(maxR, height[R])
-            water += maxR - height[R]
  
-    return water
+    return []
  
-print(trap([0,1,0,2,1,0,1,3,2,1,2,1]))  # 6
-print(trap([4,2,0,3,2,5]))               # 9'''
+print(twoSum([2,7,11,15], 9))   # [1,2]
+print(twoSum([2,3,4], 6))        # [1,3]'''
             },
             {
                 "id": "LC 80",
@@ -1023,6 +1063,33 @@ print(dailyTemperatures([73,74,75,71,69,72,76,73]))
 # [1, 1, 4, 2, 1, 1, 0, 0]'''
             },
             {
+                "id": "LC 42",
+                "title": "Trapping Rain Water",
+                "difficulty": "Hard",
+                "complexity": "O(n) time, O(1) space",
+                "description": "Calculate how much water can be trapped between heights.",
+                "approach": "Two pointers. Track max height seen from left and right. Water at position = min(maxL, maxR) - height.",
+                "code": '''def trap(height):
+    L, R = 0, len(height) - 1
+    maxL, maxR = height[L], height[R]
+    water = 0
+ 
+    while L < R:
+        if maxL <= maxR:
+            L += 1
+            maxL = max(maxL, height[L])
+            water += maxL - height[L]
+        else:
+            R -= 1
+            maxR = max(maxR, height[R])
+            water += maxR - height[R]
+ 
+    return water
+ 
+print(trap([0,1,0,2,1,0,1,3,2,1,2,1]))  # 6
+print(trap([4,2,0,3,2,5]))               # 9'''
+            },
+            {
                 "id": "LC 84",
                 "title": "Largest Rectangle in Histogram",
                 "difficulty": "Hard",
@@ -1049,72 +1116,7 @@ print(dailyTemperatures([73,74,75,71,69,72,76,73]))
 print(largestRectangleArea([2,1,5,6,2,3]))  # 10
 print(largestRectangleArea([2,4]))           # 4'''
             },
-            {
-                "id": "LC 232",
-                "title": "Implement Queue using Stacks",
-                "difficulty": "Easy",
-                "complexity": "O(1) amortized push/pop",
-                "description": "Implement a FIFO queue using only two stacks.",
-                "approach": "Two stacks: inbox for push, outbox for pop. Transfer inbox→outbox lazily when outbox is empty.",
-                "code": '''class MyQueue:
-    def __init__(self):
-        self.inbox = []   # for push
-        self.outbox = []  # for pop/peek
- 
-    def push(self, x):
-        self.inbox.append(x)
- 
-    def _transfer(self):
-        if not self.outbox:
-            while self.inbox:
-                self.outbox.append(self.inbox.pop())
- 
-    def pop(self):
-        self._transfer()
-        return self.outbox.pop()
- 
-    def peek(self):
-        self._transfer()
-        return self.outbox[-1]
- 
-    def empty(self):
-        return not self.inbox and not self.outbox
- 
-q = MyQueue()
-q.push(1); q.push(2)
-print(q.peek())  # 1
-print(q.pop())   # 1
-print(q.empty()) # False'''
-            },
-            {
-                "id": "LC 150",
-                "title": "Evaluate Reverse Polish Notation",
-                "difficulty": "Medium",
-                "complexity": "O(n) time, O(n) space",
-                "description": "Evaluate the value of an arithmetic expression in Reverse Polish Notation.",
-                "approach": "Push numbers onto stack. On operator, pop two numbers, apply operator, push result.",
-                "code": '''def evalRPN(tokens):
-    stack = []
-    ops = {
-        '+': lambda a, b: a + b,
-        '-': lambda a, b: a - b,
-        '*': lambda a, b: a * b,
-        '/': lambda a, b: int(a / b),  # truncate toward zero
-    }
- 
-    for token in tokens:
-        if token in ops:
-            b, a = stack.pop(), stack.pop()
-            stack.append(ops[token](a, b))
-        else:
-            stack.append(int(token))
- 
-    return stack[0]
- 
-print(evalRPN(["2","1","+","3","*"]))        # 9
-print(evalRPN(["4","13","5","/","+"]))        # 6
-print(evalRPN(["10","6","9","3","+","-11","*","/","*","17","+","5","+"]))  # 22'''
-            },
+
         ]
     },
 
