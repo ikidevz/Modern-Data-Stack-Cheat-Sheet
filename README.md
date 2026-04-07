@@ -1,97 +1,129 @@
 # 📊🧱⚙️ The Modern Data Stack Cheat Sheet
 
-A practical, engineering-first reference for **Data Analysts, Analytics Engineers, and Data Engineers**.
+![header_main_img](https://tdhghaslnufgtzjybhhf.supabase.co/storage/v1/object/public/resume/moden_data_stack_cheat_sheer_banner.png)
 
-This is not a tutorial. It's a **working knowledge base** of patterns, syntax, and system-level thinking across the modern data stack.
+> A practical, engineering-first reference for **Data Analysts**, **Analytics Engineers**, and **Data Engineers**.
 
-## 🎯 Purpose
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://modern-data-stack-cheat-sheet-ikigami.streamlit.app)
 
-Built as a living reference for real-world data systems — not just syntax. This cheat sheet provides quick access to common patterns and approaches across the most important tools in modern data work.
+---
 
-## 🧠 What's Inside
+## 🧠 What Is This?
 
-### 📊 DataFrame & Processing
+This is **not a tutorial**.
 
-- **🐼 Pandas** – Local analytics and data manipulation
-- **⚡ Polars** – High-performance columnar processing
-- **🔥 PySpark** – Distributed data processing at scale
+It is a **working knowledge base** of patterns, syntax, and system-level thinking across the modern data stack — built for practitioners who want a fast, reliable reference while working on real pipelines and data apps.
+
+---
+
+## 📚 What's Covered
+
+### 📊 Data Analysis & Math
+
+| Page                          | Description                                                 |
+| ----------------------------- | ----------------------------------------------------------- |
+| 📈 Data Analysis              | EDA foundations, aggregations, and analytical workflows     |
+| 🔢 Math & Statistics          | Core statistical concepts and mathematical foundations      |
+| 🧮 Data Structure & Algorithm | Essential structures and algorithmic thinking for data work |
+
+### 🐍 Python & DataFrames
+
+| Page                      | Description                                       |
+| ------------------------- | ------------------------------------------------- |
+| 🐼 Pandas                 | Local analytics and data wrangling                |
+| 🔍 EDA                    | Exploratory Data Analysis patterns and techniques |
+| 🧹 Data Cleaning (Pandas) | Cleaning and transforming data in Python          |
 
 ### 🗄️ SQL & Databases
 
-- **🐘 PostgreSQL** – Production-grade relational database
-- **🐬 MySQL** – Popular open-source RDBMS
+| Page                   | Description                          |
+| ---------------------- | ------------------------------------ |
+| 🧹 Data Cleaning (SQL) | Cleaning at the database layer       |
+| 🐘 PostgreSQL          | Advanced SQL and relational patterns |
+| 🐬 MySQL               | Queries, joins, and DB management    |
 
-## 🚀 Getting Started
+### ⚡ Big Data & Processing
 
-### Prerequisites
+| Page                  | Description                                  |
+| --------------------- | -------------------------------------------- |
+| 🌀 Polars             | Columnar, high-performance data processing   |
+| 🔥 PySpark            | Distributed big data processing              |
+| 🧱 Databricks & Delta | Delta Lake patterns and Databricks workflows |
 
-- Python 3.8+
-- Streamlit
+### ⚙️ Data Engineering
 
-### Installation
+| Page                         | Description                                              |
+| ---------------------------- | -------------------------------------------------------- |
+| 🌊 Kafka                     | Event streaming and message queues                       |
+| 🔄 ETL Types                 | Batch, streaming, and hybrid ETL patterns                |
+| 🛠️ Feature Engineering       | Feature creation and transformation for analytics and ML |
+| 🏗️ Data Engineering Patterns | Pipeline architecture and engineering best practices     |
+| 🧩 Design Patterns           | Software and system design patterns applied to data      |
 
-```bash
-# Clone the repository
-git clone <your-repo-url>
-cd modern-data-stack-cheatsheet
+### 🎨 Visualization
 
-# Install dependencies
-pip install streamlit
+| Page                  | Description                               |
+| --------------------- | ----------------------------------------- |
+| 🎨 Data Visualization | Charts, plots, and storytelling with data |
 
-# Run the app
-streamlit run app/Home.py
-```
+---
 
-## 🧭 How to Use
+## 🧭 How to Use This
 
-- Use the **sidebar** to navigate between tools and layers
+- Use the **sidebar** to jump between tools and layers
 - Treat each page as a **quick reference**, not a walkthrough
 - Focus on **patterns**, not memorization
 - Apply what you see directly to **real pipelines and data apps**
 
-## 📂 Project Structure
+---
+
+## 🗂️ Project Structure
 
 ```
-.
-app/
-├── components/
-│   ├── mysql.py
-│   ├── pandas.py
-│   ├── polaris.py
-│   ├── postgresql.py
-│   └── pyspark.py
+Modern-Data-Stack-Cheat-Sheet/
+├── Home.py                            # Main entry point
 ├── pages/
-│   ├── 1_Data_Analysis.py
-│   ├── 2_Pandas.py
-│   ├── 3_PostgreSQL.py
-│   ├── 4_PySpark.py
-│   ├── 5_Polaris.py
-│   ├── 6_MySQL.py
-│   └── 7_Kafka.py
-└── Home.py
-└── README.md           # This file
+│   ├── 1__Data_Analysis.py
+│   ├── 2__Math_&_Statistics.py
+│   ├── 3__Data_Structure_&_Algorithm.py
+│   ├── 4__Pandas.py
+│   ├── 5__EDA.py
+│   ├── 6__Data_Cleaning_(Pandas).py
+│   ├── 7__Data_Cleaning_(SQL).py
+│   ├── 8__PostgreSQL.py
+│   ├── 9__MySQL.py
+│   ├── 10__Polaris.py
+│   ├── 11__PySpark.py
+│   ├── 12__Databricks_Delta.py
+│   ├── 13__Kafka.py
+│   ├── 14__ETL_Types.py
+│   ├── 15__Feature_Engineering.py
+│   ├── 16__Data_Engineering_Patterns.py
+│   ├── 17__Design_Patterns.py
+│   └── 18__Data_Visualization.py
+├── components/                        # Shared UI components (sidebar, etc.)
+└── utility/                           # SEO and helper utilities
 ```
-
-## 🚀 Roadmap
-
-Planned additions:
-
-- 🧱 **Data Engineering Design Patterns** – Common architectural patterns and best practices
-- 📐 **Analytics Engineering Modeling Patterns** – dbt, dimensional modeling, and metrics layers
-- 🧪 **Performance & Optimization Playbooks** – Query optimization, indexing strategies, and scaling patterns
-
-## 🤝 Contributing
-
-This is a living reference. Contributions, corrections, and expansions are welcome.
-
-## 📄 License
-
-MIT
-
-## 👤 Author
-
-[Ikigami](https://github.com/ikigamisama)
 
 ---
 
-**Built for practitioners who ship data products.**
+## 🛠️ Built With
+
+- [Streamlit](https://streamlit.io/) — app framework
+- Python — all pages and components
+
+---
+
+## 🌐 Live App
+
+👉 [modern-data-stack-cheat-sheet-ikigami.streamlit.app](https://modern-data-stack-cheat-sheet-ikigami.streamlit.app)
+
+---
+
+## 🤝 Contributing
+
+Found something outdated or missing? Feel free to open an issue or submit a PR. This is a **living reference** — contributions are welcome.
+
+---
+
+_Built as a living reference for real-world data systems — not just syntax._

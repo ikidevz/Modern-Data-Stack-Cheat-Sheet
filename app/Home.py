@@ -42,31 +42,40 @@ col1, col2 = st.columns(2)
 with col1:
     st.markdown(
         """
-        **📊 Data Analysis & Visualization**
+        **📊 Data Analysis & Math**
         - 📈 Data Analysis — EDA, aggregations, and analytical workflows
-        - 🎨 Data Visualization — charts, plots, and storytelling with data
+        - 🔢 Math & Statistics — core statistical concepts and mathematical foundations
+        - 🧮 Data Structure & Algorithm — essential structures and algorithmic thinking
 
-        **🧹 Data Cleaning**
-        - 🐼 Data Cleaning (Pandas) — cleaning in Python
-        - 🗄️ Data Cleaning (SQL) — cleaning at the database layer
-
-        **🐍 DataFrame & Processing**
+        **🐍 Python & DataFrames**
         - 🐼 Pandas — local analytics and data wrangling
-        - ⚡ Polars — columnar, high-performance processing
-        - 🔥 PySpark — distributed big data processing
+        - 🔍 EDA — exploratory data analysis patterns and techniques
+        - 🧹 Data Cleaning (Pandas) — cleaning and transforming data in Python
+
+        **🗄️ SQL & Databases**
+        - 🧹 Data Cleaning (SQL) — cleaning at the database layer
+        - 🐘 PostgreSQL — advanced SQL and relational patterns
+        - 🐬 MySQL — queries, joins, and DB management
         """
     )
 
 with col2:
     st.markdown(
         """
-        **🗄️ SQL & Databases**
-        - 🐘 PostgreSQL — advanced SQL and relational patterns
-        - 🐬 MySQL — queries, joins, and DB management
+        **⚡ Big Data & Processing**
+        - 🌀 Polars — columnar, high-performance data processing
+        - 🔥 PySpark — distributed big data processing
+        - 🧱 Databricks & Delta — Delta Lake patterns and Databricks workflows
 
         **⚙️ Data Engineering**
         - 🌊 Kafka — event streaming and message queues
-        - 🧱 Design Patterns — architecture and pipeline design patterns
+        - 🔄 ETL Types — batch, streaming, and hybrid ETL patterns
+        - 🛠️ Feature Engineering — feature creation and transformation
+        - 🏗️ Data Engineering Patterns — pipeline architecture and best practices
+        - 🧩 Design Patterns — software and system design patterns for data
+
+        **🎨 Visualization**
+        - 🎨 Data Visualization — charts, plots, and storytelling with data
         """
     )
 
