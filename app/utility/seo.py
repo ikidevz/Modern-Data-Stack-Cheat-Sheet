@@ -74,6 +74,10 @@ PAGE_META = {
         "title": "EDA Guide",
         "description": "A structured study guide to understanding your data before modeling.",
     },
+    "DSA": {
+        "title": "Data Structure & Algorithm Cheat Sheet",
+        "description": "Cheat sheet covering essential data structures and algorithms for data professionals, including arrays, linked lists, trees, sorting algorithms, and more.",
+    }
 }
 
 BASE_URL = "https://modern-data-stack-cheat-sheet-ikigami.streamlit.app"
