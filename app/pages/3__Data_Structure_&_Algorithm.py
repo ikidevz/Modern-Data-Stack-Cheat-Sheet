@@ -135,6 +135,183 @@ def fibonacci(n):
     return fibonacci(n - 1) + fibonacci(n - 2)  # 2 recursive calls''',
         "leetcode_examples": [
             {
+                "id": "LC 1",
+                "title": "Two Sum",
+                "difficulty": "Easy",
+                "complexity": "O(n) time, O(n) space",
+                "description": "Given an array of integers, return indices of two numbers that add up to a target.",
+                "approach": "HashMap approach: store each number and its index. For each number, check if complement exists in map.",
+                "code": '''def twoSum(nums, target):
+    seen = {}  # value -> index
+    for i, num in enumerate(nums):
+        complement = target - num
+        if complement in seen:
+            return [seen[complement], i]
+        seen[num] = i
+    return []
+ 
+# Example
+print(twoSum([2,7,11,15], 9))  # [0,1]
+print(twoSum([3,2,4], 6))       # [1,2]'''
+            },
+            {
+                "id": "LC 217",
+                "title": "Contains Duplicate",
+                "difficulty": "Easy",
+                "complexity": "O(n) time, O(n) space",
+                "description": "Return true if any value appears at least twice in the array.",
+                "approach": "Add each element to a set. If element already in set → duplicate found.",
+                "code": '''def containsDuplicate(nums):
+    seen = set()
+    for num in nums:
+        if num in seen:
+            return True
+        seen.add(num)
+    return False
+ 
+# Pythonic one-liner: O(n) time, O(n) space
+def containsDuplicate2(nums):
+    return len(nums) != len(set(nums))
+ 
+print(containsDuplicate([1,2,3,1]))  # True
+print(containsDuplicate([1,2,3,4]))  # False'''
+            },
+            {
+                "id": "LC 242",
+                "title": "Valid Anagram",
+                "difficulty": "Easy",
+                "complexity": "O(n) time, O(1) space (26 chars)",
+                "description": "Given two strings s and t, return true if t is an anagram of s.",
+                "approach": "Count character frequencies in both strings. Compare counts.",
+                "code": '''from collections import Counter
+ 
+def isAnagram(s, t):
+    if len(s) != len(t):
+        return False
+    return Counter(s) == Counter(t)
+ 
+# Manual approach (shows the O(1) space trick)
+def isAnagram2(s, t):
+    count = [0] * 26
+    for c in s: count[ord(c) - ord('a')] += 1
+    for c in t: count[ord(c) - ord('a')] -= 1
+    return all(x == 0 for x in count)
+ 
+print(isAnagram("anagram", "nagaram"))  # True
+print(isAnagram("rat", "car"))          # False'''
+            },
+            {
+                "id": "LC 169",
+                "title": "Majority Element",
+                "difficulty": "Easy",
+                "complexity": "O(n) time, O(1) space (Boyer-Moore)",
+                "description": "Find the element that appears more than n/2 times.",
+                "approach": "Boyer-Moore Voting: keep a candidate and count. When count hits 0, switch candidate.",
+                "code": '''def majorityElement(nums):
+    # Boyer-Moore Voting Algorithm: O(1) space!
+    candidate, count = None, 0
+    for num in nums:
+        if count == 0:
+            candidate = num
+        count += 1 if num == candidate else -1
+    return candidate
+ 
+# Verify complexity: O(n) time, O(1) space
+print(majorityElement([3,2,3]))        # 3
+print(majorityElement([2,2,1,1,1,2,2])) # 2'''
+            },
+            {
+                "id": "LC 268",
+                "title": "Missing Number",
+                "difficulty": "Easy",
+                "complexity": "O(n) time, O(1) space",
+                "description": "Find the missing number in range [0, n] given array of n distinct numbers.",
+                "approach": "Expected sum of [0..n] = n*(n+1)//2. Subtract actual sum to get the missing number.",
+                "code": '''def missingNumber(nums):
+    n = len(nums)
+    expected = n * (n + 1) // 2  # O(1) formula
+    return expected - sum(nums)
+ 
+# XOR approach: also O(n) time, O(1) space
+def missingNumber2(nums):
+    res = len(nums)
+    for i, num in enumerate(nums):
+        res ^= i ^ num  # XOR cancels pairs
+    return res
+ 
+print(missingNumber([3,0,1]))    # 2
+print(missingNumber([9,6,4,2,3,5,7,0,1]))  # 8'''
+            },
+            {
+                "id": "LC 412",
+                "title": "FizzBuzz",
+                "difficulty": "Easy",
+                "complexity": "O(n) time, O(n) space",
+                "description": "Return strings for 1..n: 'FizzBuzz' if div by 15, 'Fizz' if div by 3, 'Buzz' if div by 5.",
+                "approach": "Iterate 1 to n, check divisibility with modulo. String concatenation trick avoids nested ifs.",
+                "code": '''def fizzBuzz(n):
+    result = []
+    for i in range(1, n + 1):
+        s = ""
+        if i % 3 == 0: s += "Fizz"
+        if i % 5 == 0: s += "Buzz"
+        result.append(s or str(i))  # fallback to number
+    return result
+ 
+print(fizzBuzz(15))
+# ['1','2','Fizz','4','Buzz','Fizz','7','8',
+#  'Fizz','Buzz','11','Fizz','13','14','FizzBuzz']'''
+            },
+        ]
+    },
+
+    "📦 Arrays & Strings": {
+        "tag": "Fundamentals",
+        "complexity": {"Access": "O(1)", "Search": "O(n)", "Insert/Delete (mid)": "O(n)", "Append": "O(1) avg"},
+        "summary": (
+            "Arrays store elements in **contiguous memory**, giving O(1) index access. "
+            "**Static arrays** are fixed-size; **dynamic arrays** (Python lists) resize automatically. "
+            "Strings are immutable character arrays."
+        ),
+        "content": """
+### Static Arrays
+- **Fixed size** — can't grow after creation
+- **O(1)** access by index (memory computed directly)
+- **O(n)** insert/delete in the middle (need to shift elements)
+ 
+### Dynamic Arrays (Python `list`)
+Built on top of static arrays. When full, allocates a **new larger block** (usually 2x) and copies.
+ 
+- **Append**: O(1) amortized — occasionally O(n) during resize
+- **Insert at middle**: O(n) — must shift elements
+- **Delete from end**: O(1)
+- **Search**: O(n) unsorted
+ 
+### Strings
+In Python, strings are **immutable**. Every modification creates a **new string** — O(n) copy.
+ 
+- Access character: O(1)
+- Concatenation `s + 'z'`: O(n) — copies the whole string
+- Length `len(s)`: O(1) — stored internally
+""",
+        "python_code": '''# Dynamic Arrays (Python lists)
+A = [1, 2, 3]
+A.append(5)          # O(1) amortized
+A.pop()              # O(1) - remove last
+A.insert(2, 5)       # O(n) - shift required
+A[0] = 7             # O(1) - modify by index
+print(A[2])          # O(1) - access by index
+print(7 in A)        # O(n) - search
+print(len(A))        # O(1)
+ 
+# Strings
+s = "hello"
+print(s[2])          # O(1) - access
+print(len(s))        # O(1)
+b = s + "z"          # O(n) - creates new string
+print("f" in s)      # O(n) - search''',
+        "leetcode_examples": [
+            {
                 "id": "LC 2239",
                 "title": "Find Closest Number to Zero",
                 "difficulty": "Easy",
@@ -417,216 +594,6 @@ def findClosestNumber(nums: List[int]) -> int:
         for j in range(n // 2):
             matrix[i][j], matrix[i][n-j-1] = matrix[i][n-j-1], matrix[i][j]'''
             },
-
-        ]
-    },
-
-    "📦 Arrays & Strings": {
-        "tag": "Fundamentals",
-        "complexity": {"Access": "O(1)", "Search": "O(n)", "Insert/Delete (mid)": "O(n)", "Append": "O(1) avg"},
-        "summary": (
-            "Arrays store elements in **contiguous memory**, giving O(1) index access. "
-            "**Static arrays** are fixed-size; **dynamic arrays** (Python lists) resize automatically. "
-            "Strings are immutable character arrays."
-        ),
-        "content": """
-### Static Arrays
-- **Fixed size** — can't grow after creation
-- **O(1)** access by index (memory computed directly)
-- **O(n)** insert/delete in the middle (need to shift elements)
- 
-### Dynamic Arrays (Python `list`)
-Built on top of static arrays. When full, allocates a **new larger block** (usually 2x) and copies.
- 
-- **Append**: O(1) amortized — occasionally O(n) during resize
-- **Insert at middle**: O(n) — must shift elements
-- **Delete from end**: O(1)
-- **Search**: O(n) unsorted
- 
-### Strings
-In Python, strings are **immutable**. Every modification creates a **new string** — O(n) copy.
- 
-- Access character: O(1)
-- Concatenation `s + 'z'`: O(n) — copies the whole string
-- Length `len(s)`: O(1) — stored internally
-""",
-        "python_code": '''# Dynamic Arrays (Python lists)
-A = [1, 2, 3]
-A.append(5)          # O(1) amortized
-A.pop()              # O(1) - remove last
-A.insert(2, 5)       # O(n) - shift required
-A[0] = 7             # O(1) - modify by index
-print(A[2])          # O(1) - access by index
-print(7 in A)        # O(n) - search
-print(len(A))        # O(1)
- 
-# Strings
-s = "hello"
-print(s[2])          # O(1) - access
-print(len(s))        # O(1)
-b = s + "z"          # O(n) - creates new string
-print("f" in s)      # O(n) - search''',
-        "leetcode_examples": [
-            {
-                "id": "LC 121",
-                "title": "Best Time to Buy and Sell Stock",
-                "difficulty": "Easy",
-                "complexity": "O(n) time, O(1) space",
-                "description": "Find the maximum profit from one buy and one sell (buy before sell).",
-                "approach": "Track the minimum price seen so far. At each price, compute profit vs current min. Update best profit.",
-                "code": '''def maxProfit(prices):
-    min_price = float('inf')
-    max_profit = 0
-    for price in prices:
-        min_price = min(min_price, price)
-        max_profit = max(max_profit, price - min_price)
-    return max_profit
- 
-print(maxProfit([7,1,5,3,6,4]))  # 5 (buy@1, sell@6)
-print(maxProfit([7,6,4,3,1]))    # 0 (no profit possible)'''
-            },
-            {
-                "id": "LC 238",
-                "title": "Product of Array Except Self",
-                "difficulty": "Medium",
-                "complexity": "O(n) time, O(1) extra space",
-                "description": "Return array where output[i] = product of all elements except nums[i]. No division allowed.",
-                "approach": "Two passes: first pass builds prefix products, second pass multiplies suffix products into result.",
-                "code": '''def productExceptSelf(nums):
-    n = len(nums)
-    result = [1] * n
- 
-    # Left pass: result[i] = product of all elements left of i
-    prefix = 1
-    for i in range(n):
-        result[i] = prefix
-        prefix *= nums[i]
- 
-    # Right pass: multiply in product of all elements right of i
-    suffix = 1
-    for i in range(n - 1, -1, -1):
-        result[i] *= suffix
-        suffix *= nums[i]
- 
-    return result
- 
-print(productExceptSelf([1,2,3,4]))   # [24,12,8,6]
-print(productExceptSelf([-1,1,0,-3,3])) # [0,0,9,0,0]'''
-            },
-            {
-                "id": "LC 53",
-                "title": "Maximum Subarray",
-                "difficulty": "Medium",
-                "complexity": "O(n) time, O(1) space",
-                "description": "Find the contiguous subarray with the largest sum (Kadane's Algorithm).",
-                "approach": "Kadane's: track current running sum. If it goes negative, reset to 0 (start fresh). Track global max.",
-                "code": '''def maxSubArray(nums):
-    max_sum = nums[0]
-    curr_sum = 0
-    for num in nums:
-        curr_sum = max(num, curr_sum + num)  # restart if negative
-        max_sum = max(max_sum, curr_sum)
-    return max_sum
- 
-print(maxSubArray([-2,1,-3,4,-1,2,1,-5,4]))  # 6 (subarray [4,-1,2,1])
-print(maxSubArray([1]))                        # 1
-print(maxSubArray([5,4,-1,7,8]))              # 23'''
-            },
-            {
-                "id": "LC 56",
-                "title": "Merge Intervals",
-                "difficulty": "Medium",
-                "complexity": "O(n log n) time, O(n) space",
-                "description": "Merge all overlapping intervals and return the resulting list.",
-                "approach": "Sort by start time. Iterate: if current start <= last merged end, extend the end. Otherwise add new interval.",
-                "code": '''def merge(intervals):
-    intervals.sort(key=lambda x: x[0])
-    merged = [intervals[0]]
- 
-    for start, end in intervals[1:]:
-        if start <= merged[-1][1]:       # overlapping
-            merged[-1][1] = max(merged[-1][1], end)
-        else:
-            merged.append([start, end])  # no overlap, add new
- 
-    return merged
- 
-print(merge([[1,3],[2,6],[8,10],[15,18]]))
-# [[1,6],[8,10],[15,18]]
-print(merge([[1,4],[4,5]]))
-# [[1,5]]'''
-            },
-            {
-                "id": "LC 152",
-                "title": "Maximum Product Subarray",
-                "difficulty": "Medium",
-                "complexity": "O(n) time, O(1) space",
-                "description": "Find the contiguous subarray that has the largest product.",
-                "approach": "Track both max and min products (negatives can flip). At each step update both, then update global max.",
-                "code": '''def maxProduct(nums):
-    res = max(nums)
-    cur_min, cur_max = 1, 1
- 
-    for num in nums:
-        if num == 0:
-            cur_min, cur_max = 1, 1
-            continue
-        candidates = (num, cur_max * num, cur_min * num)
-        cur_max = max(candidates)
-        cur_min = min(candidates)
-        res = max(res, cur_max)
- 
-    return res
- 
-print(maxProduct([2,3,-2,4]))  # 6 (subarray [2,3])
-print(maxProduct([-2,0,-1]))   # 0'''
-            },
-            {
-                "id": "LC 128",
-                "title": "Longest Consecutive Sequence",
-                "difficulty": "Medium",
-                "complexity": "O(n) time, O(n) space",
-                "description": "Find the length of the longest consecutive sequence in an unsorted array.",
-                "approach": "Use a HashSet. Only start counting from a number with no left neighbor (n-1 not in set). Count streak from there.",
-                "code": '''def longestConsecutive(nums):
-    num_set = set(nums)
-    best = 0
- 
-    for n in num_set:
-        if n - 1 not in num_set:  # only start from sequence beginning
-            length = 1
-            while n + length in num_set:
-                length += 1
-            best = max(best, length)
- 
-    return best
- 
-print(longestConsecutive([100,4,200,1,3,2]))  # 4 (1,2,3,4)
-print(longestConsecutive([0,3,7,2,5,8,4,6,0,1]))  # 9'''
-            },
-            {
-                "id": "LC 11",
-                "title": "Container With Most Water",
-                "difficulty": "Medium",
-                "complexity": "O(n) time, O(1) space",
-                "description": "Find two lines that form a container holding the most water.",
-                "approach": "Two pointers from both ends. Area = min(height[L], height[R]) * (R - L). Move the shorter side inward.",
-                "code": '''def maxArea(height):
-    L, R = 0, len(height) - 1
-    max_water = 0
- 
-    while L < R:
-        water = min(height[L], height[R]) * (R - L)
-        max_water = max(max_water, water)
-        if height[L] < height[R]:
-            L += 1  # move shorter side
-        else:
-            R -= 1
-    return max_water
- 
-print(maxArea([1,8,6,2,5,4,8,3,7]))  # 49
-print(maxArea([1,1]))                  # 1'''
-            },
         ]
     },
 
@@ -737,169 +704,214 @@ def count_chars(s):
 print(count_chars("banana"))  # Counter({'a':3,'n':2,'b':1})''',
         "leetcode_examples": [
             {
-                "id": "LC 290",
-                "title": "Word Pattern",
+                "id": "LC 771",
+                "title": "Jewels and Stones",
                 "difficulty": "Easy",
-                "complexity": "O(n) time, O(n) space",
-                "description": "Check if a string follows the same pattern as given pattern string.",
-                "approach": "Two-way bijection: map pattern chars to words AND words to pattern chars. Both must match.",
-                "code": '''def wordPattern(pattern, s):
-    words = s.split()
-    if len(pattern) != len(words):
-        return False
- 
-    char_to_word = {}
-    word_to_char = {}
- 
-    for c, w in zip(pattern, words):
-        if c in char_to_word and char_to_word[c] != w:
-            return False
-        if w in word_to_char and word_to_char[w] != c:
-            return False
-        char_to_word[c] = w
-        word_to_char[w] = c
- 
-    return True
- 
-print(wordPattern("abba", "dog cat cat dog"))  # True
-print(wordPattern("abba", "dog cat cat fish"))  # False'''
+                "complexity": "O(n + m) time, O(n) space",
+                "description": "You're given strings jewels representing the types of stones that are jewels, and stones representing the stones you have. Each character in stones is a type of stone you have. You want to know how many of the stones you have are also jewels.",
+                "approach": "To solve this problem, we can use a set to store the types of jewels for O(1) average time complexity lookups. We then iterate through the stones and count how many of them are in the set of jewels.",
+                "code": ''' def numJewelsInStones (jewels: str, stones: str) -> int:
+    # O(n + m)
+    s = set(jewels)
+    count = 0
+    for stone in stones:
+        if stone in s:
+            count += 1
+    return count'''
             },
             {
-                "id": "LC 205",
-                "title": "Isomorphic Strings",
+                "id": "LC 217",
+                "title": "Contains Duplicate",
+                "difficulty": "Easy",
+                "complexity": "O(n) time, O(n) space",
+                "description": "Return true if any value appears at least twice in the array.",
+                "approach": "Add each element to a set. If element already in set → duplicate found.",
+                "code": ''' def containsDuplicate(nums: list[int]) -> bool:
+    s = set()
+    for num in nums:
+        if num in s:
+            return True
+        else:
+            s.add(num)
+    return False'''
+            },
+
+            {
+                "id": "LC 383",
+                "title": "Ransom Note",
+                "difficulty": "Easy",
+                "complexity": "O(R + M) time, O(M) space",
+                "description": "Given two strings ransomNote and magazine, return true if ransomNote can be constructed by using the letters from magazine and false otherwise. Each letter in magazine can only be used once in ransomNote.",
+                "approach": "Use a hash map to count the frequency of each character in magazine. Then, iterate through ransomNote and check if the required characters are available in the hash map with sufficient frequency. If any character is missing or insufficient, return false. If we successfully check all characters, return true.",
+                "code": '''def canConstruct(ransomNote: str, magazine: str) -> bool:
+    hashmap = Counter(magazine) # TC for Counter is O(n)
+
+    for ch in ransomNote:
+        if hashmap[ch] > 0:
+            hashmap[ch]-=1
+        else:
+            return False
+    return True'''
+            },
+            {
+                "id": "LC 242",
+                "title": "Valid Anagram",
+                "difficulty": "Easy",
+                "complexity": "O(n) time, O(n) space",
+                "description": "Given two strings s and t, return true if t is an anagram of s, and false otherwise. An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.",
+                "approach": "To determine if two strings are anagrams, we can count the frequency of each character in both strings and compare the counts. If the counts are the same for all characters, then the strings are anagrams of each other.",
+                "code": '''def isAnagram(s: str, t: str) -> bool:
+    if len(s) != len(t):
+        return False
+
+    s_dict = Counter(s)
+    t_dict = Counter(t)
+
+    return s_dict == t_dict'''
+            },
+            {
+                "id": "LC 1189",
+                "title": "Maximum Number of Balloons",
                 "difficulty": "Easy",
                 "complexity": "O(n) time, O(1) space",
-                "description": "Determine if two strings are isomorphic (same structure mapping).",
-                "approach": "Map each char in s to char in t, and vice versa. Check consistency of both mappings.",
-                "code": '''def isIsomorphic(s, t):
-    s_to_t = {}
-    t_to_s = {}
- 
-    for cs, ct in zip(s, t):
-        if cs in s_to_t and s_to_t[cs] != ct:
-            return False
-        if ct in t_to_s and t_to_s[ct] != cs:
-            return False
-        s_to_t[cs] = ct
-        t_to_s[ct] = cs
- 
-    return True
- 
-print(isIsomorphic("egg", "add"))   # True
-print(isIsomorphic("foo", "bar"))   # False
-print(isIsomorphic("paper", "title"))  # True'''
+                "description": "Given a string text, return the maximum number of times we can form the word \"balloon\" using the characters from text.",
+                "approach": "Count the frequency of each character in the input string. Then, determine how many complete instances of \"balloon\" can be formed based on the available characters.",
+                "code": '''def maxNumberOfBalloons(text: str) -> int:
+    counter = defaultdict(int)
+    balloon = "balloon"
+    
+    for c in text:
+        if c in balloon:
+            counter[c] += 1
+    
+    if any(c not in counter for c in balloon):
+        return 0
+    else:
+        return min(counter["b"], counter["a"], counter["l"] // 2, counter["o"] // 2, counter["n"])'''
+            },
+            {
+                "id": "LC 1",
+                "title": "Two Sum",
+                "difficulty": "Easy",
+                "complexity": "O(n) time, O(n) space",
+                "description": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",
+                "approach": "Use a hash map to store the indices of elements as we iterate through the array. For each element, calculate its complement and check if the complement is already in the hash map.",
+                "code": '''def twoSum(nums: List[int], target: int) -> List[int]:
+    h = {}
+    for i in range(len(nums)):
+        h[nums[i]] = i
+
+    for i in range(len(nums)):
+        y = target - nums[i]
+
+        if y in h and h[y] != i:
+            return [i, h[y]]'''
+            },
+            {
+                "id": "LC 169",
+                "title": "Majority Element",
+                "difficulty": "Easy",
+                "complexity": "O(n) time, O(1) space",
+                "description": "Given an array nums of size n, return the majority element. The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.",
+                "approach": "Use Boyer-Moore Majority Vote Algorithm to find the majority element in linear time and constant space.",
+                "code": '''def majorityElement(nums: List[int]) -> int:
+    candidate = None
+    count = 0
+
+    for num in nums:
+        if count == 0:
+            candidate = num
+        
+        count += 1 if candidate == num else -1
+    
+    return candidate'''
+            },
+            {
+                "id": "LC 36",
+                "title": "Valid Sudoku",
+                "difficulty": "Medium",
+                "complexity": "O(n^2) time, O(n) space",
+                "description": "Determine if a 9x9 Sudoku board is valid according to the rules.",
+                "approach": "Check each row, column, and 3x3 box for duplicate values.",
+                "code": '''def isValidSudoku(self, board: List[List[str]]) -> bool:
+    # Validate Rows
+    for i in range(9):
+        s = set()
+        for j in range(9):
+            item = board[i][j]
+            if item in s:
+                return False
+            elif item != '.':
+                s.add(item)
+    
+    # Validate Cols
+    for i in range(9):
+        s = set()
+        for j in range(9):
+            item = board[j][i]
+            if item in s:
+                return False
+            elif item != '.':
+                s.add(item)
+        
+    # Validate Boxes
+    starts = [(0, 0), (0, 3), (0, 6),
+                (3, 0), (3, 3), (3, 6),
+                (6, 0), (6, 3), (6, 6)]
+    
+    for i, j in starts:
+        s = set()
+        for row in range(i, i+3):
+            for col in range(j, j+3):
+                item = board[row][col]
+                if item in s:
+                    return False
+                elif item != '.':
+                    s.add(item)
+    return True'''
             },
             {
                 "id": "LC 49",
                 "title": "Group Anagrams",
                 "difficulty": "Medium",
-                "complexity": "O(n * k) time, O(n * k) space",
-                "description": "Group strings that are anagrams of each other.",
-                "approach": "Use sorted string as key in hashmap. All anagrams produce the same sorted key.",
+                "complexity": "O(n * m) time,  O(n * m) space",
+                "description": "Given an array of strings, group anagrams together.",
+                "approach": "Use a hash map to store lists of anagrams. For each string, sort its characters and use the sorted string as a key.",
                 "code": '''from collections import defaultdict
- 
-def groupAnagrams(strs):
-    groups = defaultdict(list)
-    for s in strs:
-        key = tuple(sorted(s))  # "eat","tea","ate" → ('a','e','t')
-        groups[key].append(s)
-    return list(groups.values())
- 
-print(groupAnagrams(["eat","tea","tan","ate","nat","bat"]))
-# [['eat','tea','ate'], ['tan','nat'], ['bat']]'''
-            },
-            {
-                "id": "LC 347",
-                "title": "Top K Frequent Elements",
-                "difficulty": "Medium",
-                "complexity": "O(n) time, O(n) space (bucket sort)",
-                "description": "Return the k most frequent elements from the array.",
-                "approach": "Count frequencies, then bucket sort by frequency index. Collect from end of bucket array.",
-                "code": '''def topKFrequent(nums, k):
-    count = {}
-    freq = [[] for _ in range(len(nums) + 1)]
- 
-    for n in nums:
-        count[n] = 1 + count.get(n, 0)
-    for n, c in count.items():
-        freq[c].append(n)
- 
-    res = []
-    for i in range(len(freq) - 1, 0, -1):
-        for n in freq[i]:
-            res.append(n)
-            if len(res) == k:
-                return res
- 
-print(topKFrequent([1,1,1,2,2,3], 2))  # [1,2]
-print(topKFrequent([1], 1))             # [1]'''
+
+def groupAnagrams(strs: List[str]) -> List[List[str]]:
+    anagrams_dict = defaultdict(list)
+    for s in strs: # n
+        count = [0] * 26
+        for c in s:
+            count[ord(c) - ord("a")] += 1
+        key = tuple(count)
+        anagrams_dict[key].append(s)
+
+    return anagrams_dict.values()'''
             },
             {
                 "id": "LC 128",
                 "title": "Longest Consecutive Sequence",
-                "difficulty": "Medium",
-                "complexity": "O(n) time, O(n) space",
-                "description": "Find the length of the longest consecutive sequence in an unsorted array.",
-                "approach": "Store all numbers in a set. For each number, check if it's the start of a sequence (n-1 not in set). Count forward.",
-                "code": '''def longestConsecutive(nums):
-    num_set = set(nums)
-    best = 0
- 
-    for n in num_set:
-        if n - 1 not in num_set:  # start of sequence
-            cur = n
-            streak = 1
-            while cur + 1 in num_set:
-                cur += 1
-                streak += 1
-            best = max(best, streak)
- 
-    return best
- 
-print(longestConsecutive([100,4,200,1,3,2]))  # 4'''
+                "difficulty": "Hard",
+                "complexity": "O(n) time,  O(n) space",
+                "description": "Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence. The consecutive elements sequence is a sequence of integers where each integer is one more than the previous integer. The longest consecutive elements sequence is the longest such sequence that can be found in nums.",
+                "approach": "Use a set to store the unique numbers. For each number, check if it's the start of a sequence (i.e., num - 1 is not in the set). If it is, count how long the sequence is by checking for num + 1, num + 2, etc. Keep track of the longest sequence found.",
+                "code": '''def longestConsecutive(nums: List[int]) -> int:
+    s = set(nums)
+    longest = 0
+
+    for num in s:
+        if num - 1 not in s:
+            next_num = num + 1
+            length = 1
+            while next_num in s:
+                length += 1
+                next_num += 1
+            longest = max(longest, length)
+    
+    return longest'''
             },
-            {
-                "id": "LC 560",
-                "title": "Subarray Sum Equals K",
-                "difficulty": "Medium",
-                "complexity": "O(n) time, O(n) space",
-                "description": "Count the number of subarrays that sum to k.",
-                "approach": "Prefix sum + hashmap. If prefix_sum - k exists in map, we found a valid subarray.",
-                "code": '''def subarraySum(nums, k):
-    count = 0
-    prefix = 0
-    seen = {0: 1}  # prefix_sum -> frequency
- 
-    for num in nums:
-        prefix += num
-        if prefix - k in seen:
-            count += seen[prefix - k]
-        seen[prefix] = seen.get(prefix, 0) + 1
- 
-    return count
- 
-print(subarraySum([1,1,1], 2))    # 2
-print(subarraySum([1,2,3], 3))    # 2'''
-            },
-            {
-                "id": "LC 451",
-                "title": "Sort Characters By Frequency",
-                "difficulty": "Medium",
-                "complexity": "O(n log n) time, O(n) space",
-                "description": "Sort characters in a string by decreasing frequency.",
-                "approach": "Count frequencies with Counter, then sort by frequency descending and build result string.",
-                "code": '''from collections import Counter
- 
-def frequencySort(s):
-    freq = Counter(s)
-    # Sort by frequency descending, build string
-    return ''.join(char * count
-                   for char, count in freq.most_common())
- 
-print(frequencySort("tree"))   # "eert" or "eetr"
-print(frequencySort("cccaaa")) # "cccaaa" or "aaaccc"
-print(frequencySort("Aabb"))   # "bbAa" or "bbaA"'''
-            }
         ]
     },
 
@@ -1077,223 +1089,182 @@ def is_valid_palindrome(s):
 print(is_valid_palindrome("A man, a plan, a canal: Panama"))  # True''',
         "leetcode_examples": [
             {
-                "id": "LC 125",
-                "title": "Valid Palindrome",
-                "difficulty": "Easy",
-                "complexity": "O(n) time, O(1) space",
-                "description": "Check if a string is a palindrome considering only alphanumeric characters.",
-                "approach": "Two pointers from both ends, skip non-alphanumeric, compare chars (case-insensitive).",
-                "code": '''def isPalindrome(s):
-    L, R = 0, len(s) - 1
- 
-    while L < R:
-        while L < R and not s[L].isalnum():
-            L += 1
-        while L < R and not s[R].isalnum():
-            R -= 1
-        if s[L].lower() != s[R].lower():
-            return False
-        L += 1; R -= 1
- 
-    return True
- 
-print(isPalindrome("A man, a plan, a canal: Panama"))  # True
-print(isPalindrome("race a car"))                       # False
-print(isPalindrome(" "))                                # True'''
-            },
-            {
-                "id": "LC 26",
-                "title": "Remove Duplicates from Sorted Array",
-                "difficulty": "Easy",
-                "complexity": "O(n) time, O(1) space",
-                "description": "Remove duplicates in-place from sorted array. Return new length.",
-                "approach": "Slow pointer tracks position for next unique. Fast pointer scans ahead for new unique values.",
-                "code": '''def removeDuplicates(nums):
-    slow = 1  # position for next unique element
- 
-    for fast in range(1, len(nums)):
-        if nums[fast] != nums[fast - 1]:
-            nums[slow] = nums[fast]
-            slow += 1
- 
-    return slow
- 
-nums = [1,1,2]
-k = removeDuplicates(nums)
-print(k, nums[:k])  # 2 [1, 2]
- 
-nums = [0,0,1,1,1,2,2,3,3,4]
-k = removeDuplicates(nums)
-print(k, nums[:k])  # 5 [0, 1, 2, 3, 4]'''
-            },
-            {
                 "id": "LC 977",
                 "title": "Squares of a Sorted Array",
                 "difficulty": "Easy",
                 "complexity": "O(n) time, O(n) space",
-                "description": "Return sorted squares of each number in sorted array.",
-                "approach": "Two pointers from both ends. Largest square is at one of the ends. Fill result array from right to left.",
-                "code": '''def sortedSquares(nums):
-    L, R = 0, len(nums) - 1
-    result = [0] * len(nums)
-    pos = len(nums) - 1  # fill from right
- 
-    while L <= R:
-        if abs(nums[L]) > abs(nums[R]):
-            result[pos] = nums[L] ** 2
-            L += 1
+                "description": "You are given an integer array nums sorted in non-decreasing order. Return an array of the squares of each number sorted in non-decreasing order.",
+                "approach": "Two pointers approach: We can use two pointers, one starting at the beginning of the array and the other at the end. We compare the absolute values of the elements at these pointers, square the larger one, and add it to the result array. We then move the pointer that had the larger absolute value. Finally, we reverse the result array to get the correct order.",
+                "code": '''def sortedSquares(nums: List[int]) -> List[int]:
+    left = 0
+    right = len(nums) - 1
+    result = []
+
+    while left <= right:
+        if abs(nums[left]) > abs(nums[right]):
+            result.append(nums[left] ** 2)
+            left += 1
         else:
-            result[pos] = nums[R] ** 2
-            R -= 1
-        pos -= 1
- 
-    return result
- 
-print(sortedSquares([-4,-1,0,3,10]))  # [0,1,9,16,100]
-print(sortedSquares([-7,-3,2,3,11]))  # [4,9,9,49,121]'''
+            result.append(nums[right] ** 2)
+            right -= 1
+
+    result.reverse()
+
+    return result'''
             },
             {
-                "id": "LC 232",
-                "title": "Implement Queue using Stacks",
+                "id": "LC 344",
+                "title": "Reverse String",
                 "difficulty": "Easy",
-                "complexity": "O(1) amortized push/pop",
-                "description": "Implement a FIFO queue using only two stacks.",
-                "approach": "Two stacks: inbox for push, outbox for pop. Transfer inbox→outbox lazily when outbox is empty.",
-                "code": '''class MyQueue:
-    def __init__(self):
-        self.inbox = []   # for push
-        self.outbox = []  # for pop/peek
- 
-    def push(self, x):
-        self.inbox.append(x)
- 
-    def _transfer(self):
-        if not self.outbox:
-            while self.inbox:
-                self.outbox.append(self.inbox.pop())
- 
-    def pop(self):
-        self._transfer()
-        return self.outbox.pop()
- 
-    def peek(self):
-        self._transfer()
-        return self.outbox[-1]
- 
-    def empty(self):
-        return not self.inbox and not self.outbox
- 
-q = MyQueue()
-q.push(1); q.push(2)
-print(q.peek())  # 1
-print(q.pop())   # 1
-print(q.empty()) # False'''
+                "complexity": "O(n) time, O(1) space",
+                "description": "Write a function that reverses a string. The input string is given as an array of characters s.",
+                "approach": "Use two pointers, one starting at the beginning and the other at the end. Swap the characters at these pointers and move them towards each other until they meet.",
+                "code": '''def reverseString(self, s: List[str]) -> None:
+    n = len(s)
+    l = 0
+    r = n - 1
+
+    while l < r:
+        s[l], s[r] = s[r], s[l]
+        l += 1
+        r -= 1'''
             },
             {
-                "id": "LC 150",
-                "title": "Evaluate Reverse Polish Notation",
-                "difficulty": "Medium",
-                "complexity": "O(n) time, O(n) space",
-                "description": "Evaluate the value of an arithmetic expression in Reverse Polish Notation.",
-                "approach": "Push numbers onto stack. On operator, pop two numbers, apply operator, push result.",
-                "code": '''def evalRPN(tokens):
-    stack = []
-    ops = {
-        '+': lambda a, b: a + b,
-        '-': lambda a, b: a - b,
-        '*': lambda a, b: a * b,
-        '/': lambda a, b: int(a / b),  # truncate toward zero
-    }
- 
-    for token in tokens:
-        if token in ops:
-            b, a = stack.pop(), stack.pop()
-            stack.append(ops[token](a, b))
-        else:
-            stack.append(int(token))
- 
-    return stack[0]
- 
-print(evalRPN(["2","1","+","3","*"]))        # 9
-print(evalRPN(["4","13","5","/","+"]))        # 6
-print(evalRPN(["10","6","9","3","+","-11","*","/","*","17","+","5","+"]))  # 22'''
-            },
-            {
-                "id": "LC 15",
-                "title": "3Sum",
-                "difficulty": "Medium",
-                "complexity": "O(n²) time, O(1) space",
-                "description": "Find all unique triplets in array that sum to zero.",
-                "approach": "Sort array. For each element, use two pointers on remaining. Skip duplicates carefully.",
-                "code": '''def threeSum(nums):
-    nums.sort()
-    res = []
- 
-    for i in range(len(nums) - 2):
-        if i > 0 and nums[i] == nums[i-1]:
-            continue  # skip duplicate
-        L, R = i + 1, len(nums) - 1
-        while L < R:
-            total = nums[i] + nums[L] + nums[R]
-            if total == 0:
-                res.append([nums[i], nums[L], nums[R]])
-                while L < R and nums[L] == nums[L+1]: L += 1
-                while L < R and nums[R] == nums[R-1]: R -= 1
-                L += 1; R -= 1
-            elif total < 0:
-                L += 1
-            else:
-                R -= 1
- 
-    return res
- 
-print(threeSum([-1,0,1,2,-1,-4]))
-# [[-1,-1,2],[-1,0,1]]'''
+                "id": "LC 125",
+                "title": "Valid Palindrome",
+                "difficulty": "Easy",
+                "complexity": "O(n) time, O(1) space",
+                "description": "Given a string s, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.",
+                "approach": "Use two pointers, one starting at the beginning and the other at the end. Skip non-alphanumeric characters and compare the remaining characters.",
+                "code": '''def isPalindrome(self, s: str) -> bool:
+    n = len(s)
+    L = 0
+    R = n - 1
+
+    while L < R:
+        if not s[L].isalnum():
+            L += 1
+            continue
+
+        if not s[R].isalnum():
+            R -= 1
+            continue
+
+        if s[L].lower() != s[R].lower():
+            return False
+
+        L += 1
+        R -= 1
+
+    return True'''
             },
             {
                 "id": "LC 167",
-                "title": "Two Sum II - Input Array Is Sorted",
+                "title": "Two Sum II",
                 "difficulty": "Medium",
                 "complexity": "O(n) time, O(1) space",
-                "description": "Find two numbers in a sorted array that add up to target. Return 1-indexed positions.",
-                "approach": "Classic squeeze pattern: L at start, R at end. Move based on sum vs target.",
-                "code": '''def twoSum(numbers, target):
-    L, R = 0, len(numbers) - 1
- 
-    while L < R:
-        total = numbers[L] + numbers[R]
-        if total == target:
-            return [L + 1, R + 1]  # 1-indexed
-        elif total < target:
-            L += 1
+                "description": "Given a 1-indexed array of integers numbers that is already sorted in non-decreasing order, find two numbers such that they add up to a specific target number. Let these two numbers be numbers[index1] and numbers[index2] where 1 <= index1 < index2 <= numbers.length. Return the indices of the two numbers, index1 and index2, added by one as an integer array [index1, index2] of length 2.",
+                "approach": "Use two pointers, one starting at the beginning and the other at the end. Calculate the sum of the elements at these pointers. If the sum is equal to the target, return the indices. If the sum is less than the target, move the left pointer to the right. If the sum is greater than the target, move the right pointer to the left.",
+                "code": '''def twoSum(self, numbers: List[int], target: int) -> List[int]:
+    n = len(numbers)
+    l = 0
+    r = n - 1
+
+    while l < r:
+        summ = numbers[l] + numbers[r]
+        if summ == target:
+            return [l + 1, r + 1]
+        elif summ < target:
+            l += 1
         else:
-            R -= 1
- 
-    return []
- 
-print(twoSum([2,7,11,15], 9))   # [1,2]
-print(twoSum([2,3,4], 6))        # [1,3]'''
+            r -= 1'''
             },
             {
-                "id": "LC 80",
-                "title": "Remove Duplicates from Sorted Array II",
+                "id": "LC 15",
+                "title": "Three Sum",
+                "difficulty": "Medium",
+                "complexity": "O(n^2) time, O(n) space",
+                "description": "Given an array nums of n integers, return an array of all the unique triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.",
+                "approach": "Sort the array first. Then, for each element, use two pointers to find pairs that sum to the negative of the current element.",
+                "code": '''def threeSum(nums: List[int]) -> List[List[int]]:
+    nums.sort()
+    n = len(nums)
+    answer = []
+    for i in range(n):
+        if nums[i] > 0:
+            break
+        elif i > 0 and nums[i] == nums[i-1]:
+            continue
+        lo, hi = i+1, n-1
+        while lo < hi:
+            summ = nums[i] + nums[lo] + nums[hi]
+            if summ == 0:
+                answer.append([nums[i], nums[lo], nums[hi]])
+                lo, hi = lo+1, hi-1
+                while lo < hi and nums[lo] == nums[lo-1]:
+                    lo += 1
+                while lo < hi and nums[hi] == nums[hi+1]:
+                    hi -= 1
+            elif summ < 0:
+                lo += 1
+            else:
+                hi -= 1
+    
+    return answer'''
+            },
+            {
+                "id": "LC 11",
+                "title": "Container With Most Water",
                 "difficulty": "Medium",
                 "complexity": "O(n) time, O(1) space",
-                "description": "Allow each unique element to appear at most twice. Return new length.",
-                "approach": "Slow pointer at index 2. For each element, compare with nums[slow-2]. If different, keep it.",
-                "code": '''def removeDuplicates(nums):
-    slow = 2  # first 2 elements always valid
- 
-    for fast in range(2, len(nums)):
-        if nums[fast] != nums[slow - 2]:
-            nums[slow] = nums[fast]
-            slow += 1
- 
-    return slow
- 
-nums = [1,1,1,2,2,3]
-k = removeDuplicates(nums)
-print(k, nums[:k])  # 5 [1,1,2,2,3]'''
+                "description": "You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]). Find two lines that together with the x-axis form a container, such that the container contains the most water.",
+                "approach": "Use two pointers, one starting at the beginning and the other at the end. Calculate the area formed by these pointers and move the pointer pointing to the shorter line towards the other pointer.",
+                "code": '''def maxArea(self, height: List[int]) -> int:
+    n = len(height)
+    l = 0
+    r = n - 1
+    max_area = 0
+
+    while l < r:
+        w = r - l
+        h = min(height[l], height[r])
+        a = w * h
+        max_area = max(max_area, a)
+        
+        if height[l] < height[r]:
+            l += 1
+        else:
+            r -= 1
+
+    return max_area'''
+            },
+
+            {
+                "id": "LC 42",
+                "title": "Trapping Rain Water",
+                "difficulty": "Hard",
+                "complexity": "O(n) time, O(n) space",
+                "description": "Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.",
+                "approach": "First, we can precompute the maximum height to the left and right of each bar. Then, for each bar, the amount of water it can trap is the minimum of the maximum heights on its left and right minus its own height. We sum this up for all bars to get the total trapped water.",
+                "code": '''def trap(height: List[int]) -> int:
+    l_wall = r_wall = 0
+    n = len(height)
+    max_left = [0] * n
+    max_right = [0] * n
+
+    for i in range(n):
+        j = -i - 1
+        max_left[i] = l_wall
+        max_right[j] = r_wall
+        l_wall = max(l_wall, height[i])
+        r_wall = max(r_wall, height[j])
+
+    summ = 0
+    for i in range(n):
+        pot = min(max_left[i], max_right[i])
+        summ += max(0, pot - height[i])
+
+    return summ'''
             },
         ]
     },
@@ -1515,142 +1486,135 @@ print(max_sliding_window([1,3,-1,-3,5,3,6,7], 3))
 # [3, 3, 5, 5, 6, 7]''',
         "leetcode_examples": [
             {
+                "id": "LC 682",
+                "title": "Baseball Game",
+                "difficulty": "Easy",
+                "complexity": "O(n) time, O(n) space",
+                "description": "You are given a list of operations for a baseball game. Each operation is either a number, '+', 'D', or 'C'. Return the sum of all the scores on the record.",
+                "approach": "Use a stack to keep track of the scores. For each operation, update the stack accordingly and return the sum of all elements in the stack.",
+                "code": '''def calPoints(operations: List[str]) -> int:
+    stk = []
+
+    for op in operations:
+        if op == "+":
+            stk.append(stk[-1] + stk[-2])
+        elif op == "D":
+            stk.append(stk[-1] * 2)
+        elif op == "C":
+            stk.pop()
+        else:
+            stk.append(int(op))
+
+    return sum(stk)'''
+            },
+            {
                 "id": "LC 20",
                 "title": "Valid Parentheses",
                 "difficulty": "Easy",
                 "complexity": "O(n) time, O(n) space",
-                "description": "Determine if a string of brackets is valid (properly opened and closed).",
-                "approach": "Push open brackets onto stack. On close bracket, check if top of stack matches. Stack must be empty at end.",
-                "code": '''def isValid(s):
-    stack = []
-    pairs = {')': '(', '}': '{', ']': '['}
- 
-    for ch in s:
-        if ch in "({[":
-            stack.append(ch)
+                "description": "You are given a string of parentheses. Determine if the string is valid.",
+                "approach": "Use a stack to keep track of the opening parentheses. For each closing parenthesis, check if it matches the most recent opening parenthesis.",
+                "code": '''def isValid(s: str) -> bool:
+    hashmap = {")": "(", "}": "{", "]": "["}
+    stk = []
+
+    for c in s:
+        if c not in hashmap:
+            stk.append(c)
         else:
-            if not stack or stack[-1] != pairs[ch]:
+            if not stk:
                 return False
-            stack.pop()
- 
-    return len(stack) == 0
- 
-print(isValid("()"))      # True
-print(isValid("()[]{}"))  # True
-print(isValid("(]"))      # False
-print(isValid("([)]"))    # False'''
+            else:
+                popped = stk.pop()
+                if popped != hashmap[c]:
+                    return False
+
+    return not stk'''
             },
             {
-                "id": "LC 155",
-                "title": "Min Stack",
+                "id": "LC 150",
+                "title": "Evaluate Reverse Polish Notation (RPN) ",
                 "difficulty": "Medium",
-                "complexity": "O(1) all operations",
-                "description": "Design a stack that supports push, pop, top, and retrieving the minimum element in O(1).",
-                "approach": "Use two stacks: one normal, one tracking minimums. Push to min_stack only when new min found.",
-                "code": '''class MinStack:
-    def __init__(self):
-        self.stack = []
-        self.min_stack = []  # tracks minimums
- 
-    def push(self, val):
-        self.stack.append(val)
-        min_val = min(val, self.min_stack[-1] if self.min_stack else val)
-        self.min_stack.append(min_val)
- 
-    def pop(self):
-        self.stack.pop()
-        self.min_stack.pop()
- 
-    def top(self):
-        return self.stack[-1]
- 
-    def getMin(self):
-        return self.min_stack[-1]
- 
-ms = MinStack()
-ms.push(-2); ms.push(0); ms.push(-3)
-print(ms.getMin())  # -3
-ms.pop()
-print(ms.top())     # 0
-print(ms.getMin())  # -2'''
+                "complexity": "O(n) time, O(n) space",
+                "description": "You are given a list of tokens representing an arithmetic expression in Reverse Polish Notation. Evaluate the expression and return the result.",
+                "approach": "Use a stack to keep track of the operands. For each operator, pop the top two operands from the stack, perform the operation, and push the result back onto the stack.",
+                "code": '''def evalRPN(tokens: List[str]) -> int:
+    stk = []
+    for t in tokens:
+        if t in "+-*/":
+            b, a = stk.pop(), stk.pop()
+
+            if t == "+":
+                stk.append(a + b)
+            elif t == "-":
+                stk.append(a - b)
+            elif t == "*":
+                stk.append(a * b)
+            else:
+                division = a / b
+                if division < 0:
+                    stk.append(ceil(division))
+                else:
+                    stk.append(floor(division))
+        else:
+            stk.append(int(t))
+
+    return stk[0]'''
             },
             {
                 "id": "LC 739",
                 "title": "Daily Temperatures",
                 "difficulty": "Medium",
                 "complexity": "O(n) time, O(n) space",
-                "description": "For each day, find how many days until a warmer temperature. Return 0 if no warmer day.",
-                "approach": "Monotonic stack storing indices. When we find a warmer day, pop and compute difference in indices.",
-                "code": '''def dailyTemperatures(temperatures):
-    n = len(temperatures)
-    result = [0] * n
-    stack = []  # stores indices, decreasing temps
- 
-    for i, temp in enumerate(temperatures):
-        while stack and temperatures[stack[-1]] < temp:
-            j = stack.pop()
-            result[j] = i - j
-        stack.append(i)
- 
-    return result
- 
-print(dailyTemperatures([73,74,75,71,69,72,76,73]))
-# [1, 1, 4, 2, 1, 1, 0, 0]'''
+                "description": "You are given a list of daily temperatures. Return a list where each element is the number of days you have to wait after the ith day to get a warmer temperature.",
+                "approach": "Use a stack to keep track of indices of temperatures. For each temperature, pop indices from the stack if the current temperature is warmer, and update the answer for those indices.",
+                "code": '''def dailyTemperatures( temperatures: List[int]) -> List[int]:
+    temps = temperatures
+    n = len(temps)
+    answer = [0] * n
+    stk = []
+
+    for i, t in enumerate(temps):
+        while stk and stk[-1][0] < t:
+            stk_t, stk_i = stk.pop()
+            answer[stk_i] = i - stk_i
+
+        stk.append((t, i))
+    return answer'''
             },
+
             {
-                "id": "LC 42",
-                "title": "Trapping Rain Water",
-                "difficulty": "Hard",
-                "complexity": "O(n) time, O(1) space",
-                "description": "Calculate how much water can be trapped between heights.",
-                "approach": "Two pointers. Track max height seen from left and right. Water at position = min(maxL, maxR) - height.",
-                "code": '''def trap(height):
-    L, R = 0, len(height) - 1
-    maxL, maxR = height[L], height[R]
-    water = 0
+                "id": "LC 155",
+                "title": "Min Stack",
+                "difficulty": "Medium",
+                "complexity": "O(1) time, O(n) space",
+                "description": "Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.",
+                "approach": "Use two stacks: one for the actual stack and another to keep track of the minimum values. When pushing a new value, compare it with the current minimum and update the minimum stack accordingly.",
+                "code": '''class MinStack:
+    def __init__(self):
+        self.stk = []
+        self.min_stk = []
  
-    while L < R:
-        if maxL <= maxR:
-            L += 1
-            maxL = max(maxL, height[L])
-            water += maxL - height[L]
+    def push(self, val: int) -> None:
+        self.stk.append(val)
+        if not self.min_stk:
+            self.min_stk.append(val)
+        elif self.min_stk[-1] < val:
+            self.min_stk.append(self.min_stk[-1])
         else:
-            R -= 1
-            maxR = max(maxR, height[R])
-            water += maxR - height[R]
+            self.min_stk.append(val)
  
-    return water
+    def pop(self) -> None:
+        self.stk.pop()
+        self.min_stk.pop()
  
-print(trap([0,1,0,2,1,0,1,3,2,1,2,1]))  # 6
-print(trap([4,2,0,3,2,5]))               # 9'''
+    def top(self) -> int:
+        return self.stk[-1]
+ 
+    def getMin(self) -> int:
+        return self.min_stk[-1]'''
             },
-            {
-                "id": "LC 84",
-                "title": "Largest Rectangle in Histogram",
-                "difficulty": "Hard",
-                "complexity": "O(n) time, O(n) space",
-                "description": "Find the largest rectangle area in a histogram.",
-                "approach": "Monotonic stack (increasing). When we see shorter bar, pop and calculate area extending left.",
-                "code": '''def largestRectangleArea(heights):
-    stack = []   # (index, height)
-    max_area = 0
- 
-    for i, h in enumerate(heights):
-        start = i
-        while stack and stack[-1][1] > h:
-            idx, height = stack.pop()
-            max_area = max(max_area, height * (i - idx))
-            start = idx  # can extend back to this index
-        stack.append((start, h))
- 
-    for idx, height in stack:
-        max_area = max(max_area, height * (len(heights) - idx))
- 
-    return max_area
- 
-print(largestRectangleArea([2,1,5,6,2,3]))  # 10
-print(largestRectangleArea([2,4]))           # 4'''
-            },
+
 
         ]
     },
