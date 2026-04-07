@@ -505,32 +505,80 @@ A **hash function** converts a key into an array index using modulo arithmetic.
 - `collections.Counter` — frequency counting shortcut
 """,
         "python_code": '''from collections import defaultdict, Counter
- 
-# HashSet
-s = set()
-s.add(1); s.add(2); s.add(3)
-print(1 in s)        # O(1) lookup
-s.remove(3)          # O(1) delete
- 
-# From a string — get unique chars
-unique = set("aaabbbccc")   # {'a','b','c'}
- 
-# HashMap (dict)
-d = {"greg": 1, "steve": 2}
-d["arsh"] = 4        # O(1) insert
-print("greg" in d)   # O(1) key check
-print(d["greg"])     # O(1) value lookup
-for k, v in d.items():  # O(n) iteration
-    print(k, v)
- 
-# defaultdict — no KeyError on missing key
-freq = defaultdict(int)
-for c in "banana":
-    freq[c] += 1
- 
-# Counter — frequency counting
-counts = Counter("banana")
-# Counter({'a': 3, 'n': 2, 'b': 1})''',
+
+# ============================================================
+# 1. Detect duplicates (O(n))
+# ============================================================
+
+def has_duplicate(nums):
+    seen = set()
+    for x in nums:
+        if x in seen:
+            return True
+        seen.add(x)
+    return False
+
+# Sample usage
+print(has_duplicate([1, 2, 3, 4]))      # False
+print(has_duplicate([1, 2, 3, 1]))      # True
+
+
+# ============================================================
+# 2. Two Sum (HashMap)
+# ============================================================
+
+def two_sum(nums, target):
+    lookup = {}
+    for i, num in enumerate(nums):
+        diff = target - num
+        if diff in lookup:
+            return [lookup[diff], i]
+        lookup[num] = i
+    return []
+
+# Sample usage
+print(two_sum([2, 7, 11, 15], 9))       # [0, 1]
+
+
+# ============================================================
+# 3. Group Anagrams
+# ============================================================
+
+def group_anagrams(strs):
+    groups = defaultdict(list)
+    for word in strs:
+        key = tuple(sorted(word))
+        groups[key].append(word)
+    return list(groups.values())
+
+# Sample usage
+print(group_anagrams(["eat", "tea", "tan", "ate", "nat", "bat"]))
+# [['eat', 'tea', 'ate'], ['tan', 'nat'], ['bat']]
+
+
+# ============================================================
+# 4. Character Count
+# ============================================================
+
+def char_count(s):
+    freq = {}
+    for c in s:
+        freq[c] = freq.get(c, 0) + 1
+    return freq
+
+# Sample usage
+print(char_count("banana"))   # {'b':1,'a':3,'n':2}
+
+
+# ============================================================
+# 5. Counter (built-in)
+# ============================================================
+
+def count_chars(s):
+    return Counter(s)
+
+# Sample usage
+print(count_chars("banana"))  # Counter({'a':3,'n':2,'b':1})''',
         "leetcode_examples": [
             {
                 "id": "LC 290",
@@ -726,7 +774,11 @@ Use when:
 ### Why It Works
 At each step you eliminate part of the search space. You never need to re-examine eliminated elements → **O(n) total**.
 """,
-        "python_code": '''# Squeeze: find pair summing to target in sorted array
+        "python_code": '''
+# ============================================================
+# 1. Two Sum (Sorted)
+# ============================================================
+
 def two_sum_sorted(arr, target):
     L, R = 0, len(arr) - 1
     while L < R:
@@ -734,19 +786,139 @@ def two_sum_sorted(arr, target):
         if total == target:
             return [L, R]
         elif total < target:
-            L += 1   # need bigger sum
+            L += 1
         else:
-            R -= 1   # need smaller sum
+            R -= 1
     return []
- 
-# Palindrome check
+
+# Sample usage
+print(two_sum_sorted([1, 2, 3, 4, 6], 6))   # [1, 3]
+
+
+# ============================================================
+# 2. Palindrome Check
+# ============================================================
+
 def is_palindrome(s):
     L, R = 0, len(s) - 1
     while L < R:
         if s[L] != s[R]:
             return False
-        L += 1; R -= 1
-    return True''',
+        L += 1
+        R -= 1
+    return True
+
+# Sample usage
+print(is_palindrome("racecar"))   # True
+print(is_palindrome("hello"))     # False
+
+
+# ============================================================
+# 3. Remove Duplicates (Sorted Array)
+# ============================================================
+
+def remove_duplicates(arr):
+    if not arr:
+        return 0
+
+    write = 1
+    for read in range(1, len(arr)):
+        if arr[read] != arr[read - 1]:
+            arr[write] = arr[read]
+            write += 1
+
+    return write
+
+# Sample usage
+arr = [1, 1, 2, 2, 3]
+k = remove_duplicates(arr)
+print(arr[:k])   # [1, 2, 3]
+
+
+# ============================================================
+# 4. Move Zeroes
+# ============================================================
+
+def move_zeroes(nums):
+    insert = 0
+    for num in nums:
+        if num != 0:
+            nums[insert] = num
+            insert += 1
+
+    for i in range(insert, len(nums)):
+        nums[i] = 0
+
+# Sample usage
+nums = [0, 1, 0, 3, 12]
+move_zeroes(nums)
+print(nums)   # [1, 3, 12, 0, 0]
+
+
+# ============================================================
+# 5. Reverse String
+# ============================================================
+
+def reverse_string(s):
+    s = list(s)
+    L, R = 0, len(s) - 1
+    while L < R:
+        s[L], s[R] = s[R], s[L]
+        L += 1
+        R -= 1
+    return "".join(s)
+
+# Sample usage
+print(reverse_string("hello"))   # "olleh"
+
+
+# ============================================================
+# 6. Container With Most Water
+# ============================================================
+
+def max_area(height):
+    L, R = 0, len(height) - 1
+    max_water = 0
+
+    while L < R:
+        h = min(height[L], height[R])
+        width = R - L
+        max_water = max(max_water, h * width)
+
+        if height[L] < height[R]:
+            L += 1
+        else:
+            R -= 1
+
+    return max_water
+
+# Sample usage
+print(max_area([1,8,6,2,5,4,8,3,7]))   # 49
+
+
+# ============================================================
+# 7. Valid Palindrome (Ignore Symbols)
+# ============================================================
+
+def is_valid_palindrome(s):
+    L, R = 0, len(s) - 1
+
+    while L < R:
+        while L < R and not s[L].isalnum():
+            L += 1
+        while L < R and not s[R].isalnum():
+            R -= 1
+
+        if s[L].lower() != s[R].lower():
+            return False
+
+        L += 1
+        R -= 1
+
+    return True
+
+# Sample usage
+print(is_valid_palindrome("A man, a plan, a canal: Panama"))  # True''',
         "leetcode_examples": [
             {
                 "id": "LC 125",
@@ -1006,20 +1178,185 @@ Operations:
 | Balanced parentheses | Buffering |
 """,
         "python_code": '''from collections import deque
- 
-# Stack using list
+
+# ============================================================
+# STACK (LIFO - Last In, First Out)
+# ============================================================
+
 stack = []
-stack.append(5)   # push O(1)
+
+# Push (O(1))
+stack.append(5)
 stack.append(4)
 stack.append(3)
-top = stack[-1]   # peek O(1)  → 3
-x = stack.pop()   # pop O(1)   → 3
- 
-# Queue using deque (O(1) on both ends)
+
+# Peek (O(1))
+print(stack[-1])   # 3
+
+# Pop (O(1))
+print(stack.pop()) # 3
+print(stack)       # [5, 4]
+
+
+# ============================================================
+# 1. VALID PARENTHESES (STACK) 🔥
+# ============================================================
+
+def is_valid_parentheses(s):
+    stack = []
+    mapping = {')': '(', '}': '{', ']': '['}
+
+    for c in s:
+        if c in mapping:
+            if not stack or stack.pop() != mapping[c]:
+                return False
+        else:
+            stack.append(c)
+
+    return len(stack) == 0
+
+# Sample usage
+print(is_valid_parentheses("()[]{}"))   # True
+print(is_valid_parentheses("(]"))       # False
+
+
+# ============================================================
+# 2. MIN STACK (TRACK MINIMUM)
+# ============================================================
+
+class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.min_stack = []
+
+    def push(self, val):
+        self.stack.append(val)
+        val = min(val, self.min_stack[-1] if self.min_stack else val)
+        self.min_stack.append(val)
+
+    def pop(self):
+        self.stack.pop()
+        self.min_stack.pop()
+
+    def top(self):
+        return self.stack[-1]
+
+    def get_min(self):
+        return self.min_stack[-1]
+
+# Sample usage
+ms = MinStack()
+ms.push(3)
+ms.push(1)
+ms.push(2)
+print(ms.get_min())  # 1
+ms.pop()
+print(ms.get_min())  # 1
+
+
+# ============================================================
+# 3. MONOTONIC STACK (NEXT GREATER ELEMENT)
+# ============================================================
+
+def next_greater(nums):
+    res = [-1] * len(nums)
+    stack = []  # store indices
+
+    for i in range(len(nums)):
+        while stack and nums[i] > nums[stack[-1]]:
+            idx = stack.pop()
+            res[idx] = nums[i]
+        stack.append(i)
+
+    return res
+
+# Sample usage
+print(next_greater([2, 1, 2, 4, 3]))  # [4, 2, 4, -1, -1]
+
+
+# ============================================================
+# QUEUE (FIFO - First In, First Out)
+# ============================================================
+
 q = deque()
-q.append(5)       # enqueue O(1)
+
+# Enqueue (O(1))
+q.append(5)
 q.append(6)
-item = q.popleft()  # dequeue O(1) → 5''',
+
+# Dequeue (O(1))
+print(q.popleft())   # 5
+print(q)             # deque([6])
+
+
+# ============================================================
+# 4. IMPLEMENT QUEUE USING LIST (NOT IDEAL)
+# ============================================================
+
+def queue_with_list():
+    q = []
+    q.append(1)
+    q.append(2)
+    print(q.pop(0))   # O(n) ⚠️ slow
+
+# Sample usage
+queue_with_list()
+
+
+# ============================================================
+# 5. BFS (QUEUE USAGE) 🔥
+# ============================================================
+
+def bfs(graph, start):
+    visited = set()
+    q = deque([start])
+
+    while q:
+        node = q.popleft()
+        if node not in visited:
+            print(node, end=" ")
+            visited.add(node)
+            for nei in graph[node]:
+                q.append(nei)
+
+# Sample usage
+graph = {
+    0: [1, 2],
+    1: [2],
+    2: [0, 3],
+    3: [3]
+}
+bfs(graph, 0)   # 0 1 2 3
+print()
+
+
+# ============================================================
+# 6. SLIDING WINDOW MAX (DEQUE) 🔥
+# ============================================================
+
+def max_sliding_window(nums, k):
+    q = deque()
+    res = []
+
+    for i in range(len(nums)):
+        # remove out-of-window
+        if q and q[0] <= i - k:
+            q.popleft()
+
+        # maintain decreasing order
+        while q and nums[q[-1]] < nums[i]:
+            q.pop()
+
+        q.append(i)
+
+        if i >= k - 1:
+            res.append(nums[q[0]])
+
+    return res
+
+# Sample usage
+print(max_sliding_window([1,3,-1,-3,5,3,6,7], 3))
+# [3, 3, 5, 5, 6, 7]''',
         "leetcode_examples": [
             {
                 "id": "LC 20",
@@ -1194,17 +1531,87 @@ Each node holds: `prev` + `value` + `next`.
     def __init__(self, val, next=None):
         self.val = val
         self.next = next
- 
-# Reverse linked list
-def reverse(head):
-    prev = None
-    curr = head
-    while curr:
-        nxt = curr.next
-        curr.next = prev
-        prev = curr
-        curr = nxt
-    return prev  # new head''',
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    # Insert at the end
+    def append(self, val):
+        new_node = ListNode(val)
+        if not self.head:
+            self.head = new_node
+            return
+        curr = self.head
+        while curr.next:
+            curr = curr.next
+        curr.next = new_node
+
+    # Insert at the beginning
+    def prepend(self, val):
+        self.head = ListNode(val, self.head)
+
+    # Delete first occurrence of value
+    def delete(self, val):
+        curr = self.head
+        prev = None
+        while curr:
+            if curr.val == val:
+                if prev:
+                    prev.next = curr.next
+                else:
+                    self.head = curr.next
+                return True  # Deleted successfully
+            prev = curr
+            curr = curr.next
+        return False  # Value not found
+
+    # Reverse the linked list
+    def reverse(self):
+        prev = None
+        curr = self.head
+        while curr:
+            nxt = curr.next
+            curr.next = prev
+            prev = curr
+            curr = nxt
+        self.head = prev
+
+    # Print all nodes
+    def print_list(self):
+        curr = self.head
+        while curr:
+            print(curr.val, end=" -> ")
+            curr = curr.next
+        print("None")
+
+    # Find a value
+    def find(self, val):
+        curr = self.head
+        while curr:
+            if curr.val == val:
+                return curr
+            curr = curr.next
+        return None
+
+# Example usage
+ll = LinkedList()
+ll.append(1)
+ll.append(2)
+ll.append(3)
+ll.print_list()  # 1 -> 2 -> 3 -> None
+
+ll.reverse()
+ll.print_list()  # 3 -> 2 -> 1 -> None
+
+ll.prepend(0)
+ll.print_list()  # 0 -> 3 -> 2 -> 1 -> None
+
+ll.delete(2)
+ll.print_list()  # 0 -> 3 -> 1 -> None
+
+node = ll.find(3)
+print("Found:", node.val if node else "Not found")  # Found: 3''',
         "leetcode_examples": [
             {
                 "id": "LC 206",
@@ -1418,14 +1825,100 @@ Find the **first index** where a condition becomes True.
 4. If False → `L = M + 1`
 5. Return `L` — the boundary
 """,
-        "python_code": '''def binary_search(arr, target):
+        "python_code": '''# Iterative binary search
+def binary_search(arr, target):
+    """
+    Standard iterative binary search.
+    Returns True if target exists, else False.
+    """
     L, R = 0, len(arr) - 1
     while L <= R:
         M = (L + R) // 2
-        if arr[M] == target: return True
-        elif arr[M] < target: L = M + 1
-        else: R = M - 1
-    return False''',
+        if arr[M] == target:
+            return True
+        elif arr[M] < target:
+            L = M + 1
+        else:
+            R = M - 1
+    return False
+
+# Iterative binary search returning index
+def binary_search_index(arr, target):
+    """
+    Returns the index of the target if found, else -1.
+    """
+    L, R = 0, len(arr) - 1
+    while L <= R:
+        M = (L + R) // 2
+        if arr[M] == target:
+            return M
+        elif arr[M] < target:
+            L = M + 1
+        else:
+            R = M - 1
+    return -1
+
+# Recursive binary search
+def binary_search_recursive(arr, target, L=0, R=None):
+    """
+    Recursive binary search.
+    Returns True if target exists, else False.
+    """
+    if R is None:
+        R = len(arr) - 1
+    if L > R:
+        return False
+    M = (L + R) // 2
+    if arr[M] == target:
+        return True
+    elif arr[M] < target:
+        return binary_search_recursive(arr, target, M + 1, R)
+    else:
+        return binary_search_recursive(arr, target, L, M - 1)
+
+# Find first and last occurrence (for arrays with duplicates)
+def binary_search_bounds(arr, target):
+    """
+    Returns (first_index, last_index) of target in sorted array.
+    Returns (-1, -1) if not found.
+    """
+    def find_first():
+        L, R = 0, len(arr) - 1
+        first = -1
+        while L <= R:
+            M = (L + R) // 2
+            if arr[M] == target:
+                first = M
+                R = M - 1  # search left
+            elif arr[M] < target:
+                L = M + 1
+            else:
+                R = M - 1
+        return first
+
+    def find_last():
+        L, R = 0, len(arr) - 1
+        last = -1
+        while L <= R:
+            M = (L + R) // 2
+            if arr[M] == target:
+                last = M
+                L = M + 1  # search right
+            elif arr[M] < target:
+                L = M + 1
+            else:
+                R = M - 1
+        return last
+
+    return find_first(), find_last()
+
+# Example usage
+arr = [1, 2, 3, 3, 3, 4, 5]
+print(binary_search(arr, 3))             # True
+print(binary_search_index(arr, 3))       # 2 (first found index)
+print(binary_search_recursive(arr, 4))   # True
+print(binary_search_bounds(arr, 3))      # (2, 4) first and last occurrence
+print(binary_search_bounds(arr, 6))      # (-1, -1)''',
         "leetcode_examples": [
             {
                 "id": "LC 704",
@@ -1629,25 +2122,82 @@ for R in range(n):
     # update answer
 ```
 """,
-        "python_code": '''# Fixed window: max sum of k consecutive elements
+        "python_code": '''# ----------------------------
+# Sliding Window Utilities
+# ----------------------------
+
+# Fixed window: max sum of k consecutive elements
 def max_sum_k(arr, k):
+    """
+    Returns the maximum sum of any contiguous subarray of size k.
+    """
+    if k > len(arr) or k <= 0:
+        return None
     window_sum = sum(arr[:k])
     best = window_sum
     for i in range(k, len(arr)):
         window_sum += arr[i] - arr[i - k]
         best = max(best, window_sum)
     return best
- 
-# Variable window: longest unique substring
-def longest_unique(s):
+
+# Fixed window: min sum of k consecutive elements
+def min_sum_k(arr, k):
+    """
+    Returns the minimum sum of any contiguous subarray of size k.
+    """
+    if k > len(arr) or k <= 0:
+        return None
+    window_sum = sum(arr[:k])
+    best = window_sum
+    for i in range(k, len(arr)):
+        window_sum += arr[i] - arr[i - k]
+        best = min(best, window_sum)
+    return best
+
+# Variable window: longest substring with all unique characters
+def longest_unique_substring(s):
+    """
+    Returns the length of the longest substring with all unique characters.
+    """
     seen = set()
-    L = 0; best = 0
+    L = 0
+    best = 0
     for R in range(len(s)):
         while s[R] in seen:
-            seen.remove(s[L]); L += 1
+            seen.remove(s[L])
+            L += 1
         seen.add(s[R])
         best = max(best, R - L + 1)
-    return best''',
+    return best
+
+# Variable window: smallest subarray with sum >= target
+def min_subarray_sum(arr, target):
+    """
+    Returns the length of the smallest contiguous subarray with sum >= target.
+    Returns 0 if no such subarray exists.
+    """
+    L = 0
+    curr_sum = 0
+    best = float('inf')
+    for R in range(len(arr)):
+        curr_sum += arr[R]
+        while curr_sum >= target:
+            best = min(best, R - L + 1)
+            curr_sum -= arr[L]
+            L += 1
+    return 0 if best == float('inf') else best
+
+# Example usage
+arr = [2, 1, 5, 1, 3, 2]
+print("Max sum of 3 consecutive elements:", max_sum_k(arr, 3))    # 9
+print("Min sum of 2 consecutive elements:", min_sum_k(arr, 2))    # 2
+
+s = "abcabcbb"
+print("Longest unique substring length:", longest_unique_substring(s))  # 3
+
+arr2 = [2,3,1,2,4,3]
+target = 7
+print("Min subarray length with sum >= 7:", min_subarray_sum(arr2, target))  # 2''',
         "leetcode_examples": [
             {
                 "id": "LC 3",
@@ -1776,29 +2326,127 @@ print(minWindow("a", "a"))               # "a"'''
                 "description": "Find the maximum in each sliding window of size k.",
                 "approach": "Monotonic deque storing indices in decreasing order. Front is always the current window max.",
                 "code": '''from collections import deque
- 
-def maxSlidingWindow(nums, k):
-    q = deque()   # indices, decreasing order of values
-    result = []
- 
-    for i in range(len(nums)):
-        # Remove indices outside window
-        while q and q[0] < i - k + 1:
-            q.popleft()
- 
-        # Remove smaller elements from back (they're useless)
-        while q and nums[q[-1]] < nums[i]:
-            q.pop()
- 
-        q.append(i)
- 
-        if i >= k - 1:
-            result.append(nums[q[0]])
- 
-    return result
- 
-print(maxSlidingWindow([1,3,-1,-3,5,3,6,7], 3))
-# [3,3,5,5,6,7]'''
+
+# ----------------------------
+# Binary Tree Core Utilities
+# ----------------------------
+
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+class BinaryTree:
+    def __init__(self, root=None):
+        self.root = root
+
+    # ----------------------------
+    # Traversals
+    # ----------------------------
+
+    def in_order(self, node=None):
+        """
+        In-order traversal (Left, Root, Right)
+        """
+        if node is None:
+            node = self.root
+        if not node:
+            return
+        self.in_order(node.left)
+        print(node.val, end=" ")
+        self.in_order(node.right)
+
+    def pre_order(self, node=None):
+        """
+        Pre-order traversal (Root, Left, Right)
+        """
+        if node is None:
+            node = self.root
+        if not node:
+            return
+        print(node.val, end=" ")
+        self.pre_order(node.left)
+        self.pre_order(node.right)
+
+    def post_order(self, node=None):
+        """
+        Post-order traversal (Left, Right, Root)
+        """
+        if node is None:
+            node = self.root
+        if not node:
+            return
+        self.post_order(node.left)
+        self.post_order(node.right)
+        print(node.val, end=" ")
+
+    def level_order(self):
+        """
+        Level-order traversal (Breadth-first)
+        """
+        if not self.root:
+            return
+        q = deque([self.root])
+        while q:
+            node = q.popleft()
+            print(node.val, end=" ")
+            if node.left:
+                q.append(node.left)
+            if node.right:
+                q.append(node.right)
+
+    # ----------------------------
+    # Utility Functions
+    # ----------------------------
+
+    def height(self, node=None):
+        """
+        Returns the height of the tree
+        """
+        if node is None:
+            node = self.root
+        if not node:
+            return 0
+        return 1 + max(self.height(node.left), self.height(node.right))
+
+    def search(self, val, node=None):
+        """
+        Search for a value in the tree
+        """
+        if node is None:
+            node = self.root
+        if not node:
+            return False
+        if node.val == val:
+            return True
+        return self.search(val, node.left) or self.search(val, node.right)
+
+# ----------------------------
+# Example usage
+# ----------------------------
+
+# Build a simple binary tree
+root = TreeNode(1)
+root.left = TreeNode(2)
+root.right = TreeNode(3)
+root.left.left = TreeNode(4)
+root.left.right = TreeNode(5)
+
+bt = BinaryTree(root)
+
+print("In-order:", end=" ")
+bt.in_order()
+print("\nPre-order:", end=" ")
+bt.pre_order()
+print("\nPost-order:", end=" ")
+bt.post_order()
+print("\nLevel-order:", end=" ")
+bt.level_order()
+
+print("\nHeight of tree:", bt.height())
+print("Search for 3:", bt.search(3))  # True
+print("Search for 6:", bt.search(6))  # False'''
             },
             {
                 "id": "LC 643",
@@ -2051,18 +2699,70 @@ def levelOrder(root):
 For max-heap, **negate values**: push `-x`, pop and negate result.
 """,
         "python_code": '''import heapq
- 
-heap = []
-for num in [-4, 3, 1, 0, 2, 5]:
-    heapq.heappush(heap, num)
- 
-print(heap[0])                   # peek → -4
-smallest = heapq.heappop(heap)   # → -4
- 
-# Max-Heap: negate values
-max_heap = []
-heapq.heappush(max_heap, -9)
-largest = -heapq.heappop(max_heap)  # 9''',
+
+# ----------------------------
+# Heap Utilities
+# ----------------------------
+
+class MinHeap:
+    def __init__(self, arr=None):
+        """
+        Initialize min-heap from array (optional)
+        """
+        self.heap = arr[:] if arr else []
+        if self.heap:
+            heapq.heapify(self.heap)
+
+    def push(self, val):
+        heapq.heappush(self.heap, val)
+
+    def pop(self):
+        return heapq.heappop(self.heap) if self.heap else None
+
+    def peek(self):
+        return self.heap[0] if self.heap else None
+
+    def __len__(self):
+        return len(self.heap)
+
+class MaxHeap:
+    def __init__(self, arr=None):
+        """
+        Initialize max-heap using negation
+        """
+        self.heap = [-x for x in arr] if arr else []
+        if self.heap:
+            heapq.heapify(self.heap)
+
+    def push(self, val):
+        heapq.heappush(self.heap, -val)
+
+    def pop(self):
+        return -heapq.heappop(self.heap) if self.heap else None
+
+    def peek(self):
+        return -self.heap[0] if self.heap else None
+
+    def __len__(self):
+        return len(self.heap)
+
+# ----------------------------
+# Example Usage
+# ----------------------------
+
+# Min-Heap
+min_heap = MinHeap([-4, 3, 1, 0, 2, 5])
+print("Min-Heap peek:", min_heap.peek())  # -4
+print("Min-Heap pop:", min_heap.pop())    # -4
+min_heap.push(-10)
+print("Min-Heap peek after push:", min_heap.peek())  # -10
+
+# Max-Heap
+max_heap = MaxHeap([9, 1, 5])
+print("Max-Heap peek:", max_heap.peek())  # 9
+print("Max-Heap pop:", max_heap.pop())    # 9
+max_heap.push(20)
+print("Max-Heap peek after push:", max_heap.peek())  # 20''',
         "leetcode_examples": [
             {
                 "id": "LC 703",
@@ -2275,19 +2975,119 @@ def backtrack(index, current_solution):
 - **Pop** after recursive call to undo the choice
 - Use conditions to **prune** invalid paths early
 """,
-        "python_code": '''def subsets(nums):
+        "python_code": '''# Generate all subsets of a list
+def subsets(nums):
+    """
+    Returns all possible subsets of nums
+    """
     res = []
     sol = []
+
     def backtrack(i):
         if i == len(nums):
             res.append(sol.copy())
             return
-        backtrack(i + 1)          # don't pick
+        # Don't pick
+        backtrack(i + 1)
+        # Pick
         sol.append(nums[i])
-        backtrack(i + 1)          # pick
-        sol.pop()                 # undo
+        backtrack(i + 1)
+        sol.pop()  # Undo
+
     backtrack(0)
-    return res''',
+    return res
+
+# Generate all permutations of a list
+def permutations(nums):
+    """
+    Returns all possible permutations of nums
+    """
+    res = []
+    sol = []
+    used = [False] * len(nums)
+
+    def backtrack():
+        if len(sol) == len(nums):
+            res.append(sol.copy())
+            return
+        for i in range(len(nums)):
+            if used[i]:
+                continue
+            used[i] = True
+            sol.append(nums[i])
+            backtrack()
+            sol.pop()
+            used[i] = False
+
+    backtrack()
+    return res
+
+# Combination sum (numbers can be reused)
+def combination_sum(candidates, target):
+    """
+    Returns all unique combinations where numbers sum to target.
+    Numbers can be reused.
+    """
+    res = []
+    sol = []
+
+    def backtrack(i, total):
+        if total == target:
+            res.append(sol.copy())
+            return
+        if total > target or i == len(candidates):
+            return
+        # Pick
+        sol.append(candidates[i])
+        backtrack(i, total + candidates[i])
+        sol.pop()  # Undo
+        # Don't pick
+        backtrack(i + 1, total)
+
+    backtrack(0, 0)
+    return res
+
+# N-Queens problem (return board positions)
+def n_queens(n):
+    """
+    Returns all valid N-Queens arrangements as lists of column indices per row.
+    """
+    res = []
+    sol = []
+
+    def is_safe(row, col):
+        for r, c in enumerate(sol):
+            if c == col or abs(c - col) == row - r:
+                return False
+        return True
+
+    def backtrack(row):
+        if row == n:
+            res.append(sol.copy())
+            return
+        for col in range(n):
+            if is_safe(row, col):
+                sol.append(col)
+                backtrack(row + 1)
+                sol.pop()
+
+    backtrack(0)
+    return res
+
+# ----------------------------
+# Example Usage
+# ----------------------------
+
+nums = [1, 2, 3]
+print("Subsets:", subsets(nums))
+print("Permutations:", permutations(nums))
+
+candidates = [2, 3, 6, 7]
+target = 7
+print("Combination Sum:", combination_sum(candidates, target))
+
+n = 4
+print("4-Queens Solutions:", n_queens(n))''',
         "leetcode_examples": [
             {
                 "id": "LC 78",
@@ -2530,21 +3330,115 @@ print(letterCombinations("23"))
 Always track visited nodes to **prevent infinite loops** in cyclic graphs!
 """,
         "python_code": '''from collections import defaultdict, deque
- 
-graph = defaultdict(list)
+
+# ----------------------------
+# Graph Utilities
+# ----------------------------
+
+class Graph:
+    def __init__(self, edges=None, directed=False):
+        """
+        Initialize a graph from edges. Can be directed or undirected.
+        """
+        self.graph = defaultdict(list)
+        self.directed = directed
+        if edges:
+            for u, v in edges:
+                self.add_edge(u, v)
+
+    def add_edge(self, u, v):
+        self.graph[u].append(v)
+        if not self.directed:
+            self.graph[v].append(u)
+
+    # ----------------------------
+    # Traversals
+    # ----------------------------
+
+    def bfs(self, start):
+        """
+        Breadth-first search starting from `start`.
+        Returns the order of visited nodes.
+        """
+        seen = {start}
+        q = deque([start])
+        order = []
+        while q:
+            node = q.popleft()
+            order.append(node)
+            for nb in self.graph[node]:
+                if nb not in seen:
+                    seen.add(nb)
+                    q.append(nb)
+        return order
+
+    def dfs(self, start):
+        """
+        Depth-first search starting from `start`.
+        Returns the order of visited nodes.
+        """
+        seen = set()
+        order = []
+
+        def dfs_rec(node):
+            seen.add(node)
+            order.append(node)
+            for nb in self.graph[node]:
+                if nb not in seen:
+                    dfs_rec(nb)
+
+        dfs_rec(start)
+        return order
+
+    # ----------------------------
+    # Utilities
+    # ----------------------------
+
+    def has_path_dfs(self, u, v):
+        """
+        Returns True if there is a path from u to v using DFS
+        """
+        seen = set()
+
+        def dfs(node):
+            if node == v:
+                return True
+            seen.add(node)
+            for nb in self.graph[node]:
+                if nb not in seen and dfs(nb):
+                    return True
+            return False
+
+        return dfs(u)
+
+    def has_path_bfs(self, u, v):
+        """
+        Returns True if there is a path from u to v using BFS
+        """
+        seen = {u}
+        q = deque([u])
+        while q:
+            node = q.popleft()
+            if node == v:
+                return True
+            for nb in self.graph[node]:
+                if nb not in seen:
+                    seen.add(nb)
+                    q.append(nb)
+        return False
+
+# ----------------------------
+# Example Usage
+# ----------------------------
+
 edges = [(0,1),(1,2),(0,3)]
-for u, v in edges:
-    graph[u].append(v)
- 
-def bfs(start, graph):
-    seen = {start}
-    q = deque([start])
-    while q:
-        node = q.popleft()
-        for nb in graph[node]:
-            if nb not in seen:
-                seen.add(nb)
-                q.append(nb)''',
+g = Graph(edges)
+
+print("BFS from 0:", g.bfs(0))  # [0, 1, 3, 2]
+print("DFS from 0:", g.dfs(0))  # [0, 1, 2, 3] (order may vary)
+
+print("Path exists 0→2 (DFS)?", g.has_path_dfs(0, 2))  # True
+print("Path exists 3→2 (BFS)?", g.has_path_bfs(3, 2))  # False''',
         "leetcode_examples": [
             {
                 "id": "LC 200",
@@ -2799,12 +3693,13 @@ Signs a problem needs DP:
 """,
         "python_code": '''# Fibonacci — space-optimized O(1)
 def fib(n):
-    if n <= 1: return n
+    if n <= 1:
+        return n
     prev, curr = 0, 1
     for _ in range(2, n + 1):
         prev, curr = curr, prev + curr
     return curr
- 
+
 # Coin change: min coins to make amount
 def coin_change(coins, amount):
     dp = [float('inf')] * (amount + 1)
@@ -2813,7 +3708,60 @@ def coin_change(coins, amount):
         for c in coins:
             if c <= a:
                 dp[a] = min(dp[a], dp[a - c] + 1)
-    return dp[amount] if dp[amount] != float('inf') else -1''',
+    return dp[amount] if dp[amount] != float('inf') else -1
+
+# Longest Common Subsequence (LCS)
+def longest_common_subsequence(s1, s2):
+    m, n = len(s1), len(s2)
+    dp = [[0]*(n+1) for _ in range(m+1)]
+    for i in range(m):
+        for j in range(n):
+            if s1[i] == s2[j]:
+                dp[i+1][j+1] = dp[i][j] + 1
+            else:
+                dp[i+1][j+1] = max(dp[i][j+1], dp[i+1][j])
+    return dp[m][n]
+
+# 0/1 Knapsack problem
+def knapsack(weights, values, W):
+    n = len(weights)
+    dp = [[0]*(W+1) for _ in range(n+1)]
+    for i in range(1, n+1):
+        for w in range(W+1):
+            if weights[i-1] <= w:
+                dp[i][w] = max(dp[i-1][w], dp[i-1][w - weights[i-1]] + values[i-1])
+            else:
+                dp[i][w] = dp[i-1][w]
+    return dp[n][W]
+
+# Unique paths in a grid (m x n)
+def unique_paths(m, n):
+    dp = [[1]*n for _ in range(m)]
+    for i in range(1, m):
+        for j in range(1, n):
+            dp[i][j] = dp[i-1][j] + dp[i][j-1]
+    return dp[m-1][n-1]
+
+# ----------------------------
+# Example Usage
+# ----------------------------
+
+print("Fibonacci(10):", fib(10))  # 55
+
+coins = [1, 2, 5]
+amount = 11
+print("Coin change for 11:", coin_change(coins, amount))  # 3 (5+5+1)
+
+s1, s2 = "abcde", "ace"
+print("LCS length:", longest_common_subsequence(s1, s2))  # 3
+
+weights = [1, 3, 4]
+values = [15, 20, 30]
+W = 4
+print("0/1 Knapsack max value:", knapsack(weights, values, W))  # 35
+
+m, n = 3, 7
+print("Unique paths in 3x7 grid:", unique_paths(m, n))  # 28''',
         "leetcode_examples": [
             {
                 "id": "LC 70",
