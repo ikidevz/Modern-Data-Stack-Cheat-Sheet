@@ -65,7 +65,8 @@ Big O is about the **dominant term**. Drop constants, drop smaller terms.
         "python_code": '''# O(1) - Constant
 def get_first(arr):
     return arr[0]  # always 1 operation
- 
+
+
 # O(n) - Linear
 def find_max(arr):
     max_val = arr[0]
@@ -73,7 +74,8 @@ def find_max(arr):
         if x > max_val:
             max_val = x
     return max_val
- 
+
+
 # O(n²) - Quadratic
 def has_duplicate(arr):
     for i in range(len(arr)):
@@ -81,16 +83,56 @@ def has_duplicate(arr):
             if arr[i] == arr[j]:
                 return True
     return False
- 
+
+
 # O(log n) - Logarithmic
 def binary_search(arr, target):
     L, R = 0, len(arr) - 1
     while L <= R:
         M = (L + R) // 2  # halves each time
-        if arr[M] == target: return True
-        elif arr[M] < target: L = M + 1
-        else: R = M - 1
-    return False''',
+        if arr[M] == target:
+            return True
+        elif arr[M] < target:
+            L = M + 1
+        else:
+            R = M - 1
+    return False
+
+
+# O(n log n) - Linearithmic
+def merge_sort(arr):
+    if len(arr) <= 1:
+        return arr
+
+    mid = len(arr) // 2
+    left = merge_sort(arr[:mid])
+    right = merge_sort(arr[mid:])
+
+    return merge(left, right)
+
+
+def merge(left, right):
+    result = []
+    i = j = 0
+
+    while i < len(left) and j < len(right):  # linear merge
+        if left[i] < right[j]:
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+
+    result.extend(left[i:])
+    result.extend(right[j:])
+    return result
+
+
+# O(2^n) - Exponential
+def fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n - 1) + fibonacci(n - 2)  # 2 recursive calls''',
         "leetcode_examples": [
             {
                 "id": "LC 1",
@@ -1880,6 +1922,26 @@ def invertTree2(root):
     return root'''
             },
             {
+                "id": "LC 543",
+                "title": "Diameter of Binary Tree",
+                "difficulty": "Easy",
+                "complexity": "O(n) time, O(h) space",
+                "description": "Find the length of the longest path between any two nodes in the tree.",
+                "approach": "At each node, diameter through it = left_height + right_height. Track max during DFS.",
+                "code": '''def diameterOfBinaryTree(root):
+    diameter = [0]
+ 
+    def height(node):
+        if not node: return 0
+        L = height(node.left)
+        R = height(node.right)
+        diameter[0] = max(diameter[0], L + R)
+        return 1 + max(L, R)
+ 
+    height(root)
+    return diameter[0]'''
+            },
+            {
                 "id": "LC 100",
                 "title": "Same Tree",
                 "difficulty": "Easy",
@@ -1961,26 +2023,7 @@ def levelOrder(root):
     dfs(root)
     return max_sum[0]'''
             },
-            {
-                "id": "LC 543",
-                "title": "Diameter of Binary Tree",
-                "difficulty": "Easy",
-                "complexity": "O(n) time, O(h) space",
-                "description": "Find the length of the longest path between any two nodes in the tree.",
-                "approach": "At each node, diameter through it = left_height + right_height. Track max during DFS.",
-                "code": '''def diameterOfBinaryTree(root):
-    diameter = [0]
- 
-    def height(node):
-        if not node: return 0
-        L = height(node.left)
-        R = height(node.right)
-        diameter[0] = max(diameter[0], L + R)
-        return 1 + max(L, R)
- 
-    height(root)
-    return diameter[0]'''
-            },
+
         ]
     },
 
