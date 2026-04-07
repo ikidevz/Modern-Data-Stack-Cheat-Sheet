@@ -3276,210 +3276,228 @@ print("4-Queens Solutions:", n_queens(n))''',
                 "id": "LC 78",
                 "title": "Subsets",
                 "difficulty": "Medium",
-                "complexity": "O(2ⁿ) time, O(n) space",
-                "description": "Return all possible subsets (the power set) of a list of unique integers.",
-                "approach": "At each index, decide: include or exclude the element. Recurse for both choices.",
-                "code": '''def subsets(nums):
-    res = []
-    sol = []
- 
+                "complexity": "O(2^n) time, O(n) space",
+                "description": "Return all possible subsets of a given array.",
+                "approach": "Use backtracking to generate all possible combinations.",
+                "code": '''def subsets(nums: List[int]) -> List[List[int]]:
+    n = len(nums)
+    ans, sol = [], []
+
     def backtrack(i):
-        if i == len(nums):
-            res.append(sol.copy())
+        if i == n:
+            ans.append(sol[:])
             return
-        # Don't include nums[i]
+
+        # Don't pick nums[i]
         backtrack(i + 1)
-        # Include nums[i]
+
+        # Pick nums[i]
         sol.append(nums[i])
         backtrack(i + 1)
-        sol.pop()  # backtrack
- 
+        sol.pop()
+
     backtrack(0)
-    return res
- 
-print(subsets([1,2,3]))
-# [[],[3],[2],[2,3],[1],[1,3],[1,2],[1,2,3]]'''
+    return ans'''
             },
+
             {
                 "id": "LC 46",
                 "title": "Permutations",
                 "difficulty": "Medium",
-                "complexity": "O(n! * n) time, O(n) space",
-                "description": "Return all possible permutations of a list of distinct integers.",
-                "approach": "At each step, try every unused number. Mark used, recurse, unmark on backtrack.",
-                "code": '''def permute(nums):
-    res = []
- 
-    def backtrack(path, used):
-        if len(path) == len(nums):
-            res.append(path.copy())
+                "complexity": "O(n!) time, O(n) space",
+                "description": "Return all possible permutations of a given array.",
+                "approach": "Use backtracking to generate all possible arrangements.",
+                "code": '''def permute(nums: List[int]) -> List[List[int]]:
+    n = len(nums)
+    ans, sol = [], []
+
+    def backtrack():
+        if len(sol) == n:
+            ans.append(sol[:])
             return
-        for i in range(len(nums)):
-            if used[i]: continue
-            used[i] = True
-            path.append(nums[i])
-            backtrack(path, used)
-            path.pop()         # backtrack
-            used[i] = False    # backtrack
- 
-    backtrack([], [False] * len(nums))
-    return res
- 
-print(permute([1,2,3]))
-# [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]'''
+
+        for x in nums:
+            if x not in sol:
+                sol.append(x)
+                backtrack()
+                sol.pop()
+
+    backtrack()
+    return ans'''
             },
+
+            {
+                "id": "LC 77",
+                "title": "Combinations",
+                "difficulty": "Medium",
+                "complexity": "O(n choose k) time, O(k) space",
+                "description": "Return all possible combinations of k numbers chosen from the range [1, n].",
+                "approach": "Use backtracking to generate all possible combinations.",
+                "code": '''def combine(self, n: int, k: int) -> List[List[int]]:
+    ans, sol = [], []
+
+    def backtrack(x):
+        if len(sol) == k:
+            ans.append(sol[:])
+            return
+
+        left = x
+        still_need = k - len(sol)
+
+        if left > still_need:
+            backtrack(x - 1)
+
+        sol.append(x)
+        backtrack(x - 1)
+        sol.pop()
+
+    backtrack(n)
+    return ans'''
+            },
+
             {
                 "id": "LC 39",
                 "title": "Combination Sum",
                 "difficulty": "Medium",
-                "complexity": "O(2^(t/m)) time",
-                "description": "Find all combinations of candidates that sum to target. Can reuse elements.",
-                "approach": "At each index: skip it (move to i+1) or take it (stay at i, reduce remaining). Stop when remaining < 0.",
-                "code": '''def combinationSum(candidates, target):
-    res = []
- 
-    def backtrack(i, cur, remaining):
-        if remaining == 0:
-            res.append(cur.copy())
+                "complexity": "O(n**t) time, O(n) space",
+                "description": "Return all possible combinations of candidates that sum to the target. Each number in candidates may be used an unlimited number of times.",
+                "approach": "Use backtracking to generate all possible combinations while keeping track of the current sum.",
+                "code": '''def combinationSum(candidates: List[int], target: int) -> List[List[int]]:
+    res, sol = [], []
+    nums = candidates
+    n = len(nums)
+    
+    def backtrack(i, cur_sum):
+        if cur_sum == target:
+            res.append(sol[:])
             return
-        if remaining < 0 or i >= len(candidates):
+        
+        if cur_sum > target or i == n:
             return
-        # Take candidates[i] (can reuse, stay at i)
-        cur.append(candidates[i])
-        backtrack(i, cur, remaining - candidates[i])
-        cur.pop()
-        # Skip candidates[i]
-        backtrack(i + 1, cur, remaining)
- 
-    backtrack(0, [], target)
-    return res
- 
-print(combinationSum([2,3,6,7], 7))
-# [[2,2,3],[7]]'''
+
+        backtrack(i+1, cur_sum)
+
+        sol.append(nums[i])
+        backtrack(i, cur_sum+nums[i])
+        sol.pop()
+    
+    backtrack(0, 0)
+    return res'''
             },
-            {
-                "id": "LC 51",
-                "title": "N-Queens",
-                "difficulty": "Hard",
-                "complexity": "O(n!) time, O(n²) space",
-                "description": "Place n queens on an n×n chessboard so no two queens attack each other.",
-                "approach": "Place one queen per row. Track attacked columns, diagonals, anti-diagonals as sets.",
-                "code": '''def solveNQueens(n):
-    cols = set()
-    diag = set()      # row - col
-    anti_diag = set() # row + col
-    board = []
-    res = []
- 
-    def backtrack(row):
-        if row == n:
-            res.append(["".join(r) for r in board])
-            return
-        for col in range(n):
-            if col in cols or (row-col) in diag or (row+col) in anti_diag:
-                continue
-            cols.add(col); diag.add(row-col); anti_diag.add(row+col)
-            board.append(['.'] * n)
-            board[-1][col] = 'Q'
-            backtrack(row + 1)
-            board.pop()
-            cols.remove(col); diag.remove(row-col); anti_diag.remove(row+col)
- 
-    backtrack(0)
-    return res
- 
-print(len(solveNQueens(4)))  # 2 solutions'''
-            },
-            {
-                "id": "LC 79",
-                "title": "Word Search",
-                "difficulty": "Medium",
-                "complexity": "O(n * m * 4^L) time",
-                "description": "Given a board and a word, find if the word exists using adjacent cells (no reuse).",
-                "approach": "DFS/backtracking from each cell. Mark cell as visited, try all 4 directions, unmark on return.",
-                "code": '''def exist(board, word):
-    m, n = len(board), len(board[0])
-    visited = set()
- 
-    def dfs(r, c, idx):
-        if idx == len(word): return True
-        if r < 0 or c < 0 or r >= m or c >= n: return False
-        if (r,c) in visited or board[r][c] != word[idx]: return False
- 
-        visited.add((r, c))
-        res = (dfs(r+1,c,idx+1) or dfs(r-1,c,idx+1) or
-               dfs(r,c+1,idx+1) or dfs(r,c-1,idx+1))
-        visited.remove((r, c))  # backtrack
-        return res
- 
-    for r in range(m):
-        for c in range(n):
-            if dfs(r, c, 0): return True
-    return False
- 
-board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]]
-print(exist(board, "ABCCED"))  # True'''
-            },
-            {
-                "id": "LC 131",
-                "title": "Palindrome Partitioning",
-                "difficulty": "Medium",
-                "complexity": "O(n * 2^n) time, O(n) space",
-                "description": "Partition string so that every substring is a palindrome. Return all possible partitions.",
-                "approach": "Backtrack: try every prefix. If it's a palindrome, recurse on remaining. Undo on backtrack.",
-                "code": '''def partition(s):
-    res = []
- 
-    def is_palindrome(sub):
-        return sub == sub[::-1]
- 
-    def backtrack(start, path):
-        if start == len(s):
-            res.append(path.copy())
-            return
-        for end in range(start + 1, len(s) + 1):
-            sub = s[start:end]
-            if is_palindrome(sub):
-                path.append(sub)
-                backtrack(end, path)
-                path.pop()   # backtrack
- 
-    backtrack(0, [])
-    return res
- 
-print(partition("aab"))
-# [['a','a','b'], ['aa','b']]'''
-            },
+
             {
                 "id": "LC 17",
                 "title": "Letter Combinations of a Phone Number",
                 "difficulty": "Medium",
-                "complexity": "O(4^n) time, O(n) space",
-                "description": "Return all possible letter combinations a phone number digits could represent.",
-                "approach": "Map digits to letters. Backtrack through digits, try each corresponding letter.",
-                "code": '''def letterCombinations(digits):
-    if not digits: return []
-    phone = {
-        '2': 'abc', '3': 'def', '4': 'ghi', '5': 'jkl',
-        '6': 'mno', '7': 'pqrs', '8': 'tuv', '9': 'wxyz'
+                "complexity": "O(n * 4^n) time, O(n) space",
+                "description": "Return all possible letter combinations that the number could represent based on the mapping of digits to letters on a phone keypad.",
+                "approach": "Use backtracking to generate all possible combinations while keeping track of the current index.",
+                "code": '''def letterCombinations(digits: str) -> List[str]:
+    if digits == "":
+        return []
+
+    ans, sol = [], []
+    
+    letter_map = {
+        "2": "abc",
+        "3": "def",
+        "4": "ghi",
+        "5": "jkl",
+        "6": "mno",
+        "7": "pqrs",
+        "8": "tuv",
+        "9": "wxyz",
     }
-    res = []
- 
-    def backtrack(i, path):
-        if i == len(digits):
-            res.append("".join(path))
+    
+    n = len(digits)
+
+    def backtrack(i=0):
+        if i == n:
+            ans.append("".join(sol))
             return
-        for c in phone[digits[i]]:
-            path.append(c)
-            backtrack(i + 1, path)
-            path.pop()  # backtrack
- 
-    backtrack(0, [])
-    return res
- 
-print(letterCombinations("23"))
-# ['ad','ae','af','bd','be','bf','cd','ce','cf']'''
+
+        for letter in letter_map[digits[i]]:
+            sol.append(letter)
+            backtrack(i + 1)
+            sol.pop()
+
+    backtrack(0)
+    return ans'''
             },
+
+            {
+                "id": "LC 22",
+                "title": "Generate Parentheses",
+                "difficulty": "Medium",
+                "complexity": "O(2^n) time, O(n) space",
+                "description": "Return all possible combinations of well-formed parentheses.",
+                "approach": "Use backtracking to generate all possible combinations while keeping track of the number of open and close parentheses.",
+                "code": '''def generateParenthesis(n: int) -> List[str]:
+    ans, sol = [], []
+
+    def backtrack(openn, close):
+        if len(sol) == 2 * n:
+            ans.append("".join(sol))
+            return
+        if openn < n:
+            sol.append("(")
+            backtrack(openn + 1, close)
+            sol.pop()
+
+        if openn > close:
+            sol.append(")")
+            backtrack(openn, close + 1)
+            sol.pop()
+
+    backtrack(0, 0)
+    return ans'''
+            },
+
+            {
+                "id": "LC 79",
+                "title": "Word Search",
+                "difficulty": "Medium",
+                "complexity": "O((m*n)^2) time, O(W) space",
+                "description": "Return true if the word exists in the grid, false otherwise.",
+                "approach": "Use backtracking to explore all possible paths in the grid while keeping track of the current position and the word being searched.",
+                "code": '''def exist(board: List[List[str]], word: str) -> bool:
+    m = len(board)
+    n = len(board[0])
+    W = len(word)
+
+    if m == 1 and n == 1:
+        return board[0][0] == word
+
+    def backtrack(pos, index):
+        i, j = pos
+
+        if index == W:
+            return True
+
+        if board[i][j] != word[index]:
+            return False
+
+        char = board[i][j]
+        board[i][j] = "#"
+
+        for i_off, j_off in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
+            r, c = i + i_off, j + j_off
+
+            if 0 <= r < m and 0 <= c < n:
+                if backtrack((r, c), index + 1):
+                    return True
+
+        board[i][j] = char
+        return False
+
+    for i in range(m):
+        for j in range(n):
+            if backtrack((i, j), 0):
+                return True
+
+    return False'''
+            },
+
         ]
     },
 
@@ -3947,195 +3965,211 @@ m, n = 3, 7
 print("Unique paths in 3x7 grid:", unique_paths(m, n))  # 28''',
         "leetcode_examples": [
             {
+                "id": "LC 509",
+                "title": "Fibonacci Number",
+                "difficulty": "Easy",
+                "complexity": "O(n) time, O(n) space",
+                "description": "Return the n-th Fibonacci number.",
+                "approach": "Use memoization to store previously computed Fibonacci numbers to avoid redundant calculations.",
+                "code": '''def fib(n: int) -> int:
+    memo = {0:0, 1:1}
+
+    def f(x):
+        if x in memo:
+            return memo[x]
+        else:
+            memo[x] = f(x-1) + f(x-2)
+            return memo[x]
+    
+    return f(n)'''
+            },
+
+            {
                 "id": "LC 70",
                 "title": "Climbing Stairs",
                 "difficulty": "Easy",
+                "complexity": "O(n) time, O(n) space",
+                "description": "Return the number of distinct ways to climb to the top of a staircase with n steps.",
+                "approach": "Use memoization to store previously computed results to avoid redundant calculations.",
+                "code": '''def climbStairs(n: int) -> int:
+    memo = {1:1, 2:2}
+    def f(n):
+        if n in memo:
+            return memo[n]
+        else:
+            memo[n] = f(n-2) + f(n-1)
+            return memo[n]
+    
+    return f(n)'''
+            },
+
+            {
+                "id": "LC 746",
+                "title": "Min Cost Climbing Stairs",
+                "difficulty": "Easy",
+                "complexity": "O(2^n) time, O(n) space",
+                "description": "Return the minimum cost to reach the top of the floor.",
+                "approach": "Use memoization to store previously computed costs to avoid redundant calculations.",
+                "code": '''def minCostClimbingStairs(cost: List[int]) -> int:
+    # Recursive Solution
+    n = len(cost)
+
+    def min_cost(i):
+        if i < 2:
+            return 0
+
+        return min(cost[i-2] + min_cost(i-2),
+                    cost[i-1] + min_cost(i-1))
+
+    return min_cost(n)'''
+            },
+
+            {
+                "id": "LC 198",
+                "title": "House Robber",
+                "difficulty": "Medium",
+                "complexity": "O(2^n) time, O(n) space",
+                "description": "Return the maximum amount of money you can rob without alerting the police.",
+                "approach": "Use memoization to store previously computed maximum amounts to avoid redundant calculations.",
+                "code": '''def rob(nums: List[int]) -> int:
+    n = len(nums)
+
+    def helper(i):
+        if i == 0:
+            return nums[0]
+        if i == 1:
+            return max(nums[0], nums[1])
+        
+        return max(nums[i] + helper(i-2),
+                    helper(i-1))
+    
+    return helper(n-1)'''
+            },
+
+            {
+                "id": "LC 62",
+                "title": "Unique Paths",
+                "difficulty": "Medium",
+                "complexity": "O(2^(m*n)) time, O(m*n) space",
+                "description": "Return the number of unique paths from the top-left to the bottom-right of a grid.",
+                "approach": "Use memoization to store previously computed results to avoid redundant calculations.",
+                "code": '''def uniquePaths(m: int, n: int) -> int:
+    def paths(i, j):
+        if i == j == 0:
+            return 1
+        elif i < 0 or j < 0 or i == m or j == n:
+            return 0
+        else:
+            return paths(i-1, j) + paths(i, j-1)
+    
+    return paths(m-1, n-1)'''
+            },
+
+            {
+                "id": "LC 53",
+                "title": " Maximum Subarray (Kadane's Algorithm)",
+                "difficulty": "Medium",
                 "complexity": "O(n) time, O(1) space",
-                "description": "Count distinct ways to climb n stairs (can climb 1 or 2 steps at a time).",
-                "approach": "Fibonacci pattern. dp[n] = dp[n-1] + dp[n-2]. Space-optimize to just two variables.",
-                "code": '''def climbStairs(n):
-    if n <= 2: return n
-    prev, curr = 1, 2
-    for _ in range(3, n + 1):
-        prev, curr = curr, prev + curr
-    return curr
- 
-print(climbStairs(2))  # 2 (1+1, 2)
-print(climbStairs(3))  # 3 (1+1+1, 1+2, 2+1)
-print(climbStairs(5))  # 8'''
+                "description": "Find the contiguous subarray with the largest sum.",
+                "approach": "Kadane's Algorithm: keep track of the maximum sum ending at each position.",
+                "code": '''def maxSubArray(nums: List[int]) -> int:
+    max_sum = float('-inf')
+    curr_sum = 0
+    
+    for i in range(len(nums)):
+        curr_sum += nums[i]
+        max_sum = max(max_sum, curr_sum)
+
+        if curr_sum < 0:
+            curr_sum = 0
+    
+    return max_sum'''
+            },
+
+            {
+                "id": "LC 55",
+                "title": " Jump Game",
+                "difficulty": "Medium",
+                "complexity": "O(Max(nums) ^ n) time, O(n) space",
+                "description": "Determine if you can reach the last index of the array.",
+                "approach": "Use recursion with memoization to avoid redundant calculations.",
+                "code": '''def canJump(nums: List[int]) -> bool:
+    n = len(nums)
+    
+    def can_reach(i):
+        if i == n-1:
+            return True
+        
+        for jump in range(1, nums[i]+1):
+            if can_reach(i+jump):
+                return True
+        
+        return False
+    
+    return can_reach(0)'''
             },
             {
                 "id": "LC 322",
                 "title": "Coin Change",
                 "difficulty": "Medium",
                 "complexity": "O(amount * coins) time, O(amount) space",
-                "description": "Find the minimum number of coins to make up a given amount. Return -1 if impossible.",
-                "approach": "Bottom-up DP: dp[a] = min coins to make amount a. For each amount, try each coin.",
-                "code": '''def coinChange(coins, amount):
-    dp = [float('inf')] * (amount + 1)
-    dp[0] = 0  # base case: 0 coins for amount 0
- 
-    for a in range(1, amount + 1):
-        for c in coins:
-            if c <= a:
-                dp[a] = min(dp[a], dp[a - c] + 1)
- 
-    return dp[amount] if dp[amount] != float('inf') else -1
- 
-print(coinChange([1,5,11], 15))  # 3 (5+5+5)
-print(coinChange([2], 3))         # -1'''
+                "description": "Return the minimum number of coins needed to make up the given amount.",
+                "approach": "Use dynamic programming to build up the solution from smaller subproblems.",
+                "code": '''def coinChange(coins: List[int], amount: int) -> int:
+    if amount == 0:
+        return 0
+    elif amount < 0:
+        return -1
+
+    min_cnt = -1
+    for coin in coins:
+        cnt = self.coinChange(coins, amount - coin)
+        if cnt >= 0:
+            min_cnt = cnt + 1 if min_cnt < 0 else min(min_cnt, cnt + 1)
+    return min_cnt'''
             },
+
             {
                 "id": "LC 300",
                 "title": "Longest Increasing Subsequence",
                 "difficulty": "Medium",
-                "complexity": "O(n²) DP, O(n log n) with patience sort",
-                "description": "Find the length of the longest strictly increasing subsequence.",
-                "approach": "dp[i] = LIS ending at index i. For each i, check all j < i where nums[j] < nums[i].",
-                "code": '''def lengthOfLIS(nums):
+                "complexity": "O(n^2) time, O(n) space",
+                "description": "Return the length of the longest increasing subsequence.",
+                "approach": "Use dynamic programming to build up the solution from smaller subproblems.",
+                "code": '''def lengthOfLIS(nums: List[int]) -> int:
     n = len(nums)
-    dp = [1] * n  # each element alone is LIS of length 1
- 
+    dp = [1] * n
+
     for i in range(1, n):
         for j in range(i):
-            if nums[j] < nums[i]:
+            if nums[i] > nums[j]:
                 dp[i] = max(dp[i], dp[j] + 1)
- 
-    return max(dp)
- 
-# O(n log n) with binary search
-import bisect
-def lengthOfLIS2(nums):
-    sub = []  # stores the smallest tail for LIS of each length
-    for num in nums:
-        pos = bisect.bisect_left(sub, num)
-        if pos == len(sub): sub.append(num)
-        else: sub[pos] = num
-    return len(sub)
- 
-print(lengthOfLIS([10,9,2,5,3,7,101,18]))  # 4'''
+
+    return max(dp)'''
             },
-            {
-                "id": "LC 416",
-                "title": "Partition Equal Subset Sum",
-                "difficulty": "Medium",
-                "complexity": "O(n * sum) time, O(sum) space",
-                "description": "Determine if array can be partitioned into two subsets with equal sum.",
-                "approach": "If total sum is odd → impossible. Otherwise, find if subset summing to total//2 exists.",
-                "code": '''def canPartition(nums):
-    total = sum(nums)
-    if total % 2 != 0: return False
-    target = total // 2
- 
-    dp = {0}  # set of achievable sums
-    for num in nums:
-        dp = {s + num for s in dp} | dp
-        if target in dp: return True
- 
-    return target in dp
- 
-# Alternative: boolean DP array
-def canPartition2(nums):
-    target = sum(nums)
-    if target % 2: return False
-    target //= 2
-    dp = [False] * (target + 1)
-    dp[0] = True
-    for num in nums:
-        for j in range(target, num - 1, -1):
-            dp[j] = dp[j] or dp[j - num]
-    return dp[target]
- 
-print(canPartition([1,5,11,5]))  # True (1+5+5 = 11)
-print(canPartition([1,2,3,5]))   # False'''
-            },
+
             {
                 "id": "LC 1143",
                 "title": "Longest Common Subsequence",
                 "difficulty": "Medium",
                 "complexity": "O(m*n) time, O(m*n) space",
-                "description": "Find the length of the longest common subsequence of two strings.",
-                "approach": "2D DP table. If chars match, dp[i][j] = dp[i-1][j-1] + 1. Else take max of skipping either char.",
-                "code": '''def longestCommonSubsequence(text1, text2):
+                "description": "Return the length of the longest common subsequence.",
+                "approach": "Use dynamic programming to build up the solution from smaller subproblems.",
+                "code": '''def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+
     m, n = len(text1), len(text2)
-    dp = [[0] * (n + 1) for _ in range(m + 1)]
- 
-    for i in range(1, m + 1):
-        for j in range(1, n + 1):
+    dp = [[0] * (n+1) for _ in range(m + 1)]
+
+    for i in range(1, m+1):
+        for j in range(1, n+1):
             if text1[i-1] == text2[j-1]:
                 dp[i][j] = dp[i-1][j-1] + 1
             else:
                 dp[i][j] = max(dp[i-1][j], dp[i][j-1])
- 
-    return dp[m][n]
- 
-print(longestCommonSubsequence("abcde", "ace"))  # 3
-print(longestCommonSubsequence("abc", "abc"))     # 3
-print(longestCommonSubsequence("abc", "def"))     # 0'''
+    
+    return dp[m][n]'''
             },
-            {
-                "id": "LC 72",
-                "title": "Edit Distance",
-                "difficulty": "Hard",
-                "complexity": "O(m*n) time, O(m*n) space",
-                "description": "Find the minimum number of operations (insert, delete, replace) to convert word1 to word2.",
-                "approach": "2D DP. If chars match, no cost. Otherwise, min of three operations (insert, delete, replace) + 1.",
-                "code": '''def minDistance(word1, word2):
-    m, n = len(word1), len(word2)
-    dp = [[0] * (n + 1) for _ in range(m + 1)]
- 
-    # Base cases
-    for i in range(m + 1): dp[i][0] = i
-    for j in range(n + 1): dp[0][j] = j
- 
-    for i in range(1, m + 1):
-        for j in range(1, n + 1):
-            if word1[i-1] == word2[j-1]:
-                dp[i][j] = dp[i-1][j-1]
-            else:
-                dp[i][j] = 1 + min(
-                    dp[i-1][j],    # delete from word1
-                    dp[i][j-1],    # insert into word1
-                    dp[i-1][j-1]   # replace
-                )
- 
-    return dp[m][n]
- 
-print(minDistance("horse", "ros"))    # 3
-print(minDistance("intention", "execution"))  # 5'''
-            },
-            {
-                "id": "LC 91",
-                "title": "Decode Ways",
-                "difficulty": "Medium",
-                "complexity": "O(n) time, O(1) space",
-                "description": "Count number of ways to decode a string of digits (A=1, B=2, ..., Z=26).",
-                "approach": "DP where dp[i] = number of ways to decode s[:i]. Single digit valid if non-zero; double digit valid if 10-26.",
-                "code": '''def numDecodings(s):
-    if not s or s[0] == '0': return 0
- 
-    n = len(s)
-    # dp[i] = ways to decode s[:i]
-    prev2, prev1 = 1, 1  # dp[0], dp[1]
- 
-    for i in range(2, n + 1):
-        curr = 0
-        one_digit = int(s[i-1])
-        two_digit = int(s[i-2:i])
- 
-        if one_digit >= 1:         # valid single digit
-            curr += prev1
-        if 10 <= two_digit <= 26:  # valid double digit
-            curr += prev2
- 
-        prev2, prev1 = prev1, curr
- 
-    return prev1
- 
-print(numDecodings("12"))    # 2 (AB, L)
-print(numDecodings("226"))   # 3 (BZ, VF, BBF)
-print(numDecodings("06"))    # 0'''
-            },
+
         ]
     },
 }
