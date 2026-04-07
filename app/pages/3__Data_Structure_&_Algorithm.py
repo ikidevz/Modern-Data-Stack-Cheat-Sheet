@@ -135,133 +135,289 @@ def fibonacci(n):
     return fibonacci(n - 1) + fibonacci(n - 2)  # 2 recursive calls''',
         "leetcode_examples": [
             {
-                "id": "LC 1",
-                "title": "Two Sum",
-                "difficulty": "Easy",
-                "complexity": "O(n) time, O(n) space",
-                "description": "Given an array of integers, return indices of two numbers that add up to a target.",
-                "approach": "HashMap approach: store each number and its index. For each number, check if complement exists in map.",
-                "code": '''def twoSum(nums, target):
-    seen = {}  # value -> index
-    for i, num in enumerate(nums):
-        complement = target - num
-        if complement in seen:
-            return [seen[complement], i]
-        seen[num] = i
-    return []
- 
-# Example
-print(twoSum([2,7,11,15], 9))  # [0,1]
-print(twoSum([3,2,4], 6))       # [1,2]'''
-            },
-            {
-                "id": "LC 217",
-                "title": "Contains Duplicate",
-                "difficulty": "Easy",
-                "complexity": "O(n) time, O(n) space",
-                "description": "Return true if any value appears at least twice in the array.",
-                "approach": "Add each element to a set. If element already in set → duplicate found.",
-                "code": '''def containsDuplicate(nums):
-    seen = set()
-    for num in nums:
-        if num in seen:
-            return True
-        seen.add(num)
-    return False
- 
-# Pythonic one-liner: O(n) time, O(n) space
-def containsDuplicate2(nums):
-    return len(nums) != len(set(nums))
- 
-print(containsDuplicate([1,2,3,1]))  # True
-print(containsDuplicate([1,2,3,4]))  # False'''
-            },
-            {
-                "id": "LC 242",
-                "title": "Valid Anagram",
-                "difficulty": "Easy",
-                "complexity": "O(n) time, O(1) space (26 chars)",
-                "description": "Given two strings s and t, return true if t is an anagram of s.",
-                "approach": "Count character frequencies in both strings. Compare counts.",
-                "code": '''from collections import Counter
- 
-def isAnagram(s, t):
-    if len(s) != len(t):
-        return False
-    return Counter(s) == Counter(t)
- 
-# Manual approach (shows the O(1) space trick)
-def isAnagram2(s, t):
-    count = [0] * 26
-    for c in s: count[ord(c) - ord('a')] += 1
-    for c in t: count[ord(c) - ord('a')] -= 1
-    return all(x == 0 for x in count)
- 
-print(isAnagram("anagram", "nagaram"))  # True
-print(isAnagram("rat", "car"))          # False'''
-            },
-            {
-                "id": "LC 169",
-                "title": "Majority Element",
-                "difficulty": "Easy",
-                "complexity": "O(n) time, O(1) space (Boyer-Moore)",
-                "description": "Find the element that appears more than n/2 times.",
-                "approach": "Boyer-Moore Voting: keep a candidate and count. When count hits 0, switch candidate.",
-                "code": '''def majorityElement(nums):
-    # Boyer-Moore Voting Algorithm: O(1) space!
-    candidate, count = None, 0
-    for num in nums:
-        if count == 0:
-            candidate = num
-        count += 1 if num == candidate else -1
-    return candidate
- 
-# Verify complexity: O(n) time, O(1) space
-print(majorityElement([3,2,3]))        # 3
-print(majorityElement([2,2,1,1,1,2,2])) # 2'''
-            },
-            {
-                "id": "LC 268",
-                "title": "Missing Number",
+                "id": "LC 2239",
+                "title": "Find Closest Number to Zero",
                 "difficulty": "Easy",
                 "complexity": "O(n) time, O(1) space",
-                "description": "Find the missing number in range [0, n] given array of n distinct numbers.",
-                "approach": "Expected sum of [0..n] = n*(n+1)//2. Subtract actual sum to get the missing number.",
-                "code": '''def missingNumber(nums):
-    n = len(nums)
-    expected = n * (n + 1) // 2  # O(1) formula
-    return expected - sum(nums)
+                "description": "Given an integer array nums of size n, return the number with the value closest to 0 in nums. If there are multiple answers, return the number with the largest value.",
+                "approach": "This problem is typically solved using a linear scan algorithm. We initialize a variable, commonly called closest, with the first value of the array. As we iterate through the array, we compare each element using absolute value comparison: If the absolute value of the current number is less than that of closest, update closest. If the absolute values are the same, choose the positive number. This logic ensures that we return the number closest to zero and correctly handle tie-breakers in favor of positive values.",
+                "code": '''from typing import List
  
-# XOR approach: also O(n) time, O(1) space
-def missingNumber2(nums):
-    res = len(nums)
-    for i, num in enumerate(nums):
-        res ^= i ^ num  # XOR cancels pairs
-    return res
- 
-print(missingNumber([3,0,1]))    # 2
-print(missingNumber([9,6,4,2,3,5,7,0,1]))  # 8'''
+def findClosestNumber(nums: List[int]) -> int:
+    closest = nums[0]
+    for x in nums:
+        if abs(x) < abs(closest):
+            closest = x
+    
+    if closest < 0 and abs(closest) in nums:
+        return abs(closest)
+    else:
+        return closest'''
             },
             {
-                "id": "LC 412",
-                "title": "FizzBuzz",
+                "id": "LC 1768",
+                "title": "Merge Strings Alternately",
                 "difficulty": "Easy",
-                "complexity": "O(n) time, O(n) space",
-                "description": "Return strings for 1..n: 'FizzBuzz' if div by 15, 'Fizz' if div by 3, 'Buzz' if div by 5.",
-                "approach": "Iterate 1 to n, check divisibility with modulo. String concatenation trick avoids nested ifs.",
-                "code": '''def fizzBuzz(n):
-    result = []
-    for i in range(1, n + 1):
-        s = ""
-        if i % 3 == 0: s += "Fizz"
-        if i % 5 == 0: s += "Buzz"
-        result.append(s or str(i))  # fallback to number
-    return result
- 
-print(fizzBuzz(15))
-# ['1','2','Fizz','4','Buzz','Fizz','7','8',
-#  'Fizz','Buzz','11','Fizz','13','14','FizzBuzz']'''
+                "complexity": "O(T) time, O(T) space",
+                "description": "You are given two strings, word1 and word2. The task is to create a new string by merging characters alternately from each input. You begin with the first character of word1, followed by the first character of word2, then the second from word1, and so on. This continues until all characters from both strings are used. If one string is longer than the other, the remaining characters from the longer string are appended at the end.",
+                "approach": "First, import the zip_longest function from Python’s itertools module. You then use it to pair each character from word1 and word2. If one string is shorter, zip_longest fills in the gap with an empty string so the loop can continue without errors. For every paired set of characters, concatenate them and build the merged result as a single combined string. The final result is simply the join of all such pairs.",
+                "code": '''def mergeAlternately(self, word1: str, word2: str) -> str:
+    A, B = len(word1), len(word2)
+    a, b = 0, 0
+    s = []
+
+    word = 1
+    while a < A and b < B:
+        if word == 1:
+            s.append(word1[a])
+            a += 1
+            word = 2
+        else:
+            s.append(word2[b])
+            b += 1
+            word = 1
+    
+    while a < A:
+        s.append(word1[a])
+        a += 1
+    
+    while b < B:
+        s.append(word2[b])
+        b += 1
+    
+    return ''.join(s)'''
             },
+            {
+                "id": "LC 13",
+                "title": "Roman to Integer",
+                "difficulty": "Easy",
+                "complexity": "O(n) time, O(1) space",
+                "description": "You are given a Roman numeral string. Convert it to an integer. Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.",
+                "approach": "Iterate through the string from left to right. For each character, check if it forms a special case with the next character (like IV or IX). If so, subtract the value of the current character from the next one and add the result to the total. Otherwise, simply add the value of the current character to the total.",
+                "code": '''def romanToInt(self, s: str) -> int:
+    d = {'I': 1, 'V':5, 'X':10, 'L':50, 'C':100, 'D': 500, 'M':1000}
+    summ = 0
+    n = len(s)
+    i = 0
+    
+    while i < n:
+        if i < n - 1 and d[s[i]] < d[s[i+1]]:
+            summ += d[s[i+1]] - d[s[i]]
+            i += 2
+        else:
+            summ += d[s[i]]
+            i += 1
+    
+    return summ'''
+            },
+            {
+                "id": "LC 392",
+                "title": "Is Subsequence",
+                "difficulty": "Easy",
+                "complexity": "O(T) time, O(1) space",
+                "description": "Given two strings s and t, determine if s is a subsequence of t.",
+                "approach": "Use two pointers to traverse both strings. Move the pointer for t always, and move the pointer for s only when a matching character is found. If we reach the end of s, it means s is a subsequence of t.",
+                "code": '''def isSubsequence(self, s: str, t: str) -> bool:
+    S = len(s)
+    T = len(t)
+    if s == '': return True
+    if S > T: return False
+
+    j = 0
+    for i in range(T):
+        if t[i] == s[j]:
+            if j == S-1:
+                return True
+            j += 1
+    
+    return False'''
+            },
+            {
+                "id": "LC 121",
+                "title": "Best Time to Buy and Sell Stock",
+                "difficulty": "Easy",
+                "complexity": "O(n) time, O(1) space",
+                "description": "You are given an array prices where prices[i] is the price of a given stock on the ith day. You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock. Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.",
+                "approach": "Initialize two variables: min_price to track the lowest price seen so far, and max_profit to track the maximum profit. Iterate through the list of prices. For each price, update min_price if the current price is lower. Calculate the potential profit by subtracting min_price from the current price. If this potential profit is greater than max_profit, update max_profit. After iterating through all prices, return max_profit.",
+                "code": '''def maxProfit(prices: List[int]) -> int:
+    # Time: O(n)
+    # Space: O(1)
+    min_price = float('inf')
+    max_profit = 0        
+    
+    for price in prices:
+        if price < min_price:
+            min_price = price
+        
+        profit = price - min_price
+    
+        if profit > max_profit:
+            max_profit = profit
+            
+    return max_profit'''
+            },
+            {
+                "id": "LC 14",
+                "title": "Longest Common Prefix",
+                "difficulty": "Easy",
+                "complexity": " O(n * m) time, O(1) space",
+                "description": "Find the longest common prefix string amongst an array of strings. If there is no common prefix, return an empty string.",
+                "approach": "Find the minimum length among all strings. Iterate through each character position up to the minimum length. For each position, check if all strings have the same character. If so, add it to the result; otherwise, return the result.",
+                "code": '''def longestCommonPrefix(strs: List[str]) -> str:
+    min_length = float('inf')
+
+    for s in strs:
+        if len(s) < min_length:
+            min_length = len(s)
+    
+    i = 0
+    while i < min_length:
+        for s in strs:
+            if s[i] != strs[0][i]:
+                return s[:i]
+        i += 1
+    
+    return strs[0][:i]'''
+            },
+            {
+                "id": "LC 228",
+                "title": "Summary Ranges",
+                "difficulty": "Easy",
+                "complexity": " O(n) time, O(n) space",
+                "description": "Given a sorted integer array without duplicates, return the smallest sorted list of ranges that cover all the numbers in the array.",
+                "approach": "Iterate through the array and keep track of the start and end of each range. When a number is not consecutive to the previous one, finalize the current range and start a new one.",
+                "code": '''def summaryRanges(nums: List[int]) -> List[str]:
+        ans = []     
+        i = 0 
+        
+        while i < len(nums): 
+            start = nums[i]  
+            while i < len(nums)-1 and nums[i] + 1 == nums[i + 1]: 
+                i += 1 
+            
+            if start != nums[i]: 
+                ans.append(str(start) + "->" + str(nums[i]))
+            else: 
+                ans.append(str(nums[i]))
+            
+            i += 1
+ 
+        return ans'''
+            },
+            {
+                "id": "LC 238",
+                "title": "Product of Array Except Self",
+                "difficulty": "Medium",
+                "complexity": " O(n) time, O(n) space",
+                "description": "Given an integer array, return an array where each element at index i is the product of all elements in the array except the one at index i.",
+                "approach": "Iterate through the array and for each element, calculate the product of all other elements.",
+                "code": '''def productExceptSelf(nums: List[int]) -> List[int]:
+    l_mult = 1
+    r_mult = 1
+    n = len(nums)
+    l_arr = [0] * n
+    r_arr = [0] * n
+    
+    for i in range(n): 
+        j = -i -1
+        l_arr[i] = l_mult
+        r_arr[j] = r_mult
+        l_mult *= nums[i]
+        r_mult *= nums[j]
+
+    return [l*r for l, r in zip(l_arr, r_arr)]'''
+            },
+            {
+                "id": "LC 54",
+                "title": "Spiral Matrix",
+                "difficulty": "Medium",
+                "complexity": " O(m*n) time, O(1) space",
+                "description": "Given an m x n matrix, return all elements of the matrix in spiral order.",
+                "approach": "Traverse the matrix in a spiral pattern, keeping track of the boundaries.",
+                "code": '''def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+    m, n = len(matrix), len(matrix[0])
+    ans = []
+    i, j = 0, 0
+    UP, RIGHT, DOWN, LEFT = 0, 1, 2, 3
+    direction = RIGHT
+
+    UP_WALL = 0
+    RIGHT_WALL = n
+    DOWN_WALL = m
+    LEFT_WALL = -1
+
+    while len(ans) != m*n:
+        if direction == RIGHT:
+            while j < RIGHT_WALL:
+                ans.append(matrix[i][j])
+                j += 1
+            i, j = i+1, j-1
+            RIGHT_WALL -= 1
+            direction = DOWN
+        elif direction == DOWN:
+            while i < DOWN_WALL:
+                ans.append(matrix[i][j])
+                i += 1
+            i, j = i-1, j-1
+            DOWN_WALL -= 1
+            direction = LEFT
+        elif direction == LEFT:
+            while j > LEFT_WALL:
+                ans.append(matrix[i][j])
+                j -= 1
+            i, j = i-1, j+1
+            LEFT_WALL += 1
+            direction = UP
+        else:
+            while i > UP_WALL:
+                ans.append(matrix[i][j])
+                i -= 1
+            i, j = i+1, j+1
+            UP_WALL += 1
+            direction = RIGHT
+    
+    return ans'''
+            },
+            {
+                "id": "LC 56",
+                "title": "Merge Intervals",
+                "difficulty": "Medium",
+                "complexity": " O(n log n) time, O(n) space",
+                "description": "Given an array of intervals, merge all overlapping intervals.",
+                "approach": "Sort the intervals by their start times. Then iterate through the sorted intervals and merge any overlapping ones.",
+                "code": '''def merge(intervals: List[List[int]]) -> List[List[int]]:
+    intervals.sort(key=lambda interval: interval[0])
+    merged = []
+
+    for interval in intervals:
+        if not merged or merged[-1][1] < interval[0]:
+            merged.append(interval)
+        else:
+            merged[-1] = [merged[-1][0], max(merged[-1][1], interval[1])]
+    
+    return merged'''
+            },
+            {
+                "id": "LC 48",
+                "title": "Rotate Image",
+                "difficulty": "Medium",
+                "complexity": " O(n^2) time, O(1) space",
+                "description": "You are given an n x n 2D matrix representing an image. Rotate the image by 90 degrees (clockwise).",
+                "approach": "First transpose the matrix, then reverse each row.",
+                "code": '''def rotate(self, matrix: List[List[int]]) -> None:
+    n = len(matrix)
+    
+    # Tranpose
+    for i in range(n):
+        for j in range(i+1, n):
+            matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+    
+    # Reflection
+    for i in range(n):
+        for j in range(n // 2):
+            matrix[i][j], matrix[i][n-j-1] = matrix[i][n-j-1], matrix[i][j]'''
+            },
+
         ]
     },
 
