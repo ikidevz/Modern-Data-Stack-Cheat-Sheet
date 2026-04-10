@@ -115,7 +115,7 @@ elif section == "🪣 Storage – S3, Lake Formation, Glue Catalog":
             "Min storage days":   ["—", "—", "30", "30", "90", "90", "180"],
             "Min object size fee": ["—", "—", "128 KB", "128 KB", "128 KB", "40 KB", "40 KB"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
         st.subheader("S3 Consistency Model")
         st.markdown("""
@@ -221,7 +221,7 @@ resource "aws_s3_bucket_replication_configuration" "lake" {
             "Apache Hudi":         ["✅", "✅ (commits)", "✅ Partial", "❌", "Limited", "✅ (MoR)", "✅ Upsert-first", "Limited", "⭐⭐ (EMR, Glue)", "CDC-heavy upserts"],
             "Delta Lake":          ["✅", "✅ (versions)", "✅ Full", "❌", "❌", "✅", "✅ MERGE", "Optimistic CC", "⭐ (EMR, Glue partial)", "Databricks-origin shops"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
         st.subheader("Iceberg Table Properties Cheat Sheet")
         hcl("""
@@ -279,7 +279,7 @@ Lake Formation sits between IAM and the data. IAM controls service access; Lake 
             "Scale":             ["Low", "Medium", "Medium", "Medium", "⭐ High (100s of tables)"],
             "Use case":          ["Env isolation", "Team access", "PII masking", "Tenant isolation", "Enterprise governance"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
         st.subheader("LF-TBAC (Tag-Based Access Control)")
         hcl("""
@@ -414,7 +414,7 @@ elif section == "📥 Ingestion – Kinesis, MSK, Glue, DMS, AppFlow":
             "Limit":       ["Write per shard", "Read per shard (std)", "Read per shard (EFO)", "Max record size", "Retention", "Max shards (soft)", "Shard split/merge"],
             "Value":       ["1 MB/s or 1,000 records/s", "2 MB/s shared across consumers", "2 MB/s per consumer", "1 MB", "24h–8,760h (1yr)", "500", "UpdateShardCount API"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
         st.subheader("Kinesis Producer Library (KPL) vs SDK")
         df2 = pd.DataFrame({
@@ -422,7 +422,7 @@ elif section == "📥 Ingestion – Kinesis, MSK, Glue, DMS, AppFlow":
             "KPL":        ["✅ async", "✅ up to 500 records/shard", "✅ built-in", "✅", "Java only", "High-throughput producers, max cost efficiency"],
             "AWS SDK":    ["Manual", "Manual", "Manual", "Manual", "Any", "Simple producers, Lambda, quick scripts"],
         })
-        st.dataframe(df2, use_container_width=True, hide_index=True)
+        st.dataframe(df2, width='stretch', hide_index=True)
 
         st.subheader("Kinesis Firehose – Format Conversion to Parquet")
         hcl("""
@@ -556,7 +556,7 @@ resource "aws_mskconnect_connector" "s3_sink" {
             "Auth":      ["User/Pass, SSL", "MongoDB URI", "SASL/SSL", "IAM", "VPC endpoint", "IAM", "Endpoint+auth"],
             "Notes":     ["RDS, Aurora, on-prem", "Atlas or DocumentDB", "MSK or self-managed", "KDS direct", "Any VPC-accessible host", "Native, no connection needed", "ES/OpenSearch domains"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
         st.subheader("DMS – Ongoing CDC Architecture")
         st.markdown("""
@@ -688,7 +688,7 @@ resource "aws_appflow_flow" "salesforce_to_s3" {
             "Alternative":        ["JDBC directly in EMR", "Debezium on MSK Connect", "Lambda + API polling", "MSK + Kafka Streams", "Fluentd/Logstash → MSK", "SQS → Lambda → S3", "EventBridge Pipe → Step Functions"],
             "Avoid":              ["Row-by-row Lambda inserts", "DMS to Redshift (bottleneck)", "Custom API ETL for popular SaaS", "Polling DB for new rows", "Writing logs directly to Redshift", "Polling S3 for new files", "Cron + SSH + SCP"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
 # ════════════════════════════════════════════════════════════════════════════
 # PROCESSING
@@ -709,7 +709,7 @@ elif section == "⚙️ Processing – Glue, EMR, Redshift, Athena, Lambda":
             "Cost/hr":    ["$0.044", "$0.44", "$0.88", "$1.76", "$3.52", "$0.88"],
             "Best for":   ["Dev/small", "General", "Medium-large", "Large", "Huge shuffles", "Ray workloads"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
         st.subheader("Glue Job Bookmark – How it Works")
         st.markdown("""
@@ -896,7 +896,7 @@ resource "aws_emrserverless_application" "spark" {
             "When":    ["No obvious join key", "Large tables joined on same key", "Small dimension tables", "Let Redshift optimize"],
             "Risk":    ["Data shuffling on joins", "Hot nodes if skewed", "Storage overhead", "Less control"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
         st.subheader("Redshift Workload Management (WLM)")
         st.markdown("""
@@ -981,7 +981,7 @@ SECRET_ARN 'arn:aws:secretsmanager:us-east-1:123456789:secret:aurora-creds';
             "Available in": ["v3 + Iceberg", "v2 + v3", "v3", "v2 + v3", "v3", "v2 + v3", "v3"],
             "Notes":        ["Iceberg upserts natively", "RANK, DENSE_RANK, LAG, LEAD", "Complex event detection", "CUBE, ROLLUP, GROUPING SETS", "UNNEST, CROSS JOIN LATERAL", "approx_distinct, approx_percentile", "Table stats from Glue Catalog"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
         st.subheader("Athena Query Optimization Patterns")
         sql("""
@@ -1161,7 +1161,7 @@ elif section == "🏗️ Architectures – Lake, Warehouse, Lakehouse, Mesh":
             "Readers":  ["Data engineers only", "Data engineers, Data scientists", "BI, Analysts, Data scientists, APIs"],
             "LF grants": ["DE role only", "DE + DS roles", "All roles with appropriate column/row filters"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
     with tab2:
         st.header("Data Warehouse (Redshift)")
@@ -1221,7 +1221,7 @@ Batch ETL:  S3 raw → EMR Spark → S3 Iceberg (gold)  ───────┘
             "Decision":      ["Partition strategy", "File size target", "Compaction frequency", "Table maintenance", "Sort order", "Write mode"],
             "Recommendation": ["Days for time-series, hash bucket for high-cardinality IDs", "128–256 MB (sweet spot for Athena/Spark)", "Hourly for streaming tables, daily for batch", "Weekly snapshot expiry + orphan file cleanup", "Cluster by most-filtered column", "merge-on-read for streaming, copy-on-write for batch"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
         st.subheader("Iceberg Maintenance Jobs (Glue PySpark)")
         st.code('''
@@ -1300,7 +1300,7 @@ def run_iceberg_maintenance(spark, catalog, database, table):
             "Lambda Arch":     ["Batch + Speed + Serving", "Three (batch, speed, serving)", "High — two code paths", "Batch is source of truth", "Yes, batch layer reprocesses", "Mixed batch+streaming with different freshness needs"],
             "Kappa Arch":      ["Streaming only", "One (streaming, replay for batch)", "Lower — one code path", "Stream is source of truth", "Replay from Kafka/KDS with offset reset", "Primarily streaming, reprocess by replaying"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
         info("Most modern lakehouses implement a simplified Kappa-style architecture using Iceberg streaming + batch MERGE on the same table.")
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -1321,7 +1321,7 @@ elif section == "🎼 Orchestration – MWAA, Step Functions, EventBridge":
             "Max workers":  [5, 10, 25, 50, 100],
             "Cost/hr":      ["~$0.49", "~$0.98", "~$1.96", "~$3.92", "~$7.84"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
         st.subheader("DAG – AWS Pipeline Example")
         py("""
@@ -1507,7 +1507,7 @@ resource "aws_scheduler_schedule" "glue_daily" {
             "MWAA (Airflow)":  ["TriggerDagRunOperator", "ExternalTaskSensor", "XCom + Airflow state", "S3KeySensor / trigger", "HttpSensor + approval API", "SLA miss callbacks"],
             "Best choice":     ["Step Fn (simpler)", "Both equal", "MWAA (built-in)", "Step Fn (native)", "Both (SFN simpler)", "MWAA (richer)"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
 # ════════════════════════════════════════════════════════════════════════════
 # GOVERNANCE
@@ -1524,7 +1524,7 @@ elif section == "🔒 Governance, Security & Quality":
             "Service":   ["IAM + Organizations SCPs", "Lake Formation (column/row)", "Glue Data Catalog + Schema Registry", "Glue Data Quality", "AWS Glue / Data Zone catalog", "Lake Formation lineage / OpenLineage on MWAA", "Secrets Manager / Parameter Store", "AWS Config + Audit Manager + CloudTrail"],
             "Key action": ["Least privilege roles, no long-term keys", "LF-TBAC for scale, row filters for tenancy", "Versioned schemas on Kinesis/MSK", "DQDL rules on Glue tables, quarantine bad records", "Tag-based discovery, business glossary", "Track job → table lineage automatically", "Rotate credentials, inject into Glue/Lambda", "Continuous compliance checks, evidence collection"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
     with tab2:
         st.header("Glue Data Quality – DQDL Reference")
@@ -1603,7 +1603,7 @@ glueContext.write_dynamic_frame.from_options(bad_records,  "s3", {"path": "s3://
             "Recommendation": ["SSE-KMS with customer-managed key + Bucket Key", "HTTPS enforced via bucket policy", "KMS cluster encryption", "SSL required via parameter group", "KMS encryption", "TLS between brokers and clients", "SSL certificates in Secrets Manager", "Secrets Manager with auto-rotation"],
             "Terraform key":  ["`sse_algorithm = aws:kms`", "`aws:SecureTransport` condition", "`encrypted = true`", "`require_ssl = true`", "`encryption_type = KMS`", "`encryption_in_transit`", "VPC + SG isolation", "aws_secretsmanager_secret_rotation"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
         st.subheader("S3 Bucket Policy – Enforce HTTPS + Restrict to Org")
         hcl("""
@@ -1664,7 +1664,7 @@ elif section == "📊 Analytics & BI – QuickSight, OpenSearch, SageMaker":
             "Attribute":    ["Storage per user", "Refresh modes", "Query speed", "Max dataset size", "Supported sources", "Cost"],
             "Detail":       ["10 GB (Standard), unlimited (Enterprise)", "Full refresh or incremental", "Sub-second on SPICE, seconds on direct query", "Up to 500 GB per dataset (SPICE)", "S3, Athena, Redshift, Aurora, RDS, Salesforce, JIRA, 30+ more", "$9/user/mo (Standard), $18/user/mo (Enterprise)"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
         st.subheader("Row-Level Security (RLS)")
         st.markdown("""
@@ -1721,7 +1721,7 @@ resource "aws_quicksight_data_source" "athena" {
             "Ingestion":    ["Firehose → OpenSearch", "Lambda → OpenSearch client", "Kinesis → Firehose → OpenSearch", "Built-in ML plugin", "MSK → Kafka connector → OpenSearch"],
             "Index strategy": ["1 index/day (ILM policy)", "1 index/domain", "Rollover alias", "Dedicated index", "Date-based rollover"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
         st.subheader("Firehose → OpenSearch with S3 Backup")
         hcl("""
@@ -1842,7 +1842,7 @@ elif section == "🔄 dbt on AWS":
             "dbt Core":      ["Self-hosted (MWAA, ECS, Lambda)", "MWAA DAG / Step Functions", "VS Code + dbt extension", "GitHub Actions / CodePipeline", "Free (OSS)", "Full control, any runner"],
             "dbt Cloud":     ["SaaS", "Built-in scheduler", "dbt Cloud IDE", "Native CI/CD jobs", "$50/seat/mo (Teams)", "Managed, less control"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
         tip("Run **dbt Core on MWAA** (most common enterprise pattern) or on **AWS CodeBuild** for CI runs.")
 
     with tab2:
@@ -1854,7 +1854,7 @@ elif section == "🔄 dbt on AWS":
             "Best for":         ["DWH transformations", "S3 lake transforms", "Spark-native transforms", "Lakehouse SQL transforms"],
             "Install":          ["`pip install dbt-redshift`", "`pip install dbt-athena-community`", "`pip install dbt-spark`", "`pip install dbt-trino`"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
         st.subheader("dbt profiles.yml – Redshift + Athena")
         bash("""
@@ -2055,7 +2055,7 @@ elif section == "⚖️ Comparisons":
             "Data Warehouse":  ["Managed (Redshift)", "On-write", "✅", "High", "High", "Low", "Redshift MPP", "Structured BI, dashboards, finance reporting"],
             "Data Lakehouse":  ["S3 (Iceberg/Hudi)", "On-write+read", "✅", "High", "Low-medium", "High", "Multi-engine", "Unified platform, streaming+batch, ML+BI"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
     with tab2:
         st.header("Processing Engine Comparison")
@@ -2068,7 +2068,7 @@ elif section == "⚖️ Comparisons":
             "Athena":       ["Serverless Trino", "SQL (Trino)", "Auto", "Instant", "$/TB scanned", "✅ Native", "Ad-hoc queries, infrequent, S3"],
             "Lambda":       ["Serverless", "Python, Node, Java…", "Auto (concurrency)", "Cold: 100ms-2s", "Per invocation", "❌ (via boto3)", "Event-driven, lightweight transforms"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
     with tab3:
         st.header("Streaming Services Comparison")
@@ -2080,7 +2080,7 @@ elif section == "⚖️ Comparisons":
             "SQS":          ["HTTP/SDK", "Queue-based", "FIFO optional", "❌ (14d max)", "14 days", "1 consumer (std)", "Simple decoupling", "Per million requests", "Task queues, decoupling, retry"],
             "EventBridge":  ["Event-driven", "N/A", "No ordering", "❌", "None (fire+forget)", "Rules-based fan-out", "AWS events + SaaS", "Per event", "Event routing, triggers, SaaS"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
     with tab4:
         st.header("Storage Format Comparison")
@@ -2094,7 +2094,7 @@ elif section == "⚖️ Comparisons":
             "Athena support": ["✅", "✅", "✅", "✅", "✅", "✅", "✅ (partial)"],
             "Best for":       ["Import/export", "APIs, logs", "Kafka streams", "Analytics", "Hive/EMR", "Lakehouse", "Databricks"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
     with tab5:
         st.header("Orchestration Comparison")
@@ -2106,7 +2106,7 @@ elif section == "⚖️ Comparisons":
             "Lambda (cron)": ["Function", "Code only", "EventBridge rule", "Low", "Per invocation", "Native AWS", "Simple one-step scheduled jobs"],
             "CodePipeline":  ["Pipeline stages", "Console/IaC", "Commit/S3/manual", "Low", "Per pipeline", "CI/CD focused", "dbt CI/CD, Glue script deployment"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
     with tab6:
         st.header("Decision Guide: When to Use What")
@@ -2115,7 +2115,7 @@ elif section == "⚖️ Comparisons":
             "Recommended":                           ["Athena v3 + Iceberg", "EMR Serverless or Glue G.2X+", "Kinesis → Firehose → S3 → Athena", "MSK + Flink on EMR Serverless", "AppFlow", "DMS CDC or Debezium on MSK Connect", "SageMaker Feature Store", "Lake Formation + LF-TBAC", "MWAA", "Step Functions + EventBridge Scheduler"],
             "Why":                                   ["Serverless, no infra, pay per query", "Better cost/performance than Glue at scale", "Managed, no consumers to write", "Sub-second processing with full Kafka ecosystem", "No-code, built-in Salesforce connector", "Purpose-built for DB replication", "Dual online/offline store, Athena queryable", "Scales to 1000s of tables with tag policies", "Rich DAG model, Airflow compatibility", "No Airflow overhead for simple schedules"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
 # ════════════════════════════════════════════════════════════════════════════
 # IaC – TERRAFORM
@@ -2400,7 +2400,7 @@ elif section == "🚀 Modern Patterns":
             "Setup":             ["1 API call", "1 API call", "1 API call", "1 API call", "Console", "S3 → Redshift COPY schedule"],
             "Transformation":    ["❌ Raw only", "❌ Raw only", "❌ Raw only", "❌ Raw only", "❌ Raw only", "❌ Raw only"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
         info("Zero-ETL removes the replication infrastructure but NOT transformation. You still need dbt/Redshift stored procedures for business logic.")
 
     with tab2:
@@ -2598,7 +2598,7 @@ elif section == "🐛 Debugging & Troubleshooting":
             "Likely cause":                ["Insufficient workers, data skew", "Table not registered in Glue Catalog", "Job run with DISABLE instead of ENABLE", "Mixed/null types in source", "Missing S3 permissions on IAM role", "Concurrent writers + small transaction conflict", "Insufficient shuffle partitions", "Too many small Parquet files"],
             "Fix":                         ["Add workers or use G.2X+, add repartition()", "Run Crawler or register table via Glue API/TF", "Set `--job-bookmark-option = job-bookmark-enable`", "Use ResolveChoice transform before converting", "Add s3:GetObject/PutObject/ListBucket to Glue role", "Increase `write.target-file-size-bytes`, reduce concurrency", "Set `spark.sql.shuffle.partitions` to 2-3× total cores", "Compact files first with Iceberg `rewrite_data_files`"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
         st.subheader("Glue – Enable Continuous CloudWatch Logging")
         hcl("""
@@ -2618,7 +2618,7 @@ elif section == "🐛 Debugging & Troubleshooting":
             "Error":                          ["YARN ApplicationMaster OOM", "Spark executor lost (Spot interruption)", "GC overhead limit exceeded", "S3 slow performance", "Job killed: exceeded memory limit", "FileAlreadyExistsException (Iceberg)", "EMR bootstrap failed"],
             "Fix":                            ["Increase `spark.driver.memory`, use G.2X Master", "Retry logic in job, use task-level checkpointing", "Reduce executor memory fraction: `spark.memory.fraction=0.6`", "Use EMRFS consistent view, increase s3a connection pool", "Increase `spark.executor.memory` or reduce parallelism", "Check for concurrent writers, enable Iceberg optimistic CC", "Check bootstrap action script logs in /mnt/var/log/bootstrap-actions/"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
         bash("""
 # EMR — SSH into master node and check logs
@@ -2680,7 +2680,7 @@ FROM stv_wlm_service_class_state WHERE service_class > 4;
             "Error":                                    ["HIVE_PARTITION_SCHEMA_MISMATCH", "GENERIC_INTERNAL_ERROR: S3 location not found", "Query timeout", "High cost per query", "MSCK REPAIR TABLE takes forever", "Iceberg table not found after Glue Crawler"],
             "Fix":                                      ["Schema changed after partition created — drop+recreate partition or use Iceberg", "S3 path in table definition doesn't exist — update table location", "Add LIMIT, use partitioning, break into smaller queries", "Switch to Parquet+Iceberg, add partition filter, use CTAS to pre-aggregate", "Never use MSCK on large tables — use `ALTER TABLE ADD PARTITION` or Iceberg crawlers", "Crawlers don't support Iceberg — register Iceberg tables via Glue API or Terraform"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
         bash("""
 # Athena CLI — check query execution details
@@ -2703,7 +2703,7 @@ aws athena list-query-executions --work-group analytics-team \
             "Symptom":                              ["ProvisionedThroughputExceededException", "Iterator expired", "Consumer falling behind (high GetRecords.IteratorAgeMilliseconds)", "MSK consumer group lag", "MSK broker disk full", "Firehose delivery failures"],
             "Fix":                                  ["Add shards (UpdateShardCount), use KPL aggregation, retry with exponential backoff", "Shard iterator expires after 5 min idle — re-get iterator or use Enhanced Fan-Out", "Add consumers, use Enhanced Fan-Out (2MB/s per consumer per shard), scale app", "Check consumer lag in MSK metrics, scale consumers, check processing bottleneck", "Increase broker storage or enable auto-expand, implement topic retention limits", "Check S3 permissions on Firehose role, check error prefix path for failed records"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
         bash("""
 # KDS — check iterator age (lag indicator)
@@ -2748,7 +2748,7 @@ elif section == "📐 Data Modeling Patterns":
             "Snowflake":     ["Multiple joins per dim", "Slower (more joins)", "Low (normalized)", "Complex", "Normalized consistency"],
             "OBT (One Big Table)": ["0 joins", "Fastest reads", "High (duplication)", "Denorm on write", "Analytics, Athena"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
         st.subheader("SCD Type 2 on Redshift")
         sql("""
@@ -2803,7 +2803,7 @@ $$ LANGUAGE plpgsql;
             "Read by":     ["Data engineers (audit/replay)", "Data scientists, DE", "BI tools, Analysts, APIs, ML"],
             "Partitioned by": ["Ingest date", "Event/business date + entity", "Business date + dimension"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
     with tab3:
         st.header("Data Vault 2.0 on AWS")
@@ -2905,7 +2905,7 @@ elif section == "💰 Cost Optimization":
             "Min days":           ["—", "—", "30", "90", "90", "180"],
             "Retrieval":          ["Free", "Free (auto)", "$0.01/GB", "$0.03/GB", "$0.01/GB", "$0.02/GB"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
         st.markdown("""
 **Quick wins:**
@@ -2925,7 +2925,7 @@ elif section == "💰 Cost Optimization":
             "Action":            ["Use G.025X for small jobs", "Use Python Shell for lightweight ETL", "Enable auto-scaling", "Reduce number of workers", "Set job timeout", "Dev endpoint costs"],
             "Saving":            ["75% vs G.1X", "No Spark overhead (cheap)", "Only scale when needed", "Most over-provision by 2×", "Prevents runaway cost", "$0.44/DPU-hr — kill after dev"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
         st.subheader("EMR Cost Levers")
         st.markdown("""
@@ -2943,7 +2943,7 @@ elif section == "💰 Cost Optimization":
             "Saving vs on-demand": ["Pay per use (no idle)", "~40%", "~60%", "100% during pause hours", "Only pay when scaling", "Spectrum $5/TB scanned vs COPY+storage"],
             "Best when":         ["Variable/intermittent load", "Steady-state 24/7 workloads", "Long-term committed", "Dev/staging clusters", "Occasional BI bursts", "Infrequent large-table queries"],
         })
-        st.dataframe(df2, use_container_width=True, hide_index=True)
+        st.dataframe(df2, width='stretch', hide_index=True)
 
     with tab3:
         st.header("Query Cost Optimization")
@@ -2952,7 +2952,7 @@ elif section == "💰 Cost Optimization":
             "Technique":         ["Parquet vs CSV", "Partition pruning", "Iceberg file statistics", "CTAS pre-aggregation", "Result reuse cache", "Workgroup byte limit", "approx_distinct()"],
             "Scan reduction":    ["60–87%", "90%+ (with good partition)", "50–80% via bloom filters", "90%+ for repeated aggregations", "100% (free re-run)", "Prevents runaway queries", "No scan change, 10–100× faster"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
         st.subheader("Redshift – Query Cost Reduction")
         sql("""
@@ -3303,7 +3303,7 @@ def run_athena(query, workgroup='analytics-team', output='s3://my-lake/athena-re
             "Recommended":                      ["2–3× total cores", "node_ram - 1GB / executors_per_node", "4–5", "4–8g", "true", "true", "true", "true", "100", "true", "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions", "org.apache.iceberg.spark.SparkCatalog"],
             "Notes":                            ["Default 200 is too low for large datasets", "Leave 1GB for OS overhead", "4 is the sweet spot (parallelism + overhead)", "Keep higher for large result sets", "AQE auto-optimises joins and partition count", "Merges small shuffle partitions automatically", "Handles data skew automatically", "Must pair with external shuffle service", "Increase for S3-heavy workloads", "Faster multipart S3 uploads", "Required for Iceberg SQL extensions", "Required for Iceberg Glue Catalog"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
         bash("""
 # spark-submit with recommended configs
@@ -3353,7 +3353,7 @@ Each pipeline covers: architecture diagram → services → code → Terraform �
             "ETL":          ["Before load (in Glue/EMR)", "Strict — target schema known upfront", "Glue, EMR", "Medium", "Sensitive targets (Redshift), strict schemas, PII must be masked before landing"],
             "ELT":          ["After load (in Redshift/Athena/dbt)", "Flexible — raw lands first", "Redshift, Athena, dbt", "Large", "Data lake/lakehouse, exploration-first, schema-on-read targets"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
         st.subheader("Full ETL Pipeline Architecture")
         st.code("""
@@ -4380,7 +4380,7 @@ What is your PRIMARY requirement?
             "Cost":             ["Low", "Low", "Medium", "Medium", "Medium-High", "High"],
             "Best for":         ["RDS→DWH replication", "Nightly reporting, DWH loads", "ML, exploration, archive", "Unified analytics + ML", "Real-time dashboards, fraud, IoT", "Legacy hybrid: different freshness needs"],
         })
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
 
         st.subheader("Service Selection per Pipeline")
         df2 = pd.DataFrame({
@@ -4390,7 +4390,7 @@ What is your PRIMARY requirement?
             "Lakehouse":    ["All sources", "Firehose, DMS, AppFlow", "—", "Glue ETL, EMR", "S3 Iceberg (Bronze/Silver/Gold)", "Glue Catalog", "Glue ETL, dbt-athena", "Step Functions + EventBridge", "Athena, Redshift Spectrum", "Lake Formation TBAC", "Terraform"],
             "Kappa Stream": ["Events, CDC streams", "Kinesis, MSK", "Glue Streaming, Flink (EMR)", "Replay via Glue Streaming", "S3 Iceberg", "Glue Catalog", "Stream MERGE + dbt (Gold)", "EventBridge Pipes + SFN", "Athena, QuickSight direct", "Lake Formation", "Terraform"],
         })
-        st.dataframe(df2, use_container_width=True, hide_index=True)
+        st.dataframe(df2, width='stretch', hide_index=True)
 
         st.subheader("Key Checklist Before Going to Production")
         col1, col2 = st.columns(2)

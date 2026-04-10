@@ -197,7 +197,7 @@ Raw Data / Events
             "OSS":     ["Kafka",     "Spark",     "Flink",             "HDFS / S3",       "Druid / Cassandra"],
             "AWS":     ["Kinesis",   "EMR+Glue",  "Kinesis Analytics", "S3 + DynamoDB",   "Redshift / DynamoDB"],
             "GCP":     ["Pub/Sub",   "Dataproc",  "Dataflow",          "GCS + Bigtable",  "BigQuery"],
-        }), use_container_width=True, hide_index=True)
+        }), width='stretch', hide_index=True)
 
     # ─── KAPPA ───────────────────────────────────────────────────────────────
     with tab_kappa:
@@ -265,7 +265,7 @@ Raw Data / Events
             "OSS":        ["Kafka",       "Flink / Kafka Streams",    "RocksDB",        "ClickHouse / Redis"],
             "AWS":        ["MSK/Kinesis", "Kinesis Data Analytics",   "DynamoDB",       "Redshift / ElastiCache"],
             "GCP":        ["Pub/Sub",     "Dataflow",                 "Bigtable",       "BigQuery / Memorystore"],
-        }), use_container_width=True, hide_index=True)
+        }), width='stretch', hide_index=True)
 
     # ─── COMPARISON ──────────────────────────────────────────────────────────
     with tab_compare:
@@ -284,7 +284,7 @@ Raw Data / Events
                                    "Replay Kafka from offset 0", "Good (limited by stream)",
                                    "Lower (unified)", "Higher (Kafka retention)",
                                    "Days–Weeks", "Startups, event-driven apps"],
-        }), use_container_width=True, hide_index=True)
+        }), width='stretch', hide_index=True)
 
         st.markdown("#### 🧭 Decision Framework")
         st.code("""
@@ -1328,7 +1328,7 @@ elif "📋 Cheat Sheet" in page:
                                  "Replay Kafka from offset 0", "Same stream processor",
                                  "No — single codebase", "New consumer group + replay",
                                  "Exactly-once (Flink)", "Milliseconds–seconds", "Smaller"],
-    }), use_container_width=True, hide_index=True)
+    }), width='stretch', hide_index=True)
 
     st.divider()
     cs1, cs2 = st.columns(2)
@@ -1338,14 +1338,14 @@ elif "📋 Cheat Sheet" in page:
             "Layer":    ["Ingest", "Batch Store", "Batch Engine", "Speed Engine", "Serving", "Orchestration"],
             "Tools":    ["Kafka/Kinesis", "HDFS/S3/GCS", "Spark/Hive/Hadoop", "Flink/Storm/Kafka Streams",
                          "Cassandra/Druid/Redis", "Airflow/Prefect"],
-        }), use_container_width=True, hide_index=True)
+        }), width='stretch', hide_index=True)
     with cs2:
         st.subheader("🔵 Kappa Stack")
         st.dataframe(pd.DataFrame({
             "Component": ["Event Log", "Stream Engine", "State Store", "Serving", "Monitoring", "Orchestration"],
             "Tools":     ["Kafka/Redpanda/Pulsar", "Flink/Kafka Streams/Faust", "RocksDB",
                           "ClickHouse/Redis/Pinot", "Prometheus + Grafana", "Kubernetes Jobs"],
-        }), use_container_width=True, hide_index=True)
+        }), width='stretch', hide_index=True)
 
     st.divider()
     st.subheader("🎯 Interview Quick Answers")
@@ -1372,7 +1372,7 @@ elif "📋 Cheat Sheet" in page:
         ],
     }
     st.dataframe(pd.DataFrame(qa_data),
-                 use_container_width=True, hide_index=True)
+                 width='stretch', hide_index=True)
 
     st.divider()
     st.subheader("⚠️ Common Pitfalls")
@@ -1407,7 +1407,7 @@ elif "📋 Cheat Sheet" in page:
         "Install":           [f"pip install {p}" for p in [
                               "pyspark", "confluent-kafka", "faust-streaming", "apache-flink",
                               "kafka-python", "redis", "clickhouse-driver", "prometheus-client", "apache-airflow"]],
-    }), use_container_width=True, hide_index=True)
+    }), width='stretch', hide_index=True)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -1616,7 +1616,7 @@ elif "🎛️ Interactive Tools" in page:
         }
         df_latency = pd.DataFrame(scenarios, index=["🟡 Lambda", "🔵 Kappa"]).T
         df_latency.index.name = "Scenario"
-        st.dataframe(df_latency, use_container_width=True)
+        st.dataframe(df_latency, width='stretch')
 
         st.caption(
             "Lambda excels at historical accuracy at the cost of data staleness. "
