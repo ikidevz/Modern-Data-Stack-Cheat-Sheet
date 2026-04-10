@@ -77,6 +77,14 @@ PAGE_META = {
     "DSA": {
         "title": "Data Structure & Algorithm Cheat Sheet",
         "description": "Cheat sheet covering essential data structures and algorithms for data professionals, including arrays, linked lists, trees, sorting algorithms, and more.",
+    },
+    "Kappa & Lambda Architecture": {
+        "title": "Kappa & Lambda Architecture Cheat Sheet",
+        "description": "Cheat sheet covering essential concepts and patterns for both Kappa and Lambda data architectures.",
+    },
+    "AWS": {
+        "title": "AWS Data Engineering Cheat Sheet",
+        "description": "Comprehensive reference for data engineers building on AWS.",
     }
 }
 

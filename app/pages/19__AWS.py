@@ -1,6 +1,9 @@
 import streamlit as st
 import pandas as pd
 
+from components import sidebar
+from utility.seo import inject_seo
+
 st.set_page_config(
     page_title="AWS Data Engineering Cheat Sheet v2",
     page_icon="☁️",
@@ -8,6 +11,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+inject_seo('AWS')
 SECTIONS = [
     "🏠 Home",
     "🪣 Storage – S3, Lake Formation, Glue Catalog",
@@ -25,9 +29,9 @@ SECTIONS = [
     "📐 Data Modeling Patterns",
     "💰 Cost Optimization",
     "📋 Quick Reference – CLI & SQL Snippets",
-    "🧬 Master DE Pipelines – ETL/ELT, DWH, Lake, Lakehouse (Kappa)",
+    "🧬 Master DE Pipelines – ETL/ELT, DWH, Lake, Kappa",
 ]
-
+sidebar()
 st.sidebar.title("☁️ AWS Data Eng v2")
 st.sidebar.markdown("**Expanded Cheat Sheet**")
 section = st.sidebar.radio("Navigate", SECTIONS, label_visibility="collapsed")
@@ -3326,7 +3330,7 @@ spark-submit \
 # ════════════════════════════════════════════════════════════════════════════
 # MASTER DE PIPELINES – ETL/ELT, DWH, LAKE, LAKEHOUSE (KAPPA)
 # ════════════════════════════════════════════════════════════════════════════
-elif section == "🧬 Master DE Pipelines – ETL/ELT, DWH, Lake, Lakehouse (Kappa)":
+elif section == "🧬 Master DE Pipelines – ETL/ELT, DWH, Lake, Kappa":
     st.title("🧬 Master Data Engineer Pipelines on AWS")
     st.markdown("""> **End-to-end, production-grade pipeline blueprints** for every major DE pattern.
 Each pipeline covers: architecture diagram → services → code → Terraform → orchestration → monitoring.""")
