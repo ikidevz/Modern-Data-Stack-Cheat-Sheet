@@ -15,13 +15,6 @@ inject_seo('Kappa & Lambda Architecture')
 st.markdown("""
 <style>
 /* Clean white base */
-.stApp { background: #ffffff; }
-
-/* Sidebar */
-section[data-testid="stSidebar"] {
-    background: #f8f9fa !important;
-    border-right: 1px solid #e9ecef;
-}
 
 /* Remove default padding on metric */
 [data-testid="metric-container"] {
