@@ -382,7 +382,7 @@ dim_customer
 
     import pandas as pd
     st.dataframe(pd.DataFrame(comparison_data),
-                 use_container_width=True, hide_index=True)
+                 width='stretch', hide_index=True)
 
     st.divider()
 
