@@ -3,7 +3,7 @@ import datetime
 from components import sidebar
 from utility.seo import inject_seo
 
-st.set_page_config(page_title="Data Model", layout="wide")
+st.set_page_config(page_title="Data Model", page_icon="📐", layout="wide")
 inject_seo('Data Model')
 sidebar()
 st.title("📐 Data Model")
