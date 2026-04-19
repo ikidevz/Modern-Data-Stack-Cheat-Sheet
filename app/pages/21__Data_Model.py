@@ -495,59 +495,6 @@ dim_customer
         st.markdown(f"**{term}**")
         st.caption(definition)
 
-    st.divider()
-
-    # ── Discussions & Notes (with export) ─────────────────────────────────────
-    st.subheader("Discussions & Notes")
-    st.write(
-        "_Use this space for team annotations and open questions about your data models._")
-
-    if "notes_list" not in st.session_state:
-        st.session_state.notes_list = []
-
-    new_note = st.text_area(
-        "Add a note or discussion point:",
-        placeholder="e.g. Should the orders fact table use transaction or periodic snapshot grain?",
-        height=120,
-        key="new_note_input",
-    )
-
-    col_submit, col_export = st.columns([1, 3])
-
-    with col_submit:
-        if st.button("💬 Submit Note"):
-            if new_note.strip():
-                timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
-                st.session_state.notes_list.append(
-                    {"timestamp": timestamp, "note": new_note.strip()}
-                )
-                st.success("Note saved!")
-                st.rerun()
-            else:
-                st.warning("Please enter a note before submitting.")
-
-    if st.session_state.notes_list:
-        st.markdown(
-            f"**{len(st.session_state.notes_list)} note(s) saved this session:**")
-        for i, entry in enumerate(reversed(st.session_state.notes_list), 1):
-            st.markdown(f"**{i}.** `{entry['timestamp']}` — {entry['note']}")
-
-        # Build export text
-        export_lines = ["Data Model — Discussion Notes", "=" * 40, ""]
-        for entry in st.session_state.notes_list:
-            export_lines.append(f"[{entry['timestamp']}]")
-            export_lines.append(entry["note"])
-            export_lines.append("")
-        export_text = "\n".join(export_lines)
-
-        with col_export:
-            st.download_button(
-                label="⬇️ Export notes as .txt",
-                data=export_text,
-                file_name=f"data_model_notes_{datetime.datetime.now().strftime('%Y%m%d')}.txt",
-                mime="text/plain",
-            )
-
 
 # ─── TAB 2: Examples ─────────────────────────────────────────────────────────
 with tab2:
