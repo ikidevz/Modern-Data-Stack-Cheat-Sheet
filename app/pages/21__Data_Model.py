@@ -521,14 +521,14 @@ with tab2:
                 │ segment         │
                 └────────┬────────┘
                          │
-┌──────────────┐  ┌──────▼───────────────────────┐  ┌─────────────────┐
-│  dim_product │  │      fact_order_lines         │  │   dim_date      │
-│──────────────│  │──────────────────────────────│  │─────────────────│
-│ product_key  ├─►│ order_line_key  PK            │◄─┤ date_key PK     │
-│ product_name │  │ customer_key  FK              │  │ full_date       │
-│ category     │  │ product_key   FK              │  │ month / quarter │
-│ brand        │  │ date_key      FK              │  │ year            │
-│ unit_cost    │  │ channel_key   FK              │  └─────────────────┘
+┌──────────────┐  ┌──────▼────────────────────────┐   ┌─────────────────┐
+│  dim_product │  │      fact_order_lines         │   │   dim_date      │
+│──────────────│  │───────────────────────────────│   │─────────────────│
+│ product_key  ├─►│ order_line_key  PK            │◄─ ┤ date_key PK     │
+│ product_name │  │ customer_key  FK              │   │ full_date       │
+│ category     │  │ product_key   FK              │   │ month / quarter │
+│ brand        │  │ date_key      FK              │   │ year            │
+│ unit_cost    │  │ channel_key   FK              │   └─────────────────┘
 └──────────────┘  │ quantity_ordered              │
                   │ unit_price / gross_revenue    │  ┌─────────────────┐
                   │ discount / net_revenue        │  │  dim_channel    │
@@ -590,7 +590,7 @@ ORDER  BY d.month, total_net_revenue DESC;
         """)
 
     # ── Example 02 ────────────────────────────────────────────────────────────
-    with st.expander("✅ Example 02 — Kimball: SaaS Subscription Metrics (MRR, Churn, ARR)"):
+    with st.expander("✅ Example 02 — Kimball: SaaS Subscription Metrics (MRR, Churn, ARR)",  expanded=True):
         st.markdown("#### Overview")
         st.write("Tracks subscription-based revenue metrics for a SaaS business: Monthly Recurring Revenue, churn, expansions, and Annual Run Rate.")
         st.markdown("#### Grain")
@@ -656,7 +656,7 @@ ORDER  BY d.year, d.month;
         """)
 
     # ── Example 03 ────────────────────────────────────────────────────────────
-    with st.expander("✅ Example 03 — Kimball: Marketing Attribution — Multi-Touch"):
+    with st.expander("✅ Example 03 — Kimball: Marketing Attribution — Multi-Touch",  expanded=True):
         st.markdown("#### Overview")
         st.write("Models marketing touchpoints across the customer journey to attribute revenue credit to channels and campaigns using multi-touch attribution.")
         st.markdown("#### Grain")
@@ -723,7 +723,7 @@ ORDER  BY linear_revenue DESC;
         """)
 
     # ── Example 04 ────────────────────────────────────────────────────────────
-    with st.expander("✅ Example 04 — Kimball: HR Headcount & Attrition"):
+    with st.expander("✅ Example 04 — Kimball: HR Headcount & Attrition",  expanded=True):
         st.markdown("#### Overview")
         st.write(
             "Tracks workforce headcount, hires, terminations, and attrition by department, role, and time period.")
@@ -789,7 +789,7 @@ ORDER  BY d.year, d.month;
         """)
 
     # ── Example 05 ────────────────────────────────────────────────────────────
-    with st.expander("✅ Example 05 — Kimball: Inventory & Supply Chain"):
+    with st.expander("✅ Example 05 — Kimball: Inventory & Supply Chain",  expanded=True):
         st.markdown("#### Overview")
         st.write(
             "Models inventory levels, stock movements (receipts, shipments, adjustments), and supplier performance.")
@@ -853,7 +853,7 @@ ORDER  BY f.days_of_supply ASC;
         """)
 
     # ── Example 06 ────────────────────────────────────────────────────────────
-    with st.expander("✅ Example 06 — Data Vault: Customer Hub + CRM Satellite"):
+    with st.expander("✅ Example 06 — Data Vault: Customer Hub + CRM Satellite",  expanded=True):
         st.markdown("#### Overview")
         st.write("A Data Vault 2.0 implementation for customer data integrated from a CRM source. Separates identity (Hub), relationships (Link), and descriptive attributes (Satellite).")
         st.markdown("#### Grain")
@@ -935,7 +935,7 @@ WHERE  s.load_dts = (
         """)
 
     # ── Example 07 ────────────────────────────────────────────────────────────
-    with st.expander("✅ Example 07 — Data Vault: Financial Transactions"):
+    with st.expander("✅ Example 07 — Data Vault: Financial Transactions", expanded=True):
         st.markdown("#### Overview")
         st.write("Data Vault model for financial transaction data ingested from banking/ERP systems. Designed for auditability and regulatory compliance.")
         st.markdown("#### Grain")
@@ -1017,7 +1017,7 @@ ORDER  BY txn_date DESC;
         """)
 
     # ── Example 08 ────────────────────────────────────────────────────────────
-    with st.expander("✅ Example 08 — Inmon 3NF: Enterprise Customer Master"):
+    with st.expander("✅ Example 08 — Inmon 3NF: Enterprise Customer Master", expanded=True):
         st.markdown("#### Overview")
         st.write("A fully normalized 3NF customer master entity for an enterprise data warehouse following Inmon's Corporate Information Factory. No redundancy; data is stored once and referenced everywhere.")
         st.markdown("#### Grain")
@@ -1112,7 +1112,7 @@ ORDER  BY cp.full_name;
         """)
 
     # ── Example 09 ────────────────────────────────────────────────────────────
-    with st.expander("✅ Example 09 — One Big Table: Product Analytics Event Stream"):
+    with st.expander("✅ Example 09 — One Big Table: Product Analytics Event Stream", expanded=True):
         st.markdown("#### Overview")
         st.write("A denormalized wide table for product analytics — all user event data pre-joined with user, session, and product context. Common output of dbt Intermediate → Mart layer.")
         st.markdown("#### Grain")
@@ -1195,7 +1195,7 @@ ORDER  BY unique_users DESC;
         """)
 
     # ── Example 10 ────────────────────────────────────────────────────────────
-    with st.expander("✅ Example 10 — One Big Table: Ad Spend + Performance"):
+    with st.expander("✅ Example 10 — One Big Table: Ad Spend + Performance", expanded=True):
         st.markdown("#### Overview")
         st.write("A wide denormalized table for marketing performance reporting — ad spend, impressions, clicks, conversions, and cost metrics across platforms in one table.")
         st.markdown("#### Grain")
@@ -1273,7 +1273,7 @@ ORDER  BY total_spend DESC;
         """)
 
     # ── Example 11 ────────────────────────────────────────────────────────────
-    with st.expander("✅ Example 11 — Snapshot Fact: Daily Active Users"):
+    with st.expander("✅ Example 11 — Snapshot Fact: Daily Active Users", expanded=True):
         st.markdown("#### Overview")
         st.write("A periodic snapshot fact table that captures daily user activity metrics — DAU, session counts, and engagement scores — for trend and cohort analysis.")
         st.markdown("#### Grain")
@@ -1334,7 +1334,7 @@ ORDER  BY d.full_date DESC, dau DESC;
         """)
 
     # ── Example 12 ────────────────────────────────────────────────────────────
-    with st.expander("✅ Example 12 — Accumulating Snapshot: Lead-to-Close Pipeline"):
+    with st.expander("✅ Example 12 — Accumulating Snapshot: Lead-to-Close Pipeline", expanded=True):
         st.markdown("#### Overview")
         st.write("An accumulating snapshot fact table tracking a sales lead through each pipeline stage. One row per lead — updated in-place as the lead progresses.")
         st.markdown("#### Grain")
@@ -1411,7 +1411,7 @@ ORDER  BY avg_total_cycle;
         """)
 
     # ── Example 13 ────────────────────────────────────────────────────────────
-    with st.expander("✅ Example 13 — Bridge Table: Product Tags Many-to-Many"):
+    with st.expander("✅ Example 13 — Bridge Table: Product Tags Many-to-Many", expanded=True):
         st.markdown("#### Overview")
         st.write("A bridge table resolves the many-to-many relationship between products and tags. Enables tag-based filtering and revenue attribution without multi-valued columns.")
         st.markdown("#### Grain")
@@ -1472,7 +1472,7 @@ ORDER  BY total_revenue DESC;
         """)
 
     # ── Example 14 ────────────────────────────────────────────────────────────
-    with st.expander("✅ Example 14 — Junk Dimension: Web Session Flags"):
+    with st.expander("✅ Example 14 — Junk Dimension: Web Session Flags", expanded=True):
         st.markdown("#### Overview")
         st.write("A junk dimension groups several low-cardinality boolean flag columns from web session data into a single dimension, reducing fact table width without creating many small dimension tables.")
         st.markdown("#### Grain")
@@ -1549,7 +1549,7 @@ GROUP  BY sf.is_mobile, sf.is_organic_traffic;
         """)
 
     # ── Example 15 ────────────────────────────────────────────────────────────
-    with st.expander("✅ Example 15 — SCD Type 2: Employee Role History"):
+    with st.expander("✅ Example 15 — SCD Type 2: Employee Role History", expanded=True):
         st.markdown("#### Overview")
         st.write("Demonstrates Slowly Changing Dimension Type 2 for tracking employee role and department changes over time. Each change creates a new row with effective dates.")
         st.markdown("#### Grain")
@@ -1633,7 +1633,7 @@ ORDER  BY headcount DESC;
         """)
 
     # ── Example 16 ────────────────────────────────────────────────────────────
-    with st.expander("✅ Example 16 — SCD Type 3: Customer Tier Changes"):
+    with st.expander("✅ Example 16 — SCD Type 3: Customer Tier Changes", expanded=True):
         st.markdown("#### Overview")
         st.write("SCD Type 3 tracks a limited change history by adding 'previous value' columns alongside the current value. Used when you need to compare current vs. prior state without full history.")
         st.markdown("#### Grain")
@@ -1707,7 +1707,7 @@ ORDER  BY customer_count DESC;
         """)
 
     # ── Example 17 ────────────────────────────────────────────────────────────
-    with st.expander("✅ Example 17 — SCD Type Comparison (Type 1 / 2 / 3)"):
+    with st.expander("✅ Example 17 — SCD Type Comparison (Type 1 / 2 / 3)", expanded=True):
         st.markdown("#### Overview")
         st.write("A side-by-side reference comparing the three main Slowly Changing Dimension strategies — when to use each, trade-offs, and implementation patterns.")
         st.markdown("#### Comparison")
@@ -1756,7 +1756,7 @@ WHERE  customer_id = 'C001';
         """)
 
     # ── Example 18 ────────────────────────────────────────────────────────────
-    with st.expander("✅ Example 18 — Semi-Additive Facts: Account Balances"):
+    with st.expander("✅ Example 18 — Semi-Additive Facts: Account Balances", expanded=True):
         st.markdown("#### Overview")
         st.write("Semi-additive facts can be summed across some dimensions (accounts) but NOT across time. Account balances are the canonical example — you sum across accounts but average (or pick a snapshot) across time.")
         st.markdown("#### Grain")
@@ -1824,7 +1824,7 @@ GROUP  BY d.full_date, a.account_type;
         """)
 
     # ── Example 19 ────────────────────────────────────────────────────────────
-    with st.expander("✅ Example 19 — Factless Fact Table: Course Enrollment"):
+    with st.expander("✅ Example 19 — Factless Fact Table: Course Enrollment", expanded=True):
         st.markdown("#### Overview")
         st.write("A factless fact table records events or coverage relationships with no natural numeric measure. This example tracks student course enrollments — the existence of the row IS the fact.")
         st.markdown("#### Grain")
@@ -1896,7 +1896,7 @@ WHERE  f.course_key IS NULL;
         """)
 
     # ── Example 20 ────────────────────────────────────────────────────────────
-    with st.expander("✅ Example 20 — dbt Project Layout: Staging → Intermediate → Mart"):
+    with st.expander("✅ Example 20 — dbt Project Layout: Staging → Intermediate → Mart", expanded=True):
         st.markdown("#### Overview")
         st.write("A dbt project architecture pattern organizing SQL models into three layers: Staging (raw source cleaning), Intermediate (business logic), and Mart (final Kimball-style tables for BI).")
         st.markdown("#### Folder Structure")
