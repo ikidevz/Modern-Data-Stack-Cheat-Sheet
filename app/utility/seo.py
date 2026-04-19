@@ -85,6 +85,10 @@ PAGE_META = {
     "AWS": {
         "title": "AWS Data Engineering Cheat Sheet",
         "description": "Comprehensive reference for data engineers building on AWS.",
+    },
+    "Data Model": {
+        "title": "Data Modeling Cheat Sheet",
+        "description": "A concise reference for data modeling concepts, patterns, and best practices.",
     }
 }
 
