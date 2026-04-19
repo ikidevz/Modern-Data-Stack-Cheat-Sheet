@@ -1,4 +1,5 @@
 import streamlit as st
+import datetime
 from components import sidebar
 from utility.seo import inject_seo
 
@@ -15,6 +16,7 @@ tab1, tab2 = st.tabs(["📖 Concepts & Theory", "🧩 Examples"])
 # ─── TAB 1: Concepts & Theory ───────────────────────────────────────────────
 with tab1:
 
+    # ── What is a Data Model ──────────────────────────────────────────────────
     st.subheader("What is a Data Model?")
     st.write(
         """
@@ -26,6 +28,7 @@ with tab1:
 
     st.divider()
 
+    # ── Why It Matters ────────────────────────────────────────────────────────
     st.subheader("Why Data Modeling Matters")
     col1, col2, col3 = st.columns(3)
     with col1:
@@ -42,6 +45,7 @@ with tab1:
 
     st.divider()
 
+    # ── Core Modeling Approaches ──────────────────────────────────────────────
     st.subheader("Core Modeling Approaches")
 
     with st.expander("🏛️ Kimball (Dimensional Modeling)", expanded=True):
@@ -101,6 +105,374 @@ with tab1:
 
     st.divider()
 
+    # ── NEW: Modeling Layers ──────────────────────────────────────────────────
+    st.subheader("🗂️ Modeling Layers: Raw → Staging → Mart")
+    st.write(
+        """
+        Modern data stacks (especially dbt-based pipelines) organize transformations into 
+        distinct layers. Each layer has a clear responsibility — mixing concerns across layers 
+        is one of the most common causes of unmaintainable warehouse code.
+        """
+    )
+
+    col_r, col_s, col_m = st.columns(3)
+    with col_r:
+        st.markdown("**🟤 Raw / Source**")
+        st.write(
+            """
+            Exact copy of source data — no transformations. 
+            Preserves the original payload for debugging and re-processing.
+            
+            - One table per source object
+            - No renaming, casting, or filtering
+            - Append-only or full-replace load
+            - Named: `raw_<source>.<table>`
+            """
+        )
+    with col_s:
+        st.markdown("**🔵 Staging**")
+        st.write(
+            """
+            Light cleaning and standardization. One model per source table. 
+            No joins, no business logic — only renaming and casting.
+            
+            - Rename fields to snake_case
+            - Cast data types (strings → dates, floats)
+            - Filter soft-deleted rows
+            - Named: `stg_<source>__<table>`
+            """
+        )
+    with col_m:
+        st.markdown("**🟢 Mart / Serving**")
+        st.write(
+            """
+            Final business-facing models. Kimball star schemas, OBTs, 
+            or aggregated metrics tables ready for BI tools.
+            
+            - Joins, business logic, aggregations
+            - Fact and dimension tables
+            - Exposed to Tableau, Looker, Power BI
+            - Named: `fct_<entity>`, `dim_<entity>`
+            """
+        )
+
+    st.info(
+        "💡 **Intermediate layer** (optional): sits between staging and mart for complex "
+        "business logic like MRR classification, CLV calculations, or multi-source joins. "
+        "Named: `int_<description>`"
+    )
+
+    st.divider()
+
+    # ── NEW: Normalization Forms ───────────────────────────────────────────────
+    st.subheader("📐 Normalization Forms (1NF → 2NF → 3NF)")
+    st.write(
+        """
+        Normalization is the process of structuring a relational database to reduce redundancy 
+        and improve data integrity. Each normal form builds on the previous one.
+        """
+    )
+
+    with st.expander("1️⃣ First Normal Form (1NF)", expanded=True):
+        st.write(
+            """
+            **Rule:** Every column must contain atomic (indivisible) values. No repeating groups or arrays.
+            """
+        )
+        col_bad, col_good = st.columns(2)
+        with col_bad:
+            st.markdown("❌ **Violates 1NF**")
+            st.code(
+                """
+orders
+─────────────────────────────────
+order_id │ products
+─────────┼──────────────────────
+1001     │ 'shirt, pants, shoes'
+1002     │ 'hat'
+                """,
+                language="text",
+            )
+        with col_good:
+            st.markdown("✅ **Satisfies 1NF**")
+            st.code(
+                """
+order_lines
+─────────────────────────
+order_id │ product_name
+─────────┼───────────────
+1001     │ shirt
+1001     │ pants
+1001     │ shoes
+1002     │ hat
+                """,
+                language="text",
+            )
+
+    with st.expander("2️⃣ Second Normal Form (2NF)"):
+        st.write(
+            """
+            **Rule:** Must be in 1NF, and every non-key column must depend on the **entire** primary key 
+            (no partial dependencies). Applies only when the primary key is composite.
+            """
+        )
+        col_bad2, col_good2 = st.columns(2)
+        with col_bad2:
+            st.markdown("❌ **Violates 2NF**")
+            st.code(
+                """
+order_lines (PK = order_id + product_id)
+─────────────────────────────────────────
+order_id │ product_id │ product_name
+─────────┼────────────┼─────────────
+1001     │ P01        │ Shirt
+-- product_name depends only on product_id,
+-- not the full composite key → partial dependency
+                """,
+                language="text",
+            )
+        with col_good2:
+            st.markdown("✅ **Satisfies 2NF**")
+            st.code(
+                """
+order_lines            products
+──────────────────     ──────────────────
+order_id │ product_id  product_id │ name
+─────────┼──────────   ───────────┼──────
+1001     │ P01         P01        │ Shirt
+ 
+-- product_name moved to its own table
+                """,
+                language="text",
+            )
+
+    with st.expander("3️⃣ Third Normal Form (3NF)"):
+        st.write(
+            """
+            **Rule:** Must be in 2NF, and no non-key column should depend on another non-key column 
+            (no transitive dependencies). This is the standard for Inmon-style EDWs.
+            """
+        )
+        col_bad3, col_good3 = st.columns(2)
+        with col_bad3:
+            st.markdown("❌ **Violates 3NF**")
+            st.code(
+                """
+employees
+──────────────────────────────────────
+emp_id │ dept_id │ dept_name
+───────┼─────────┼──────────
+E01    │ D10     │ Finance
+-- dept_name depends on dept_id,
+-- not emp_id → transitive dependency
+                """,
+                language="text",
+            )
+        with col_good3:
+            st.markdown("✅ **Satisfies 3NF**")
+            st.code(
+                """
+employees           departments
+────────────────    ─────────────────
+emp_id │ dept_id    dept_id │ name
+───────┼─────────   ────────┼────────
+E01    │ D10        D10     │ Finance
+ 
+-- dept_name moved to its own table
+                """,
+                language="text",
+            )
+
+    st.info(
+        "📌 **When to normalize:** Use 3NF in transactional systems (OLTP) and Inmon EDWs. "
+        "Intentionally **denormalize** for analytical marts (OLAP) to reduce join complexity."
+    )
+
+    st.divider()
+
+    # ── NEW: Star vs Snowflake ─────────────────────────────────────────────────
+    st.subheader("⭐ Star Schema vs ❄️ Snowflake Schema")
+    st.write(
+        """
+        Both are Kimball dimensional designs. The difference is whether dimension tables 
+        are further normalized into sub-dimensions.
+        """
+    )
+
+    col_star, col_snow = st.columns(2)
+    with col_star:
+        st.markdown("#### ⭐ Star Schema")
+        st.code(
+            """
+fact_orders
+    ↓ FK
+dim_customer   (flat, denormalized)
+  customer_key
+  full_name
+  city
+  country       ← stored directly
+  region        ← stored directly
+            """,
+            language="text",
+        )
+        st.write(
+            """
+            - Dimensions are **flat** — all attributes in one table
+            - Fewer joins → faster queries
+            - Some redundancy (e.g. country repeated per customer)
+            - Easier to understand for BI users
+            - **Most common in practice**
+            """
+        )
+
+    with col_snow:
+        st.markdown("#### ❄️ Snowflake Schema")
+        st.code(
+            """
+fact_orders
+    ↓ FK
+dim_customer
+  customer_key
+  full_name
+  city_key      → dim_city
+                    city_key
+                    city_name
+                    country_key → dim_country
+                                    country_key
+                                    region
+            """,
+            language="text",
+        )
+        st.write(
+            """
+            - Dimensions are **normalized** into sub-dimensions
+            - More joins → slower queries
+            - Less storage redundancy
+            - Harder to query without good BI tooling
+            - Useful when dimension tables are very large
+            """
+        )
+
+    comparison_data = {
+        "Attribute": [
+            "Join complexity",
+            "Query performance",
+            "Storage efficiency",
+            "Ease of use for analysts",
+            "Redundancy",
+            "Typical use case",
+        ],
+        "⭐ Star Schema": [
+            "Low (1 join per dim)",
+            "Faster",
+            "Lower (some duplication)",
+            "High",
+            "Some",
+            "Most BI/analytics workloads",
+        ],
+        "❄️ Snowflake Schema": [
+            "High (multi-level joins)",
+            "Slower",
+            "Higher (normalized)",
+            "Lower",
+            "Minimal",
+            "Very large, slowly changing dims",
+        ],
+    }
+
+    import pandas as pd
+    st.dataframe(pd.DataFrame(comparison_data),
+                 use_container_width=True, hide_index=True)
+
+    st.divider()
+
+    # ── NEW: Anti-Patterns ────────────────────────────────────────────────────
+    st.subheader("🚫 Data Modeling Anti-Patterns")
+    st.write(
+        "Knowing what **not** to do is as important as knowing the patterns. "
+        "These are the most common mistakes teams make when designing data models."
+    )
+
+    anti_patterns = [
+        {
+            "icon": "🕳️",
+            "name": "Undefined grain",
+            "problem": "Building a fact table without defining what one row represents. "
+                       "Results in accidental fan-out and double-counting in aggregations.",
+            "fix": "Always write the grain statement first: "
+                   "'One row per X per Y.' Validate row counts against source before publishing.",
+        },
+        {
+            "icon": "🍝",
+            "name": "Logic in the mart layer",
+            "problem": "Embedding complex business rules (MRR classification, cohort logic, "
+                       "CLV formulas) directly in fact or dimension models. "
+                       "Makes models hard to test and reuse.",
+            "fix": "Move all business logic to the intermediate layer. "
+                   "Marts should only join and select — no CASE/WHEN chains.",
+        },
+        {
+            "icon": "🔑",
+            "name": "Using natural keys as surrogate keys",
+            "problem": "Relying on source system IDs (email, order number) as primary keys. "
+                       "Source keys can change, be reused, or conflict across systems.",
+            "fix": "Generate surrogate keys (integer sequences or hash keys) in your warehouse. "
+                   "Keep the natural key as a separate business key column.",
+        },
+        {
+            "icon": "📦",
+            "name": "One giant staging model",
+            "problem": "Joining multiple source tables in the staging layer 'to save time.' "
+                       "Breaks the 1:1 source-to-model contract and makes lineage invisible.",
+            "fix": "One staging model per source table. All joins belong in intermediate models.",
+        },
+        {
+            "icon": "📅",
+            "name": "Summing semi-additive facts across time",
+            "problem": "Applying SUM() to balance or inventory columns across date ranges. "
+                       "Returns inflated, meaningless totals (e.g. summing daily account balances).",
+            "fix": "Use snapshot-based queries for semi-additive facts. "
+                   "Document additive vs semi-additive measures in your data catalog.",
+        },
+        {
+            "icon": "🌀",
+            "name": "Overusing SCD Type 2 everywhere",
+            "problem": "Applying SCD Type 2 to every dimension by default adds row explosion, "
+                       "complex point-in-time joins, and maintenance overhead where it's not needed.",
+            "fix": "Use Type 1 for corrections, Type 2 only when historical accuracy is "
+                   "required for analysis. Document the SCD type on every dimension.",
+        },
+        {
+            "icon": "🏚️",
+            "name": "No documentation or data catalog",
+            "problem": "Models with no descriptions, column definitions, or grain statements. "
+                       "Creates institutional knowledge silos and slows onboarding.",
+            "fix": "Enforce descriptions in schema.yml (dbt) or your catalog tool. "
+                   "At minimum: table grain, owner, and additive/semi-additive labels.",
+        },
+        {
+            "icon": "🔗",
+            "name": "Many-to-many joins without a bridge table",
+            "problem": "Directly joining a fact table to a dimension with a many-to-many "
+                       "relationship causes row multiplication and incorrect aggregations.",
+            "fix": "Use a bridge table with an optional weighting column to resolve "
+                   "many-to-many relationships before joining to facts.",
+        },
+    ]
+
+    for ap in anti_patterns:
+        with st.expander(f"{ap['icon']} {ap['name']}"):
+            col_p, col_f = st.columns(2)
+            with col_p:
+                st.markdown("**❌ Problem**")
+                st.write(ap["problem"])
+            with col_f:
+                st.markdown("**✅ Fix**")
+                st.write(ap["fix"])
+
+    st.divider()
+
+    # ── Key Concepts Glossary ──────────────────────────────────────────────────
     st.subheader("Key Concepts Glossary")
 
     glossary = {
@@ -113,6 +485,10 @@ with tab1:
         "Degenerate Dimension": "A dimension attribute stored directly in the fact table (e.g., order number).",
         "Snapshot Fact Table": "Records the state of a process at regular intervals (daily, monthly).",
         "Accumulating Snapshot": "Tracks the lifecycle of a process through multiple pipeline stages.",
+        "Transitive Dependency": "When a non-key column depends on another non-key column rather than the primary key (violates 3NF).",
+        "Partial Dependency": "When a non-key column depends only on part of a composite primary key (violates 2NF).",
+        "Semi-Additive Fact": "A measure that can be summed across some dimensions (e.g. accounts) but not across time (e.g. balances).",
+        "Fan-out": "Unintended row multiplication caused by joining tables with a many-to-many relationship without a bridge table.",
     }
 
     for term, definition in glossary.items():
@@ -121,16 +497,56 @@ with tab1:
 
     st.divider()
 
+    # ── Discussions & Notes (with export) ─────────────────────────────────────
     st.subheader("Discussions & Notes")
     st.write(
         "_Use this space for team annotations and open questions about your data models._")
-    st.text_area(
+
+    if "notes_list" not in st.session_state:
+        st.session_state.notes_list = []
+
+    new_note = st.text_area(
         "Add a note or discussion point:",
         placeholder="e.g. Should the orders fact table use transaction or periodic snapshot grain?",
         height=120,
+        key="new_note_input",
     )
-    st.button("💬 Submit Note", disabled=True,
-              help="Discussion feature coming soon")
+
+    col_submit, col_export = st.columns([1, 3])
+
+    with col_submit:
+        if st.button("💬 Submit Note"):
+            if new_note.strip():
+                timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+                st.session_state.notes_list.append(
+                    {"timestamp": timestamp, "note": new_note.strip()}
+                )
+                st.success("Note saved!")
+                st.rerun()
+            else:
+                st.warning("Please enter a note before submitting.")
+
+    if st.session_state.notes_list:
+        st.markdown(
+            f"**{len(st.session_state.notes_list)} note(s) saved this session:**")
+        for i, entry in enumerate(reversed(st.session_state.notes_list), 1):
+            st.markdown(f"**{i}.** `{entry['timestamp']}` — {entry['note']}")
+
+        # Build export text
+        export_lines = ["Data Model — Discussion Notes", "=" * 40, ""]
+        for entry in st.session_state.notes_list:
+            export_lines.append(f"[{entry['timestamp']}]")
+            export_lines.append(entry["note"])
+            export_lines.append("")
+        export_text = "\n".join(export_lines)
+
+        with col_export:
+            st.download_button(
+                label="⬇️ Export notes as .txt",
+                data=export_text,
+                file_name=f"data_model_notes_{datetime.datetime.now().strftime('%Y%m%d')}.txt",
+                mime="text/plain",
+            )
 
 
 # ─── TAB 2: Examples ─────────────────────────────────────────────────────────
